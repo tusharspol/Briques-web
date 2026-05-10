@@ -1,640 +1,2140 @@
+/*
+  ────────────────────────────────────────────────────────────────
+  Briques.app — marketing site
+  ────────────────────────────────────────────────────────────────
+
+  Design system in three pieces:
+    1. tokens — Sunlit palette + type + spacing scale
+    2. brick — the signature decorative component (CSS-only LEGO)
+    3. layout primitives + page sections
+
+  No build step. No utility framework. Single stylesheet, ordered
+  from foundation up. Comments name decisions, not just what they
+  do, so future-me can rebuild context when re-opening this file.
+
+  Aesthetic lane: a kit catalog from 1978 that ships to your phone.
+  Cream paper, ink type, real bricks placed with a slight wobble.
+  Not Vercel. Not Notion. Not magazine pastiche.
+*/
+
+
+/* ═══════════════════════════════════════════════════════════════
+   1. RESET — minimal, opinionated
+   ═══════════════════════════════════════════════════════════════ */
+
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; text-rendering: optimizeLegibility; }
+body, h1, h2, h3, h4, p, ul, ol, figure { margin: 0; }
+ul, ol { padding: 0; list-style: none; }
+img, svg { display: block; max-width: 100%; }
+button { font: inherit; color: inherit; cursor: pointer; }
+a { color: inherit; }
+input, textarea, select, button { font: inherit; color: inherit; }
+
+
+/* ═══════════════════════════════════════════════════════════════
+   2. TOKENS
+   ═══════════════════════════════════════════════════════════════ */
+
 :root {
-  --background: #0a0a0a;
-  --surface: #141414;
-  --surface-high: #1e1e1e;
-  --primary: #d4ff3a;
-  --primary-dark: #b8e832;
-  --on-primary: #0a0a0a;
-  --text-primary: #ffffff;
-  --text-secondary: #888888;
-  --text-disabled: #444444;
-  --border: #1e1e1e;
-  --border-focus: #d4ff3a;
-  --success: #4dff91;
-  --warning: #ffb84d;
-  --shadow-heavy: 0 32px 80px rgba(0, 0, 0, 0.45);
-  --shadow-soft: 0 12px 32px rgba(0, 0, 0, 0.28);
+  /* ── Sunlit palette — mirrors lib/widgets/brick.dart ──────── */
+  --paper:     #FAF7F0;   /* default background everywhere */
+  --cream:     #F4ECD8;   /* slightly darker tinted surface */
+  --ink:       #1A1714;   /* primary text */
+  --ink-soft:  #5A5246;   /* secondary text */
+  --ink-muted: #857F76;   /* tertiary text, captions */
+  --hairline:  #E8E2D2;   /* 1px strokes, dividers */
+
+  --apricot: #F4A261;     /* primary accent — CTAs */
+  --sage:    #A3B18A;     /* calm, secondary */
+  --butter:  #F2D26F;     /* highlight bursts */
+  --sky:     #A7C7E7;     /* info, quotes */
+  --rose:    #E29578;     /* second-warm */
+
+  /* Brick stud highlight — a touch of inner-light. */
+  --stud-highlight: rgba(255, 251, 240, 0.55);
+  --stud-shadow:    rgba(26, 23, 20, 0.18);
+  --brick-edge:     rgba(26, 23, 20, 0.28);
+
+  /* ── Type ───────────────────────────────────────────────── */
+  --serif: "Instrument Serif", "Iowan Old Style", Georgia, serif;
+  --sans:  "Inter", -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+
+  /* Modular scale — fluid clamp on display sizes. Ratio is 1.30
+     between body steps, larger jumps on display. */
+  --t-mega:    clamp(3.5rem, 8vw + 1rem, 6.25rem);   /* hero */
+  --t-display: clamp(2.5rem, 5vw + 0.5rem, 4rem);    /* page H1 */
+  --t-h2:      clamp(1.75rem, 2.4vw + 0.6rem, 2.5rem);
+  --t-h3:      1.375rem;     /* 22 */
+  --t-lede:    1.1875rem;    /* 19 */
+  --t-body:    1rem;         /* 16 */
+  --t-small:   0.875rem;     /* 14 */
+  --t-eyebrow: 0.75rem;      /* 12 */
+
+  /* ── Space ──────────────────────────────────────────────── */
+  --s-1:  4px;
+  --s-2:  8px;
+  --s-3:  12px;
+  --s-4:  16px;
+  --s-5:  24px;
+  --s-6:  32px;
+  --s-7:  48px;
+  --s-8:  64px;
+  --s-9:  96px;
+  --s-10: 128px;
+
+  /* ── Layout ─────────────────────────────────────────────── */
+  --kit-max:    1180px;     /* outer container */
+  --kit-narrow: 720px;      /* legal pages, copy-heavy reads */
+  --radius-sm:  6px;
+  --radius:     12px;
+  --radius-lg:  20px;
 }
 
-@font-face {
-  font-family: "Outfit";
-  src: url("assets/fonts/Outfit-SemiBold.ttf") format("truetype");
-  font-style: normal;
-  font-weight: 600;
-}
 
-@font-face {
-  font-family: "Outfit";
-  src: url("assets/fonts/Outfit-Bold.ttf") format("truetype");
-  font-style: normal;
-  font-weight: 700;
-}
-
-@font-face {
-  font-family: "Outfit";
-  src: url("assets/fonts/Outfit-ExtraBold.ttf") format("truetype");
-  font-style: normal;
-  font-weight: 800;
-}
-
-@font-face {
-  font-family: "PlusJakartaSans";
-  src: url("assets/fonts/PlusJakartaSans-Regular.ttf") format("truetype");
-  font-style: normal;
-  font-weight: 400;
-}
-
-@font-face {
-  font-family: "PlusJakartaSans";
-  src: url("assets/fonts/PlusJakartaSans-Medium.ttf") format("truetype");
-  font-style: normal;
-  font-weight: 500;
-}
-
-@font-face {
-  font-family: "PlusJakartaSans";
-  src: url("assets/fonts/PlusJakartaSans-Bold.ttf") format("truetype");
-  font-style: normal;
-  font-weight: 700;
-}
-
-* {
-  box-sizing: border-box;
-}
-
-html,
-body {
-  width: 100%;
-  height: 100%;
-  margin: 0;
-  overflow: hidden;
-}
+/* ═══════════════════════════════════════════════════════════════
+   3. BASE
+   ═══════════════════════════════════════════════════════════════ */
 
 body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: var(--t-body);
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  /* Subtle paper texture via radial gradients — almost invisible
+     but reads as "physical surface" rather than blank canvas. */
+  background-image:
+    radial-gradient(ellipse at top, rgba(244, 162, 97, 0.05), transparent 50%),
+    radial-gradient(circle at 70% 80%, rgba(167, 199, 231, 0.04), transparent 40%);
+  background-attachment: fixed;
+}
+
+/* Selection — warm butter highlight (matches the brand) */
+::selection { background: var(--butter); color: var(--ink); }
+
+/* Focus ring — same warm tone, never a default blue */
+:focus-visible {
+  outline: 2px solid var(--apricot);
+  outline-offset: 3px;
+  border-radius: var(--radius-sm);
+}
+
+
+/* ═══════════════════════════════════════════════════════════════
+   4. THE BRICK — signature decorative component
+   ═══════════════════════════════════════════════════════════════
+
+   A LEGO brick rendered in pure CSS:
+     • Body: a colored rectangle with rounded corners.
+     • Studs: round dots positioned via CSS grid on top.
+     • Side highlight: 1px inner ring giving plastic-edge depth.
+     • Optional rotation via .brick--tilt-{n} for "hand-placed" feel.
+
+   Sizing comes from --brick-cell (one stud cell) + the cols/rows
+   utility classes. cols×rows defines the stud grid. The body
+   dimensions follow.
+
+   Example:
+     <span class="brick brick--apricot brick--2x2 brick--tilt-l">
+       <span class="studs"><i></i><i></i><i></i><i></i></span>
+     </span>
+*/
+
+.brick {
+  --brick-cell: 22px;            /* one stud cell side */
+  --brick-cols: 2;
+  --brick-rows: 2;
+  --brick-color: var(--apricot);
+
   position: relative;
-  font-family: "PlusJakartaSans", sans-serif;
-  color: var(--text-primary);
-  background:
-    radial-gradient(circle at top left, rgba(212, 255, 58, 0.2), transparent 34%),
-    radial-gradient(circle at 84% 16%, rgba(77, 255, 145, 0.12), transparent 24%),
-    linear-gradient(135deg, #080808 0%, #0a0a0a 50%, #111111 100%);
+  display: inline-block;
+  width: calc(var(--brick-cell) * var(--brick-cols));
+  height: calc(var(--brick-cell) * var(--brick-rows));
+  background: var(--brick-color);
+  border-radius: 4px;
+  /* Plastic-edge depth: inner highlight + outer shadow. The shadow
+     gives it a tiny lift off the page. */
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.35),
+    inset 0 -1px 0 var(--brick-edge),
+    0 1px 0 var(--brick-edge),
+    0 4px 10px -4px rgba(26, 23, 20, 0.18);
+  transition: transform 220ms cubic-bezier(0.2, 0.8, 0.2, 1);
+  vertical-align: middle;
 }
 
-body::before,
-body::after {
-  content: "";
+/* Sizing modifiers — cols×rows defines stud grid + total dims */
+.brick--1x1 { --brick-cols: 1; --brick-rows: 1; }
+.brick--1x2 { --brick-cols: 1; --brick-rows: 2; }
+.brick--2x1 { --brick-cols: 2; --brick-rows: 1; }
+.brick--2x2 { --brick-cols: 2; --brick-rows: 2; }
+.brick--3x2 { --brick-cols: 3; --brick-rows: 2; }
+.brick--4x1 { --brick-cols: 4; --brick-rows: 1; }
+.brick--4x2 { --brick-cols: 4; --brick-rows: 2; }
+.brick--6x2 { --brick-cols: 6; --brick-rows: 2; }
+
+/* Studs — child <i> elements positioned via grid on a .studs
+   wrapper. Real LEGO studs are ~62% of the cell width with a soft
+   highlight and a thin shadow. */
+.brick .studs {
   position: absolute;
-  inset: 0;
+  inset: calc(var(--brick-cell) * 0.10) calc(var(--brick-cell) * 0.10) auto;
+  height: calc(var(--brick-cell) * var(--brick-rows) - var(--brick-cell) * 0.20);
+  display: grid;
+  grid-template-columns: repeat(var(--brick-cols), 1fr);
+  grid-template-rows: repeat(var(--brick-rows), 1fr);
+  gap: calc(var(--brick-cell) * 0.06);
   pointer-events: none;
 }
 
-body::before {
-  background-image:
-    linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-  background-size: 72px 72px;
-  mask-image: radial-gradient(circle at center, black 40%, transparent 86%);
-}
-
-body::after {
+.brick .studs i {
+  width: 62%;
+  height: 62%;
+  border-radius: 50%;
   background:
-    radial-gradient(circle at 68% 46%, rgba(212, 255, 58, 0.12), transparent 18%),
-    radial-gradient(circle at 22% 82%, rgba(255, 184, 77, 0.08), transparent 16%);
-  filter: blur(18px);
+    radial-gradient(
+      ellipse at 32% 30%,
+      var(--stud-highlight) 0%,
+      transparent 45%
+    ),
+    var(--brick-color);
+  box-shadow:
+    inset 0 -1px 0 var(--stud-shadow),
+    0 1px 0 var(--stud-shadow);
+  align-self: center;
+  justify-self: center;
 }
 
-.shell {
-  position: relative;
-  z-index: 1;
-  display: grid;
-  grid-template-rows: auto 1fr;
-  width: min(1280px, 100%);
-  height: 100%;
-  margin: 0 auto;
-  padding: clamp(18px, 3vw, 30px);
-}
+/* Color modifiers */
+.brick--apricot { --brick-color: var(--apricot); }
+.brick--sage    { --brick-color: var(--sage); }
+.brick--butter  { --brick-color: var(--butter); }
+.brick--sky     { --brick-color: var(--sky); }
+.brick--rose    { --brick-color: var(--rose); }
+.brick--cream   { --brick-color: var(--cream); }
+.brick--ink     { --brick-color: var(--ink); }
 
-.topbar {
+/* Hand-placed wobble — small rotations make a row feel placed by
+   hand instead of plotted by a designer's grid. Use sparingly:
+   too much tilt reads as kitsch. */
+.brick--tilt-l    { transform: rotate(-6deg); }
+.brick--tilt-r    { transform: rotate(6deg); }
+.brick--tilt-l-sm { transform: rotate(-3deg); }
+.brick--tilt-r-sm { transform: rotate(3deg); }
+.brick--tilt-r-lg { transform: rotate(10deg); }
+.brick--tilt-l-lg { transform: rotate(-10deg); }
+
+/* Sizes */
+.brick--lg { --brick-cell: 32px; }
+.brick--xl { --brick-cell: 44px; }
+.brick--xxl { --brick-cell: 56px; }
+.brick--sm { --brick-cell: 16px; }
+.brick--xs { --brick-cell: 12px; }
+
+/* The brick band — a row of mixed bricks, used as section header
+   decoration. Wraps gracefully on small screens. */
+.brick-band {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 20px;
+  align-items: flex-end;
+  gap: var(--s-3);
+  flex-wrap: wrap;
+  padding: var(--s-4) 0;
 }
 
-.brand {
-  display: inline-flex;
-  align-items: center;
-  gap: 14px;
-}
 
-.brand__mark {
-  display: grid;
-  place-items: center;
-  width: 54px;
-  height: 54px;
-  border-radius: 18px;
-  background:
-    linear-gradient(180deg, rgba(212, 255, 58, 0.18), rgba(212, 255, 58, 0.04)),
-    var(--surface);
-  border: 1px solid rgba(212, 255, 58, 0.16);
-  box-shadow: var(--shadow-soft);
-}
+/* ═══════════════════════════════════════════════════════════════
+   5. TYPOGRAPHY UTILITIES
+   ═══════════════════════════════════════════════════════════════ */
 
-.brand__mark img {
-  width: 74%;
-  height: 74%;
-  object-fit: contain;
-}
-
-.brand__text {
-  display: grid;
-  gap: 3px;
-}
-
-.brand__name {
-  font-family: "Outfit", sans-serif;
-  font-size: 1.2rem;
-  font-weight: 700;
-  letter-spacing: -0.02em;
-}
-
-.brand__meta,
-.topbar__pill,
-.eyebrow,
-.signal,
-.screen__tag,
-.floating__label,
-.stage__badge,
-.stage__status {
-  font-size: 0.72rem;
-  font-weight: 500;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-}
-
-.brand__meta {
-  color: var(--text-secondary);
-}
-
-.topbar__pill {
-  padding: 11px 16px;
-  border-radius: 999px;
-  color: var(--on-primary);
-  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-  box-shadow: 0 10px 24px rgba(212, 255, 58, 0.2);
-}
-
-.hero {
-  display: grid;
-  grid-template-columns: minmax(0, 1.05fr) minmax(320px, 0.95fr);
-  align-items: center;
-  gap: clamp(28px, 5vw, 70px);
-  min-height: 0;
-}
-
-.hero__copy {
-  display: grid;
-  gap: clamp(16px, 2vw, 24px);
-  max-width: 640px;
-  animation: rise-in 700ms ease-out both;
-}
+.serif { font-family: var(--serif); font-weight: 400; }
+.italic { font-style: italic; }
 
 .eyebrow {
-  display: inline-flex;
-  width: fit-content;
-  padding: 10px 14px;
-  border-radius: 999px;
-  color: var(--primary);
-  border: 1px solid rgba(212, 255, 58, 0.18);
-  background: rgba(212, 255, 58, 0.06);
-}
-
-h1,
-h2,
-strong {
-  margin: 0;
-  font-family: "Outfit", sans-serif;
-}
-
-h1 {
-  max-width: 10.5ch;
-  font-size: clamp(2.8rem, 6vw, 5.6rem);
-  line-height: 0.95;
-  font-weight: 800;
-  letter-spacing: -0.06em;
-  text-wrap: balance;
+  font-size: var(--t-eyebrow);
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  font-weight: 600;
+  color: var(--ink-soft);
 }
 
 .lede {
-  max-width: 52ch;
-  margin: 0;
-  font-size: clamp(0.98rem, 1.5vw, 1.08rem);
-  line-height: 1.72;
-  color: #cfcfcf;
+  font-size: var(--t-lede);
+  line-height: 1.5;
+  color: var(--ink-soft);
+  max-width: 42rem;
 }
 
-.hero__signals,
-.hero__stats,
-.screen__chips,
-.avatar-stack {
-  display: flex;
-  flex-wrap: wrap;
+.muted { color: var(--ink-muted); }
+.soft  { color: var(--ink-soft); }
+
+h1, h2, h3 { font-family: var(--serif); font-weight: 400; line-height: 1.05; }
+h1 em, h2 em, h3 em { font-style: italic; font-family: var(--serif); }
+
+
+/* ═══════════════════════════════════════════════════════════════
+   6. LAYOUT PRIMITIVES
+   ═══════════════════════════════════════════════════════════════ */
+
+.kit {
+  width: 100%;
+  max-width: var(--kit-max);
+  margin-inline: auto;
+  padding-inline: clamp(var(--s-4), 4vw, var(--s-6));
 }
 
-.hero__signals {
-  gap: 10px;
+.kit-narrow {
+  max-width: var(--kit-narrow);
+  margin-inline: auto;
+  padding-inline: clamp(var(--s-4), 4vw, var(--s-6));
 }
 
-.signal {
-  padding: 12px 16px;
-  border-radius: 999px;
-  color: var(--text-primary);
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.06);
+.section {
+  padding-block: clamp(var(--s-8), 8vw, var(--s-10));
 }
 
-.signal--primary {
-  color: var(--on-primary);
-  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-  border-color: transparent;
-}
+.section--tight { padding-block: clamp(var(--s-7), 6vw, var(--s-8)); }
 
-.hero__stats {
-  gap: 14px;
-}
 
-.stat,
-.stage,
-.screen__chips span {
-  border: 1px solid rgba(255, 255, 255, 0.07);
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.01));
-}
+/* ═══════════════════════════════════════════════════════════════
+   7. NAV
+   ═══════════════════════════════════════════════════════════════ */
 
-.stat {
-  min-width: 136px;
-  padding: 16px 18px;
-  border-radius: 22px;
-  box-shadow: var(--shadow-soft);
-}
-
-.stat strong {
-  display: block;
-  margin-bottom: 5px;
-  font-size: 1.2rem;
-  font-weight: 700;
-  letter-spacing: -0.03em;
-}
-
-.stat span {
-  font-size: 0.88rem;
-  color: var(--text-secondary);
-}
-
-.hero__stage {
-  position: relative;
-  min-height: clamp(320px, 54vh, 520px);
-  animation: rise-in 820ms ease-out 80ms both;
-}
-
-.stage {
-  position: absolute;
-  border-radius: 30px;
-  backdrop-filter: blur(22px);
-}
-
-.stage--main {
-  inset: 18px 0 28px 48px;
-  padding: clamp(20px, 2vw, 24px);
-  box-shadow: var(--shadow-heavy);
-  overflow: hidden;
-}
-
-.stage--main::before {
-  content: "";
-  position: absolute;
-  inset: -20% auto auto -10%;
-  width: 180px;
-  height: 180px;
-  border-radius: 50%;
-  background: rgba(212, 255, 58, 0.12);
-  filter: blur(24px);
-}
-
-.stage__header,
-.screen__top {
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: 50;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 14px;
+  gap: var(--s-5);
+  padding: var(--s-4) clamp(var(--s-4), 4vw, var(--s-6));
+  background: rgba(250, 247, 240, 0.85);
+  backdrop-filter: saturate(120%) blur(8px);
+  -webkit-backdrop-filter: saturate(120%) blur(8px);
+  border-bottom: 1px solid var(--hairline);
 }
 
-.stage__badge,
-.screen__tag {
-  color: var(--primary);
-}
-
-.stage__status {
-  color: var(--warning);
-}
-
-.stage__timeline {
-  display: grid;
-  gap: 10px;
-  margin: 24px 0 22px;
-}
-
-.timeline__item {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  color: var(--text-secondary);
-}
-
-.timeline__item--active {
-  color: var(--text-primary);
-}
-
-.timeline__dot {
-  width: 12px;
-  height: 12px;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.12);
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.06);
-}
-
-.timeline__item--active .timeline__dot {
-  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-  box-shadow: 0 0 18px rgba(212, 255, 58, 0.36);
-}
-
-.timeline__label {
-  font-size: 0.95rem;
-}
-
-.stage__screen {
-  position: relative;
-  z-index: 1;
-  display: grid;
-  gap: 18px;
-  padding: 20px;
-  border-radius: 24px;
-  background:
-    linear-gradient(180deg, rgba(10, 10, 10, 0.92), rgba(20, 20, 20, 0.96)),
-    var(--surface);
-  border: 1px solid rgba(212, 255, 58, 0.12);
-}
-
-.screen__brand {
+.nav__brand {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
-  font-family: "Outfit", sans-serif;
-  font-size: 1rem;
-  font-weight: 700;
+  gap: var(--s-3);
+  text-decoration: none;
+  color: var(--ink);
 }
 
-.screen__brand img {
-  width: 26px;
-  height: 26px;
+.nav__name {
+  font-family: var(--serif);
+  font-size: 1.5rem;
+  letter-spacing: -0.01em;
 }
 
-.screen__headline h2 {
-  max-width: 12ch;
-  font-size: clamp(1.4rem, 2vw, 2rem);
-  font-weight: 700;
-  line-height: 1;
-  letter-spacing: -0.05em;
+.nav__links {
+  display: flex;
+  gap: var(--s-5);
+  font-size: var(--t-small);
+  font-weight: 500;
 }
 
-.screen__headline p,
-.floating__copy {
-  margin: 10px 0 0;
-  font-size: 0.94rem;
-  line-height: 1.65;
-  color: var(--text-secondary);
+.nav__links a {
+  text-decoration: none;
+  color: var(--ink-soft);
+  transition: color 200ms;
 }
 
-.screen__chips {
-  gap: 10px;
+.nav__links a:hover, .nav__links a.is-active {
+  color: var(--ink);
 }
 
-.screen__chips span {
-  padding: 11px 14px;
+.nav__cta {
+  font-size: var(--t-small);
+  font-weight: 600;
+  text-decoration: none;
+  background: var(--ink);
+  color: var(--paper);
+  padding: 10px 16px;
   border-radius: 999px;
-  font-size: 0.84rem;
-  color: #d7d7d7;
+  transition: transform 220ms cubic-bezier(0.2, 0.8, 0.2, 1), background 200ms;
 }
 
-.stage--floating {
-  width: clamp(180px, 21vw, 230px);
-  padding: 18px;
-  box-shadow: var(--shadow-soft);
+.nav__cta:hover { background: #2a2520; transform: translateY(-1px); }
+
+@media (max-width: 720px) {
+  .nav__links { display: none; }
 }
 
-.stage--avatars {
-  top: 0;
+
+/* ═══════════════════════════════════════════════════════════════
+   8. HERO — the centerpiece
+   ═══════════════════════════════════════════════════════════════ */
+
+.hero {
+  padding-block: clamp(var(--s-8), 9vw, 7rem) clamp(var(--s-7), 6vw, var(--s-9));
+}
+
+.hero__inner {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: clamp(var(--s-6), 6vw, var(--s-9));
+  align-items: center;
+}
+/* Hero stacks at the threshold defined further down in section 25
+   (760px). This block intentionally has no @media rule of its own
+   to avoid double-overrides. */
+
+.hero__title {
+  font-size: var(--t-mega);
+  letter-spacing: -0.02em;
+  line-height: 0.96;
+  margin-bottom: var(--s-5);
+}
+
+.hero__lede {
+  font-size: var(--t-lede);
+  line-height: 1.5;
+  color: var(--ink-soft);
+  max-width: 32rem;
+  margin-bottom: var(--s-6);
+}
+
+.hero__ctas {
+  display: flex;
+  gap: var(--s-3);
+  flex-wrap: wrap;
+}
+
+.hero__sub {
+  font-size: var(--t-small);
+  color: var(--ink-muted);
+  margin-top: var(--s-4);
+}
+
+/* Hero brick scatter — fixed-aspect canvas with absolutely
+   positioned bricks. Chosen positions evoke "an architect's sketch
+   of an app under construction." */
+.hero__scatter {
+  position: relative;
+  height: clamp(280px, 38vw, 420px);
+  margin-block: var(--s-5);
+}
+
+.hero__scatter .brick {
+  position: absolute;
+}
+
+/* Tuned by eye — they should feel placed, not gridded. */
+.hero__b1 { top:  6%; left:  6%; }
+.hero__b2 { top:  0;  left: 38%; }
+.hero__b3 { top: 22%; left: 60%; }
+.hero__b4 { top: 42%; left: 14%; }
+.hero__b5 { top: 56%; left: 46%; }
+.hero__b6 { top: 76%; left:  4%; }
+.hero__b7 { top: 80%; left: 60%; }
+
+
+/* ═══════════════════════════════════════════════════════════════
+   9. BUTTONS
+   ═══════════════════════════════════════════════════════════════ */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-2);
+  padding: 14px 22px;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  background: var(--ink);
+  color: var(--paper);
+  font-weight: 600;
+  font-size: var(--t-body);
+  text-decoration: none;
+  transition: transform 220ms cubic-bezier(0.2, 0.8, 0.2, 1), background 200ms;
+  white-space: nowrap;
+}
+
+.btn:hover { transform: translateY(-2px); background: #2a2520; }
+.btn:active { transform: translateY(0); }
+
+.btn--ghost {
+  background: transparent;
+  color: var(--ink);
+  border-color: var(--ink);
+}
+
+.btn--ghost:hover { background: var(--ink); color: var(--paper); }
+
+.btn--accent {
+  background: var(--apricot);
+  color: var(--ink);
+}
+
+.btn--accent:hover { background: #ed914d; }
+
+.btn--lg { padding: 18px 28px; font-size: 1.0625rem; }
+
+
+/* ═══════════════════════════════════════════════════════════════
+   10. STEPS — "How it works" component
+   ═══════════════════════════════════════════════════════════════ */
+
+.steps {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: clamp(var(--s-5), 4vw, var(--s-7));
+  margin-top: var(--s-7);
+}
+/* .steps responsive rules consolidated in section 25. */
+
+.step {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-4);
+}
+
+/* Step number = a real brick (with studs) + number painted on top.
+   Reusing the .brick component keeps the studs aligned exactly with
+   the rest of the page's bricks; positioning a number absolutely on
+   top of it lets the studs stay readable as LEGO. */
+.step__num {
+  position: relative;
+  display: inline-block;
+  align-self: flex-start;
+  /* Match the natural size of the brick inside (4x2 @ lg cell=32px =
+     128w × 64h). Setting explicit width/height on the wrapper keeps
+     the absolutely-positioned number centered over the brick. */
+  width: 128px;
+  height: 64px;
+}
+
+.step__num .brick {
+  /* The brick fills the wrapper. Studs are auto-injected by the
+     bricks helper script. */
+  width: 100%;
+  height: 100%;
+}
+
+.step__num-label {
+  /* The numeric label sits below the studs (stud row is the top
+     ~50% of a 4x2 brick), centred horizontally. */
+  position: absolute;
+  inset: auto 0 4px 0;
+  text-align: center;
+  font-family: var(--serif);
+  font-size: 1.625rem;
+  color: var(--ink);
+  line-height: 1;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.step h3 {
+  font-size: var(--t-h3);
+  margin-bottom: var(--s-2);
+  color: var(--ink);
+  font-family: var(--serif);
+}
+
+.step p {
+  color: var(--ink-soft);
+  line-height: 1.6;
+  max-width: 28rem;
+}
+
+/* Old step--{color} hooks kept for back-compat but no longer drive
+   colour — the brick element inside .step__num owns the colour now
+   via its own .brick--{name} class. */
+
+
+/* ═══════════════════════════════════════════════════════════════
+   11. GALLERY — "what you can build"
+   ═══════════════════════════════════════════════════════════════
+
+   Asymmetric grid: items vary in span. Avoids the
+   identical-card-grid template trap. Each card has a small brick
+   accent in a corner, like a maker's mark.
+*/
+
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: var(--s-5);
+  margin-top: var(--s-7);
+}
+
+.g-card {
+  position: relative;
+  background: var(--cream);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius-lg);
+  padding: clamp(var(--s-5), 3vw, var(--s-6));
+  transition: transform 280ms cubic-bezier(0.2, 0.8, 0.2, 1);
+  display: flex;
+  flex-direction: column;
+}
+
+.g-card:hover { transform: translateY(-3px); }
+
+.g-card--wide   { grid-column: span 4; min-height: 260px; }
+.g-card--tall   { grid-column: span 2; grid-row: span 2; min-height: 360px; }
+.g-card--small  { grid-column: span 2; }
+.g-card--medium { grid-column: span 3; }
+/* .gallery responsive rules consolidated in section 25. */
+
+.g-card__kind {
+  font-size: var(--t-eyebrow);
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--ink-soft);
+  font-weight: 600;
+  margin-bottom: var(--s-2);
+}
+
+.g-card__title {
+  font-family: var(--serif);
+  font-size: clamp(1.5rem, 2.4vw, 2rem);
+  line-height: 1.1;
+  margin-bottom: var(--s-3);
+  color: var(--ink);
+}
+
+.g-card__desc {
+  color: var(--ink-soft);
+  max-width: 32rem;
+  line-height: 1.55;
+}
+
+/* Maker's mark — the brick in the bottom-right corner. */
+.g-card__mark {
+  position: absolute;
+  bottom: var(--s-5);
+  right: var(--s-5);
+  opacity: 0.95;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════
+   12. PULL QUOTE
+   ═══════════════════════════════════════════════════════════════ */
+
+.pull {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: var(--s-5);
+  padding: clamp(var(--s-6), 4vw, var(--s-7));
+  background: linear-gradient(180deg, var(--paper) 0%, var(--cream) 100%);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius-lg);
+  margin-top: var(--s-7);
+}
+
+.pull__quote {
+  font-family: var(--serif);
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  line-height: 1.25;
+  color: var(--ink);
+}
+
+.pull__cite {
+  display: block;
+  margin-top: var(--s-3);
+  font-size: var(--t-small);
+  color: var(--ink-soft);
+}
+
+
+/* ═══════════════════════════════════════════════════════════════
+   13. CTA BAND
+   ═══════════════════════════════════════════════════════════════ */
+
+.cta-band {
+  position: relative;
+  background: var(--ink);
+  color: var(--paper);
+  border-radius: var(--radius-lg);
+  padding: clamp(var(--s-7), 5vw, var(--s-9));
+  text-align: center;
+  overflow: hidden;
+}
+
+.cta-band__title {
+  font-size: clamp(2rem, 4vw, 3rem);
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  margin-bottom: var(--s-4);
+  color: var(--paper);
+  font-family: var(--serif);
+}
+
+.cta-band__title em {
+  color: var(--butter);
+  font-style: italic;
+}
+
+.cta-band__lede {
+  color: rgba(250, 247, 240, 0.7);
+  margin-inline: auto;
+  margin-bottom: var(--s-6);
+  max-width: 36rem;
+  font-size: var(--t-lede);
+}
+
+.cta-band .btn {
+  background: var(--apricot);
+  color: var(--ink);
+  border-color: var(--apricot);
+}
+
+.cta-band .btn:hover { background: #f0934a; transform: translateY(-2px); }
+
+/* Decorative bricks scattered in corners of the dark band */
+.cta-band__deco {
+  position: absolute;
+  pointer-events: none;
+}
+
+.cta-band__deco--tl { top: -10px; left:  20px; }
+.cta-band__deco--tr { top: -8px;  right: 30px; }
+.cta-band__deco--bl { bottom: -8px; left: 60px; }
+.cta-band__deco--br { bottom: -10px; right: 18px; }
+
+
+/* ═══════════════════════════════════════════════════════════════
+   14. FOOTER
+   ═══════════════════════════════════════════════════════════════ */
+
+.footer {
+  border-top: 1px solid var(--hairline);
+  padding-block: var(--s-8) var(--s-7);
+  margin-top: var(--s-9);
+}
+
+.footer__top {
+  display: grid;
+  grid-template-columns: 1.4fr repeat(3, 1fr);
+  gap: var(--s-7);
+}
+
+@media (max-width: 880px) {
+  .footer__top { grid-template-columns: 1fr 1fr; gap: var(--s-6); }
+}
+
+.footer__brand {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-3);
+}
+
+.footer__name {
+  font-family: var(--serif);
+  font-size: 1.75rem;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-3);
+}
+
+.footer__tag {
+  font-size: var(--t-small);
+  color: var(--ink-soft);
+  max-width: 22rem;
+  line-height: 1.5;
+}
+
+.footer__col {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-3);
+}
+
+.footer__col-title {
+  font-size: var(--t-eyebrow);
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-weight: 600;
+  color: var(--ink-muted);
+}
+
+.footer__col a {
+  text-decoration: none;
+  color: var(--ink-soft);
+  font-size: var(--t-small);
+  transition: color 180ms;
+}
+
+.footer__col a:hover { color: var(--ink); }
+
+.footer__base {
+  border-top: 1px solid var(--hairline);
+  margin-top: var(--s-7);
+  padding-top: var(--s-5);
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--s-3);
+  font-size: var(--t-small);
+  color: var(--ink-muted);
+}
+
+
+/* ═══════════════════════════════════════════════════════════════
+   15. PRICING
+   ═══════════════════════════════════════════════════════════════ */
+
+.price-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--s-5);
+  margin-top: var(--s-7);
+}
+
+@media (max-width: 720px) {
+  .price-grid { grid-template-columns: 1fr; }
+}
+
+.plan {
+  position: relative;
+  background: var(--paper);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius-lg);
+  padding: clamp(var(--s-6), 4vw, var(--s-7));
+  display: flex;
+  flex-direction: column;
+}
+
+.plan--accent {
+  background: var(--ink);
+  color: var(--paper);
+  border-color: var(--ink);
+}
+
+.plan--accent .plan__price-amount,
+.plan--accent .plan__name { color: var(--paper); }
+
+.plan--accent .plan__feature::before { background: var(--butter); }
+
+.plan__name {
+  font-family: var(--serif);
+  font-size: 2rem;
+  margin-bottom: var(--s-2);
+}
+
+.plan__tag {
+  font-size: var(--t-small);
+  color: var(--ink-soft);
+  margin-bottom: var(--s-5);
+}
+
+.plan--accent .plan__tag { color: rgba(250, 247, 240, 0.7); }
+
+.plan__price {
+  display: flex;
+  align-items: baseline;
+  gap: var(--s-2);
+  margin-bottom: var(--s-6);
+}
+
+.plan__price-amount {
+  font-family: var(--serif);
+  font-size: 3.5rem;
+  line-height: 1;
+}
+
+.plan__price-period {
+  font-size: var(--t-small);
+  color: var(--ink-muted);
+}
+
+.plan--accent .plan__price-period { color: rgba(250, 247, 240, 0.6); }
+
+.plan__cta {
+  align-self: stretch;
+  justify-content: center;
+  margin-bottom: var(--s-5);
+}
+
+.plan__features {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-3);
+  font-size: var(--t-small);
+  line-height: 1.5;
+}
+
+.plan__feature {
+  position: relative;
+  padding-left: 24px;
+}
+
+/* Tiny brick as the bullet — the throughline. */
+.plan__feature::before {
+  content: "";
+  position: absolute;
   left: 0;
+  top: 6px;
+  width: 14px;
+  height: 8px;
+  background: var(--apricot);
+  border-radius: 2px;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.35), inset 0 -1px 0 var(--brick-edge);
 }
 
-.stage--note {
+.plan__feature strong { color: inherit; font-weight: 700; }
+
+.plan__ribbon {
+  position: absolute;
+  top: -12px;
+  right: var(--s-5);
+  background: var(--butter);
+  color: var(--ink);
+  font-size: var(--t-eyebrow);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  padding: 6px 12px;
+  border-radius: 999px;
+  box-shadow: 0 4px 12px -4px rgba(26,23,20,0.2);
+}
+
+/* Pricing footnotes */
+.price-notes {
+  margin-top: var(--s-7);
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--s-5);
+}
+
+@media (max-width: 720px) { .price-notes { grid-template-columns: 1fr; } }
+
+.price-note {
+  background: var(--cream);
+  border-radius: var(--radius);
+  padding: var(--s-5);
+  border: 1px solid var(--hairline);
+}
+
+.price-note h4 {
+  font-family: var(--serif);
+  font-size: 1.25rem;
+  margin-bottom: var(--s-3);
+  color: var(--ink);
+}
+
+.price-note p {
+  color: var(--ink-soft);
+  font-size: var(--t-small);
+  line-height: 1.55;
+}
+
+/* "Pro+ later" signpost */
+.proplus {
+  margin-top: var(--s-7);
+  padding: var(--s-5) var(--s-6);
+  border: 1px dashed var(--ink-muted);
+  border-radius: var(--radius-lg);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--s-4);
+}
+
+.proplus h4 {
+  font-family: var(--serif);
+  font-size: 1.375rem;
+  margin-bottom: var(--s-1);
+  color: var(--ink);
+}
+
+.proplus p { color: var(--ink-soft); font-size: var(--t-small); }
+
+
+/* ═══════════════════════════════════════════════════════════════
+   16. PROSE — legal pages
+   ═══════════════════════════════════════════════════════════════ */
+
+.prose {
+  max-width: 65ch;
+  margin-inline: auto;
+  font-size: 1.0625rem;
+  line-height: 1.7;
+  color: var(--ink-soft);
+}
+
+.prose h2 {
+  position: relative;
+  font-size: clamp(1.5rem, 2.4vw, 2rem);
+  margin-top: var(--s-8);
+  margin-bottom: var(--s-4);
+  color: var(--ink);
+  padding-left: 28px;
+  font-family: var(--serif);
+}
+
+/* Tiny brick accent on every h2 — rotates colour for variety */
+.prose h2::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 14px;
+  width: 18px;
+  height: 12px;
+  background: var(--apricot);
+  border-radius: 3px;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.35), inset 0 -1px 0 var(--brick-edge);
+}
+
+.prose h2:nth-of-type(2n)::before { background: var(--sage); }
+.prose h2:nth-of-type(3n)::before { background: var(--butter); }
+.prose h2:nth-of-type(5n)::before { background: var(--sky); }
+.prose h2:nth-of-type(7n)::before { background: var(--rose); }
+
+.prose h3 {
+  font-family: var(--serif);
+  font-size: 1.375rem;
+  margin-top: var(--s-6);
+  margin-bottom: var(--s-3);
+  color: var(--ink);
+}
+
+.prose p { margin-bottom: var(--s-4); }
+.prose strong { color: var(--ink); font-weight: 600; }
+
+.prose ul, .prose ol {
+  margin-bottom: var(--s-5);
+}
+
+.prose ul { list-style: none; padding-left: 0; }
+.prose ul li {
+  position: relative;
+  padding-left: var(--s-5);
+  margin-bottom: var(--s-3);
+}
+
+.prose ul li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 11px;
+  width: 10px;
+  height: 6px;
+  background: var(--apricot);
+  border-radius: 2px;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.35);
+}
+
+.prose ol { padding-left: var(--s-5); margin-left: var(--s-3); }
+.prose ol li { margin-bottom: var(--s-3); }
+
+.prose a {
+  color: var(--ink);
+  text-decoration: underline;
+  text-decoration-color: var(--apricot);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 3px;
+  transition: text-decoration-color 200ms;
+}
+
+.prose a:hover { text-decoration-color: var(--ink); }
+
+/* Page header used by legal + sub-pages */
+.page-head {
+  padding-block: clamp(var(--s-7), 6vw, var(--s-9)) var(--s-6);
+  text-align: center;
+}
+
+.page-head__kicker {
+  font-size: var(--t-eyebrow);
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: var(--ink-soft);
+  font-weight: 600;
+}
+
+.page-head__title {
+  font-size: var(--t-display);
+  letter-spacing: -0.015em;
+  line-height: 1.05;
+  margin-block: var(--s-4) var(--s-3);
+  font-family: var(--serif);
+}
+
+.page-head__title em { color: var(--ink); font-style: italic; }
+
+.page-head__meta {
+  font-size: var(--t-small);
+  color: var(--ink-muted);
+}
+
+/* Bricks above page head — small decorative band */
+.page-head__bricks {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: var(--s-3);
+  margin-bottom: var(--s-5);
+}
+
+/* Table of contents — used on legal pages */
+.toc {
+  background: var(--cream);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius);
+  padding: var(--s-5);
+  margin-bottom: var(--s-7);
+}
+
+.toc__title {
+  display: block;
+  font-size: var(--t-eyebrow);
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-weight: 600;
+  color: var(--ink-soft);
+  margin-bottom: var(--s-3);
+}
+
+.toc ol {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--s-2) var(--s-5);
+  font-size: var(--t-small);
+}
+
+@media (max-width: 600px) { .toc ol { grid-template-columns: 1fr; } }
+
+.toc a {
+  color: var(--ink-soft);
+  text-decoration: none;
+}
+
+.toc a:hover {
+  color: var(--ink);
+  text-decoration: underline;
+  text-decoration-color: var(--apricot);
+}
+
+
+/* ═══════════════════════════════════════════════════════════════
+   17. CONTACT
+   ═══════════════════════════════════════════════════════════════ */
+
+.contact-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--s-5);
+  margin-top: var(--s-7);
+}
+
+@media (max-width: 720px) { .contact-grid { grid-template-columns: 1fr; } }
+
+.contact-card {
+  position: relative;
+  background: var(--cream);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius);
+  padding: var(--s-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-2);
+}
+
+.contact-card h3 {
+  font-family: var(--serif);
+  font-size: 1.625rem;
+  color: var(--ink);
+}
+
+.contact-card p {
+  color: var(--ink-soft);
+  font-size: var(--t-small);
+  line-height: 1.5;
+}
+
+.contact-card a {
+  font-family: var(--sans);
+  font-size: 1.0625rem;
+  font-weight: 600;
+  color: var(--ink);
+  text-decoration: underline;
+  text-decoration-color: var(--apricot);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 3px;
+}
+
+.contact-card__brick {
+  position: absolute;
+  top: var(--s-5);
+  right: var(--s-5);
+  opacity: 0.8;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════
+   18. UTILITIES
+   ═══════════════════════════════════════════════════════════════ */
+
+.center  { text-align: center; }
+.mt-5    { margin-top: var(--s-5); }
+.mt-6    { margin-top: var(--s-6); }
+.mt-7    { margin-top: var(--s-7); }
+.mb-3    { margin-bottom: var(--s-3); }
+
+
+/* ═══════════════════════════════════════════════════════════════
+   19. PHONE MOCKUP — the "show, don't tell" hero
+   ═══════════════════════════════════════════════════════════════
+
+   A CSS-rendered iPhone frame containing the actual Briques app
+   UI. Sits on the right side of the hero, replacing what was
+   previously a pure decorative brick scatter. Bricks still scatter
+   around the phone — but the phone is the centerpiece because it
+   shows what users actually get.
+
+   Frame: dark rounded rectangle with a notch + a cream screen.
+   Inside: an iOS-shaped app — wordmark, prompt field, app list.
+   Every element is real markup so the design stays editable in
+   code (not a screenshot).
+*/
+
+.phone-mock {
+  position: relative;
+  width: clamp(260px, 28vw, 320px);
+  aspect-ratio: 9 / 19.5;       /* iPhone-ish */
+  margin-inline: auto;
+  background: var(--ink);
+  border-radius: 44px;
+  padding: 10px;
+  box-shadow:
+    0 1px 0 rgba(255,255,255,0.08) inset,
+    0 -1px 0 rgba(0,0,0,0.6) inset,
+    0 30px 60px -20px rgba(26, 23, 20, 0.35),
+    0 12px 30px -12px rgba(26, 23, 20, 0.25);
+  /* Z-stacking against the brick scatter — phone wins. */
+  z-index: 2;
+}
+
+.phone-mock__screen {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: var(--paper);
+  border-radius: 36px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* iOS notch / island — a small dark pill at the top of the screen
+   that reads as "yes, this is an iPhone" without going Apple-clone. */
+.phone-mock__notch {
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 22px;
+  background: var(--ink);
+  border-radius: 999px;
+  z-index: 3;
+}
+
+/* Status bar — time on the left, dummy signal/wifi/battery on right.
+   We use ::before / ::after for the icons rather than emoji for
+   crisp rendering across platforms. */
+.phone-mock__status {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 22px 0;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ink);
+  font-family: var(--sans);
+}
+
+.phone-mock__status-icons {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-feature-settings: "tnum";
+}
+
+.phone-mock__status-icons span {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  background: var(--ink);
+  border-radius: 1px;
+}
+
+/* The app's content scrolls here in real life; on the marketing
+   site it's a static composition. Padding mirrors what the actual
+   Flutter home screen uses (24px sides), scaled to the phone's
+   smaller logical dimensions. */
+.phone-mock__body {
+  flex: 1;
+  padding: 18px 16px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  overflow: hidden;
+}
+
+/* ── Top bar — small ink brick + Briques wordmark + chip + avatar
+       Mirrors the Flutter app's _Wordmark widget exactly. */
+.phone-mock__topbar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.phone-mock__brand {
+  font-family: var(--serif);
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: -0.4px;
+  color: var(--ink);
+}
+
+.phone-mock__topbar-spacer { flex: 1; }
+
+.phone-mock__chip {
+  font-size: 9px;
+  font-weight: 600;
+  padding: 2px 7px;
+  border-radius: 999px;
+  background: var(--cream);
+  border: 1px solid var(--hairline);
+  color: var(--ink-soft);
+  font-feature-settings: "tnum";
+}
+
+.phone-mock__avatar {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--apricot);
+  color: var(--ink);
+  font-family: var(--serif);
+  font-size: 13px;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── Greeting — "Tuesday morning" / "Hi, Maya." / "What shall we build?"
+       Replicates the _Greeting widget — ink heading + italic continuation
+       in secondary colour. The display-large size in the app is 34pt;
+       on the marketing phone we step it down proportionally. */
+.phone-mock__greet { display: flex; flex-direction: column; gap: 0; }
+
+.phone-mock__greet-eyebrow {
+  font-size: 11px;
+  color: var(--ink-soft);
+  margin-bottom: 4px;
+  font-family: var(--sans);
+}
+
+.phone-mock__greet-name {
+  font-family: var(--serif);
+  font-size: 26px;
+  letter-spacing: -0.6px;
+  line-height: 1;
+  color: var(--ink);
+  margin: 0;
+}
+
+.phone-mock__greet-prompt {
+  font-family: var(--serif);
+  font-size: 26px;
+  letter-spacing: -0.6px;
+  line-height: 1.1;
+  color: var(--ink-soft);
+  font-style: italic;
+  margin: 0;
+}
+
+/* ── Prompt input card — white surface, ink border, lifted hard
+       shadow (no blur). Matches the _PromptInput widget. */
+.phone-mock__prompt-card {
+  background: var(--paper);
+  border: 1.5px solid var(--ink);
+  border-radius: 14px;
+  padding: 12px 12px 10px;
+  /* Hard shadow — no blur, like an ink-drop / brick lift. */
+  box-shadow: 0 3px 0 rgba(26, 23, 20, 0.10);
+}
+
+.phone-mock__prompt-label {
+  font-size: 12px;
+  color: var(--ink-soft);
+  margin: 0 0 10px;
+  font-family: var(--sans);
+}
+
+.phone-mock__prompt-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.phone-mock__prompt-chip {
+  font-size: 10px;
+  font-weight: 600;
+  padding: 3px 7px;
+  border-radius: 5px;
+  color: var(--ink);
+  letter-spacing: 0;
+}
+
+.phone-mock__prompt-chip--sage  { background: #DCE6D2; }   /* sageSoft */
+.phone-mock__prompt-chip--peach { background: #F2DBC8; }   /* peach */
+
+.phone-mock__prompt-arrow {
+  margin-left: auto;
+  width: 24px;
+  height: 24px;
+  background: var(--ink);
+  color: var(--paper);
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  line-height: 1;
+}
+
+/* ── Section divider — caption + count + horizontal line.
+       Matches the _SectionDivider widget. */
+.phone-mock__section {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.phone-mock__section-label {
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-weight: 700;
+  color: var(--ink-soft);
+}
+
+.phone-mock__section-count {
+  font-size: 9px;
+  font-weight: 700;
+  padding: 1px 6px;
+  border-radius: 999px;
+  background: var(--cream);
+  color: var(--ink-soft);
+}
+
+.phone-mock__section-line {
+  flex: 1;
+  height: 1px;
+  background: var(--hairline);
+  margin-left: 4px;
+}
+
+/* ── Published apps grid — 3 columns, square-ish tiles with a colored
+       art panel + name underneath. Matches _PublishedTile. */
+.phone-mock__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.phone-mock__tile {
+  background: var(--paper);
+  border: 1px solid var(--hairline);
+  border-radius: 10px;
+  padding: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  min-width: 0;
+}
+
+.phone-mock__tile-art {
+  aspect-ratio: 1 / 1;
+  border-radius: 7px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  line-height: 1;
+}
+
+.phone-mock__tile-name {
+  font-size: 9.5px;
+  font-weight: 600;
+  color: var(--ink);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Tile subtitle — what the app actually contains. The Flutter side
+   doesn't render this on the home grid (just name), but on a
+   marketing surface we want the visitor to grasp "your apps hold
+   real data" at a glance. */
+.phone-mock__tile-sub {
+  font-size: 8.5px;
+  color: var(--ink-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-top: -2px;
+}
+
+/* ── Drafts section — full-width row mirroring _AppRow widget.
+       Compact: small icon tile + name + caption + chevron. */
+.phone-mock__row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 8px;
+  background: var(--paper);
+  border: 1px solid var(--hairline);
+  border-radius: 9px;
+}
+
+.phone-mock__row-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  line-height: 1;
+}
+
+.phone-mock__row-meta {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.phone-mock__row-name {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--ink);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.2;
+}
+
+.phone-mock__row-sub {
+  font-size: 8.5px;
+  color: var(--ink-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.phone-mock__row-chevron {
+  color: var(--ink-muted);
+  font-size: 11px;
+  flex-shrink: 0;
+}
+
+/* ── Templates teaser — small horizontal-scroll-shaped row of
+       template chips. We render 3, with the third half-clipped
+       to suggest "more →" without explicit chrome. */
+.phone-mock__templates {
+  display: flex;
+  gap: 6px;
+  overflow: hidden;
+}
+
+.phone-mock__template {
+  flex-shrink: 0;
+  width: 78px;
+  background: var(--paper);
+  border: 1px solid var(--hairline);
+  border-radius: 8px;
+  padding: 5px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.phone-mock__template-art {
+  aspect-ratio: 1 / 1;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+}
+
+.phone-mock__template-name {
+  font-size: 8.5px;
+  font-weight: 600;
+  color: var(--ink);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ── Bottom fade — softens the last visible content into the home
+       indicator zone, reading as "this scrolls" instead of "the
+       page just stops here." */
+.phone-mock__screen::after {
+  content: "";
+  position: absolute;
+  left: 0;
   right: 0;
   bottom: 0;
+  height: 56px;
+  background: linear-gradient(
+    to bottom,
+    rgba(250, 247, 240, 0) 0%,
+    var(--paper) 80%
+  );
+  pointer-events: none;
+  z-index: 2;
 }
 
-.avatar-stack {
-  align-items: center;
-  margin: 14px 0 12px;
+/* Home indicator bar at the very bottom of the screen — the iOS
+   gesture pill. Gives the phone its final "yes that's iOS" cue. */
+.phone-mock__home {
+  position: absolute;
+  bottom: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 36%;
+  height: 4px;
+  background: var(--ink);
+  border-radius: 999px;
+  opacity: 0.55;
 }
 
-.avatar-stack img {
-  width: 54px;
-  height: 54px;
-  margin-left: -10px;
-  border-radius: 50%;
-  border: 3px solid rgba(10, 10, 10, 0.92);
-  box-shadow: var(--shadow-soft);
-  object-fit: cover;
+/* Hand-written annotation that floats next to the phone — a small
+   "made by Maya" / "snap them together" callout. Uses italic serif
+   to feel like a margin note. */
+.handwritten {
+  position: absolute;
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 14px;
+  color: var(--sage);
+  line-height: 1.2;
+  white-space: nowrap;
+  pointer-events: none;
 }
 
-.avatar-stack img:first-child {
-  margin-left: 0;
-}
-
-.stage--note strong {
+.handwritten::after {
+  content: "";
   display: block;
-  margin-top: 12px;
-  font-size: 1.05rem;
-  line-height: 1.25;
-  letter-spacing: -0.04em;
+  width: 36px;
+  height: 16px;
+  margin-top: 2px;
+  background-image:
+    radial-gradient(circle at 0 50%, currentColor 1px, transparent 1.5px),
+    radial-gradient(circle at 6px 50%, currentColor 1px, transparent 1.5px),
+    radial-gradient(circle at 12px 50%, currentColor 1px, transparent 1.5px),
+    radial-gradient(circle at 18px 50%, currentColor 1px, transparent 1.5px),
+    radial-gradient(circle at 24px 50%, currentColor 1px, transparent 1.5px),
+    radial-gradient(circle at 30px 50%, currentColor 1px, transparent 1.5px);
+  background-repeat: no-repeat;
+  opacity: 0.6;
 }
 
-.stage--avatars,
-.stage--note {
-  animation: float 7s ease-in-out infinite;
+
+/* ═══════════════════════════════════════════════════════════════
+   20. DIAGRAM — "Like Lego, but for software"
+   ═══════════════════════════════════════════════════════════════
+
+   Teaching diagram. Four labelled bricks on the left (the schema
+   pieces — Title, Rating, Note, Photo). An SVG flow connects them
+   into a single "app card" on the right. The point isn't to be
+   technically precise; it's to communicate the snap mechanic in
+   one glance.
+*/
+
+.diagram {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--s-7);
+  align-items: center;
+  padding: clamp(var(--s-6), 4vw, var(--s-8)) 0;
 }
 
-.stage--note {
-  animation-delay: -2.4s;
+/* .diagram responsive rules consolidated in section 25. */
+
+.diagram__pieces {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(2, max-content);
+  gap: var(--s-5) var(--s-6);
+  justify-content: center;
 }
 
-@keyframes rise-in {
-  from {
-    opacity: 0;
-    transform: translateY(18px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.diagram__piece {
+  display: flex;
+  align-items: center;
+  gap: var(--s-3);
 }
 
-@keyframes float {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-
-  50% {
-    transform: translateY(-10px);
-  }
+.diagram__piece-label {
+  font-family: var(--serif);
+  font-size: 1.125rem;
+  color: var(--ink);
 }
 
-@media (max-width: 960px) {
-  .shell {
-    padding: 18px;
-  }
+.diagram__app {
+  position: relative;
+  background: var(--paper);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius-lg);
+  padding: var(--s-5);
+  box-shadow: 0 8px 20px -10px rgba(26,23,20,0.15);
+}
 
-  .hero {
+.diagram__app-eyebrow {
+  font-size: var(--t-eyebrow);
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--ink-muted);
+  font-weight: 700;
+  margin-bottom: var(--s-2);
+}
+
+.diagram__app-title {
+  font-family: var(--serif);
+  font-size: 1.5rem;
+  margin-bottom: var(--s-4);
+  color: var(--ink);
+}
+
+.diagram__app-fields {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-3);
+}
+
+.diagram__app-field {
+  display: flex;
+  align-items: center;
+  gap: var(--s-3);
+  font-size: var(--t-small);
+  color: var(--ink-soft);
+  padding-bottom: var(--s-3);
+  border-bottom: 1px solid var(--hairline);
+}
+
+.diagram__app-field:last-child { border-bottom: 0; padding-bottom: 0; }
+
+.diagram__app-field-name {
+  font-weight: 600;
+  color: var(--ink);
+  font-family: var(--sans);
+  flex: 1;
+}
+
+.diagram__app-field-sample {
+  color: var(--ink-muted);
+  font-size: 12px;
+}
+
+.diagram__annotation {
+  position: absolute;
+  font-family: var(--serif);
+  font-style: italic;
+  color: var(--sage);
+  font-size: 14px;
+  white-space: nowrap;
+  z-index: 5;
+  pointer-events: none;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════
+   21. TRY-BAND — "Type a sentence. See an app appear."
+   ═══════════════════════════════════════════════════════════════ */
+
+.try-band {
+  background: var(--ink);
+  color: var(--paper);
+  border-radius: var(--radius-lg);
+  padding: clamp(var(--s-7), 5vw, var(--s-9)) clamp(var(--s-5), 4vw, var(--s-7));
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.try-band__kicker {
+  font-size: var(--t-eyebrow);
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: rgba(250, 247, 240, 0.55);
+  font-weight: 600;
+  margin-bottom: var(--s-3);
+}
+
+.try-band__title {
+  font-family: var(--serif);
+  font-size: clamp(2rem, 4vw, 3rem);
+  line-height: 1.1;
+  color: var(--paper);
+  margin-bottom: var(--s-6);
+}
+
+.try-band__title em {
+  color: var(--butter);
+  font-style: italic;
+}
+
+/* Fake input — looks tappable, isn't fancy. The action is sending
+   the prompt to /contact via mailto so we capture interest with a
+   real human reply (no backend needed). */
+.try-band__input {
+  display: flex;
+  align-items: center;
+  gap: var(--s-3);
+  background: var(--paper);
+  color: var(--ink);
+  border-radius: 999px;
+  padding: 8px 8px 8px 22px;
+  max-width: 580px;
+  margin-inline: auto;
+  font-size: 1.0625rem;
+  text-align: left;
+}
+
+.try-band__input-spark {
+  color: var(--apricot);
+  flex-shrink: 0;
+  font-size: 1.125rem;
+}
+
+.try-band__input-text {
+  flex: 1;
+  background: transparent;
+  border: 0;
+  outline: none;
+  font: inherit;
+  color: var(--ink);
+  min-width: 0;
+}
+
+.try-band__input-text::placeholder { color: var(--ink-muted); }
+
+.try-band__input-go {
+  background: var(--apricot);
+  color: var(--ink);
+  border: 0;
+  padding: 12px 20px;
+  border-radius: 999px;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: transform 220ms cubic-bezier(0.2, 0.8, 0.2, 1), background 200ms;
+}
+
+.try-band__input-go:hover { transform: translateY(-1px); background: #f0934a; }
+
+.try-band__starters {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: var(--s-3);
+  margin-top: var(--s-5);
+}
+
+.try-band__starters-label {
+  font-size: var(--t-eyebrow);
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: rgba(250, 247, 240, 0.5);
+  font-weight: 600;
+}
+
+.try-band__chip {
+  background: rgba(250, 247, 240, 0.08);
+  color: var(--paper);
+  border: 1px solid rgba(250, 247, 240, 0.16);
+  padding: 8px 14px;
+  border-radius: 999px;
+  font-size: var(--t-small);
+  font-family: var(--serif);
+  font-style: italic;
+  cursor: pointer;
+  transition: background 200ms, border-color 200ms;
+}
+
+.try-band__chip:hover {
+  background: rgba(250, 247, 240, 0.14);
+  border-color: rgba(250, 247, 240, 0.3);
+}
+
+
+/* ═══════════════════════════════════════════════════════════════
+   22. NAMED PULL QUOTE — face + name + quote
+   ═══════════════════════════════════════════════════════════════ */
+
+.named-pull {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: var(--s-5);
+  padding: clamp(var(--s-6), 4vw, var(--s-7));
+  background: linear-gradient(180deg, var(--paper) 0%, var(--cream) 100%);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius-lg);
+}
+
+.named-pull__avatar {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: var(--cream);
+  border: 1px solid var(--hairline);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--serif);
+  font-size: 1.75rem;
+  color: var(--ink);
+  flex-shrink: 0;
+}
+
+.named-pull__quote {
+  font-family: var(--serif);
+  font-size: clamp(1.375rem, 2.4vw, 1.75rem);
+  line-height: 1.3;
+  color: var(--ink);
+  margin-bottom: var(--s-4);
+}
+
+.named-pull__byline {
+  font-size: var(--t-small);
+  color: var(--ink-soft);
+}
+
+.named-pull__byline strong {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+@media (max-width: 600px) {
+  .named-pull { grid-template-columns: 1fr; }
+}
+
+
+/* ═══════════════════════════════════════════════════════════════
+   23. HERO LAYOUT TWEAKS — accommodate the phone mock
+   ═══════════════════════════════════════════════════════════════ */
+
+/* Override hero__inner for the phone-mock variant — the right side
+   becomes a relative-positioned canvas where the phone sits centred
+   and bricks scatter around it. */
+.hero__stage {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: clamp(420px, 50vw, 580px);
+}
+
+.hero__stage > .brick {
+  /* Direct children only — bricks INSIDE the phone-mock should keep
+     their natural inline flow. The `> ` combinator ensures we only
+     absolute-position the scatter bricks, not the wordmark brick. */
+  position: absolute;
+  z-index: 1;     /* below the phone */
+}
+
+/* Specific scatter positions tuned to leave a clean centre for the
+   phone while still feeling abundant. */
+.hero__sb1 { top: 8%;  left: 4%;  }
+.hero__sb2 { top: 0;   right: 6%; }
+.hero__sb3 { top: 28%; right: 0;  }
+.hero__sb4 { bottom: 18%; left: 0; }
+.hero__sb5 { bottom: 4%; right: 12%; }
+.hero__sb6 { bottom: 30%; right: 4%; }
+
+/* The handwritten note on the phone */
+.hero__note { top: 18%; right: -8px; }
+.hero__note2 { bottom: 22%; left: -12px; }
+
+
+/* ═══════════════════════════════════════════════════════════════
+   24. AI FEATURES — "AI built in" section
+   ═══════════════════════════════════════════════════════════════
+
+   Two side-by-side feature cards (AI Search + AI Workflows). Each
+   card has an iconographic header, a one-sentence promise, and a
+   concrete example. The example is the load-bearing thing — a
+   lede in the abstract is a ledge in the concrete. */
+
+.ai-features {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--s-5);
+  margin-top: var(--s-7);
+}
+
+.ai-feature {
+  position: relative;
+  background: var(--paper);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius-lg);
+  padding: clamp(var(--s-5), 3vw, var(--s-6));
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-3);
+}
+
+.ai-feature__head {
+  display: flex;
+  align-items: center;
+  gap: var(--s-3);
+}
+
+.ai-feature__title {
+  font-family: var(--serif);
+  font-size: 1.5rem;
+  color: var(--ink);
+  margin: 0;
+}
+
+.ai-feature__lede {
+  font-size: var(--t-body);
+  color: var(--ink-soft);
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* Example callout — a pull-quote-shaped block holding a real-feeling
+   user prompt. Cream tint sets it apart from the lede so it reads as
+   "a thing you'd actually type." */
+.ai-feature__example {
+  background: var(--cream);
+  border-radius: var(--radius);
+  padding: var(--s-4);
+  margin-top: var(--s-3);
+  font-family: var(--serif);
+  font-style: italic;
+  color: var(--ink);
+  font-size: 1rem;
+  line-height: 1.4;
+}
+
+.ai-feature__example::before {
+  content: "✦ ";
+  color: var(--apricot);
+  font-style: normal;
+  margin-right: 4px;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════
+   25. RESPONSIVE — viewport breakpoints, refined
+   ═══════════════════════════════════════════════════════════════
+
+   Strategy: hold complex layouts as long as they survive readably.
+   The previous file relied on 880px / 720px / 600px breakpoints
+   that left awkward middle-zones (iPad portrait at 768 stacked the
+   hero unnecessarily; gallery collapsed to one column on tablet,
+   wasting horizontal space).
+
+   New tiers:
+     • ≥ 980px  → full desktop
+     • 720–979  → tablet (iPad portrait + landscape, small laptops)
+     • < 720    → mobile (phones, narrow tablets)
+
+   Hero specifically holds 2-column down to 760px so iPad portrait
+   keeps the phone-on-the-side layout. Below 760, stack.
+*/
+
+/* ── Tablet (720–979px) ───────────────────────────────────────── */
+@media (max-width: 979px) {
+  /* Gallery: 4 columns instead of 6 — tiles read more usefully at
+     this size than collapsing to 1. */
+  .gallery {
+    grid-template-columns: repeat(4, 1fr);
+  }
+  .g-card--wide   { grid-column: span 4; }
+  .g-card--medium { grid-column: span 2; }
+  .g-card--small  { grid-column: span 2; }
+  .g-card--tall   { grid-column: span 2; grid-row: auto; min-height: 0; }
+
+  /* Steps: 3-up still fits on iPad portrait */
+  .steps { grid-template-columns: repeat(3, 1fr); gap: var(--s-5); }
+}
+
+/* ── Hero stack threshold ────────────────────────────────────── */
+@media (max-width: 760px) {
+  .hero__inner {
     grid-template-columns: 1fr;
-    gap: 22px;
-    align-content: center;
   }
-
-  h1 {
-    max-width: 11ch;
-    font-size: clamp(2.35rem, 9vw, 4.3rem);
-  }
-
-  .lede {
-    max-width: 44ch;
-    font-size: 0.98rem;
-  }
-
-  .hero__stats {
-    gap: 10px;
-  }
-
-  .stat {
-    min-width: 0;
-    flex: 1 1 0;
-  }
-
-  .hero__stage {
-    min-height: 310px;
-  }
-
-  .stage--main {
-    inset: 8px 0 12px;
-  }
-
-  .stage--avatars {
-    top: auto;
-    bottom: 18px;
-    left: 12px;
-    width: 186px;
-  }
-
-  .stage--note {
-    display: none;
+  /* On stacked hero, scale the phone down so it doesn't dominate */
+  .phone-mock {
+    width: clamp(240px, 70vw, 300px);
   }
 }
 
-@media (max-width: 640px) {
-  .shell {
-    gap: 12px;
-    padding: 16px;
-  }
+/* ── Diagram stack ────────────────────────────────────────────── */
+@media (max-width: 760px) {
+  .diagram { grid-template-columns: 1fr; gap: var(--s-6); }
+}
 
-  .topbar {
-    align-items: flex-start;
-    flex-direction: column;
-    gap: 12px;
-  }
+/* ── AI features stack ────────────────────────────────────────── */
+@media (max-width: 720px) {
+  .ai-features { grid-template-columns: 1fr; }
+}
 
-  .topbar__pill {
-    padding: 9px 13px;
-  }
+/* ── Steps + Gallery stack on mobile ─────────────────────────── */
+@media (max-width: 720px) {
+  .steps { grid-template-columns: 1fr; gap: var(--s-6); }
 
-  .hero__copy {
-    gap: 14px;
+  .gallery {
+    grid-template-columns: 1fr;
   }
-
-  .hero__signals {
-    gap: 8px;
+  .g-card--wide,
+  .g-card--tall,
+  .g-card--small,
+  .g-card--medium {
+    grid-column: 1 / -1;
+    grid-row: auto;
+    min-height: 0;
   }
+}
 
-  .signal {
-    padding: 10px 13px;
-    font-size: 0.66rem;
-  }
+/* ── Mobile-only tweaks ─────────────────────────────────────── */
+@media (max-width: 600px) {
+  /* Tighten section padding so hero doesn't feel like a tower */
+  .section { padding-block: clamp(var(--s-7), 8vw, var(--s-8)); }
 
-  .hero__stats {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
+  /* Headlines step down a touch */
+  .hero__title { letter-spacing: -0.025em; }
 
-  .stat {
-    padding: 14px 12px;
-    border-radius: 18px;
-  }
+  /* Hero CTAs stack on very narrow */
+  .hero__ctas .btn { width: 100%; justify-content: center; }
+}
 
-  .stat strong {
-    font-size: 1rem;
-  }
+@media (max-width: 380px) {
+  /* Phone mock further shrinks on tiny screens (older iPhone SE) */
+  .phone-mock { width: clamp(220px, 80vw, 280px); }
 
-  .stat span {
-    font-size: 0.75rem;
-  }
+  /* Plan cards condense */
+  .plan { padding: var(--s-5); }
+  .plan__price-amount { font-size: 2.75rem; }
+}
 
-  .hero__stage {
-    min-height: 270px;
-  }
-
-  .stage--main {
-    padding: 16px;
-  }
-
-  .stage__timeline {
-    margin: 16px 0;
-    gap: 8px;
-  }
-
-  .timeline__label,
-  .screen__headline p,
-  .floating__copy {
-    font-size: 0.82rem;
-  }
-
-  .screen__headline h2 {
-    font-size: 1.2rem;
-  }
-
-  .screen__chips span {
-    padding: 9px 11px;
-    font-size: 0.72rem;
-  }
-
-  .stage--avatars {
-    right: 12px;
-    left: auto;
-    bottom: -6px;
-    width: 160px;
-    padding: 14px;
-  }
-
-  .avatar-stack img {
-    width: 44px;
-    height: 44px;
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
   }
 }

@@ -1,131 +1,590 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1.0, viewport-fit=cover"
-    />
-    <meta
-      name="description"
-      content="Briques turns a plain-language idea into a polished mini app."
-    />
-    <title>Briques</title>
-    <link rel="icon" type="image/png" href="assets/images/logo.png" />
-    <link rel="stylesheet" href="styles.css" />
-  </head>
-  <body>
-    <main class="shell">
-      <header class="topbar">
-        <div class="brand">
-          <div class="brand__mark">
-            <img src="assets/images/logo.png" alt="Briques logo" />
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="An AI builder for the small mobile apps you wish existed. Describe what you want. Briques builds it." />
+
+  <title>Briques — Small bricks. Big things.</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+
+  <meta name="theme-color" content="#FAF7F0" />
+  <meta property="og:title" content="Briques — Small bricks. Big things." />
+  <meta property="og:description" content="An AI builder for the small mobile apps you wish existed." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://briques.app" />
+</head>
+<body>
+
+<!-- ═══════════════ NAV ═══════════════ -->
+<nav class="nav">
+  <a class="nav__brand" href="/">
+    <span class="brick brick--apricot brick--2x1 brick--sm">
+      <span class="studs"><i></i><i></i></span>
+    </span>
+    <span class="nav__name">Briques</span>
+  </a>
+  <div class="nav__links">
+    <a href="#what">What you build</a>
+    <a href="#how">How it works</a>
+    <a href="pricing.html">Pricing</a>
+    <a href="contact.html">Contact</a>
+  </div>
+  <a class="nav__cta" href="#cta">Get the app</a>
+</nav>
+
+
+<!-- ═══════════════ HERO — phone mockup + brick scatter ═══════════════ -->
+<header class="hero kit">
+  <div class="hero__inner">
+    <div>
+      <p class="eyebrow" style="margin-bottom: var(--s-5)">
+        <span style="display:inline-block; width:8px; height:8px; background:var(--sage); border-radius:50%; margin-right:8px; vertical-align:middle;"></span>
+        Now in beta · iPhone
+      </p>
+      <h1 class="hero__title">
+        Small <em>bricks</em>.<br>
+        Big things.
+      </h1>
+      <p class="hero__lede">
+        An AI builder for the small mobile apps you wish existed. A
+        weather log, a client tracker, a fishing journal. Describe
+        what you want. Briques builds it, on your phone, in about a
+        minute.
+      </p>
+      <div class="hero__ctas">
+        <a class="btn btn--lg" href="#cta">Get the app →</a>
+        <a class="btn btn--ghost btn--lg" href="#how">See how it works</a>
+      </div>
+      <p class="hero__sub">Single-user. Yours alone. Free during beta.</p>
+    </div>
+
+    <!-- Phone mockup centerpiece. Brick scatter positions itself
+         around the phone via .hero__stage's relative container. -->
+    <div class="hero__stage" aria-hidden="true">
+
+      <!-- Background brick scatter — sits BEHIND the phone -->
+      <span class="brick brick--butter brick--2x2 brick--lg brick--tilt-l-sm hero__sb1"></span>
+      <span class="brick brick--apricot brick--3x2 brick--lg brick--tilt-r-sm hero__sb2"></span>
+      <span class="brick brick--sage brick--2x1 brick--lg hero__sb3"></span>
+      <span class="brick brick--rose brick--4x2 brick--lg brick--tilt-r hero__sb4"></span>
+      <span class="brick brick--sky brick--2x2 brick--lg brick--tilt-l hero__sb5"></span>
+      <span class="brick brick--cream brick--1x2 brick--lg brick--tilt-r-sm hero__sb6"></span>
+
+      <!-- The phone itself — contents mirror the actual Flutter
+           home screen (lib/features/home/home_screen.dart) so the
+           marketing surface and the product agree pixel-for-pixel
+           on layout: Wordmark / Greeting / Prompt card / Section
+           divider / 3-up published tiles. -->
+      <div class="phone-mock">
+        <div class="phone-mock__screen">
+          <div class="phone-mock__notch"></div>
+          <div class="phone-mock__status">
+            <span>9:41</span>
+            <span class="phone-mock__status-icons">
+              <span></span><span></span><span></span>
+            </span>
           </div>
-          <div class="brand__text">
-            <span class="brand__name">Briques</span>
-            <span class="brand__meta">Electric AI mini-app builder</span>
+
+          <div class="phone-mock__body">
+
+            <!-- Wordmark row — small ink brick + Briques + chip + avatar -->
+            <div class="phone-mock__topbar">
+              <span class="brick brick--ink brick--2x2 brick--xs">
+                <span class="studs"><i></i><i></i><i></i><i></i></span>
+              </span>
+              <span class="phone-mock__brand">Briques</span>
+              <span class="phone-mock__topbar-spacer"></span>
+              <span class="phone-mock__chip">42 cr</span>
+              <span class="phone-mock__avatar">M</span>
+            </div>
+
+            <!-- Greeting — eyebrow + name + italic prompt -->
+            <div class="phone-mock__greet">
+              <div class="phone-mock__greet-eyebrow">Tuesday morning</div>
+              <h2 class="phone-mock__greet-name">Hi, Maya.</h2>
+              <p class="phone-mock__greet-prompt">What shall we build?</p>
+            </div>
+
+            <!-- Prompt card — bordered, lifted -->
+            <div class="phone-mock__prompt-card">
+              <p class="phone-mock__prompt-label">Describe an app…</p>
+              <div class="phone-mock__prompt-row">
+                <span class="phone-mock__prompt-chip phone-mock__prompt-chip--sage">habit tracker</span>
+                <span class="phone-mock__prompt-chip phone-mock__prompt-chip--peach">recipes</span>
+                <span class="phone-mock__prompt-arrow">↑</span>
+              </div>
+            </div>
+
+            <!-- Section divider -->
+            <div class="phone-mock__section">
+              <span class="phone-mock__section-label">Published</span>
+              <span class="phone-mock__section-count">3</span>
+              <span class="phone-mock__section-line"></span>
+            </div>
+
+            <!-- 3-up published tiles with subtitle showing what's
+                 inside each app — a count of records, last update,
+                 etc. The Flutter home grid doesn't show this, but
+                 marketing benefits from visible "your apps hold
+                 real data." -->
+            <div class="phone-mock__grid">
+              <div class="phone-mock__tile">
+                <div class="phone-mock__tile-art" style="background: var(--apricot);">📖</div>
+                <span class="phone-mock__tile-name">Reading log</span>
+                <span class="phone-mock__tile-sub">12 books</span>
+              </div>
+              <div class="phone-mock__tile">
+                <div class="phone-mock__tile-art" style="background: var(--sage);">🌱</div>
+                <span class="phone-mock__tile-name">Plant care</span>
+                <span class="phone-mock__tile-sub">8 plants</span>
+              </div>
+              <div class="phone-mock__tile">
+                <div class="phone-mock__tile-art" style="background: var(--butter);">🌤️</div>
+                <span class="phone-mock__tile-name">Weather</span>
+                <span class="phone-mock__tile-sub">24 entries</span>
+              </div>
+            </div>
+
+            <!-- Drafts section — shows that mid-build apps live
+                 here too, not only "finished" ones. One row is
+                 enough; the section divider says "1" so visitors
+                 know there can be more. -->
+            <div class="phone-mock__section">
+              <span class="phone-mock__section-label">Drafts</span>
+              <span class="phone-mock__section-count">1</span>
+              <span class="phone-mock__section-line"></span>
+            </div>
+
+            <div class="phone-mock__row">
+              <div class="phone-mock__row-icon" style="background: var(--rose);">🍳</div>
+              <div class="phone-mock__row-meta">
+                <span class="phone-mock__row-name">Recipe box</span>
+                <span class="phone-mock__row-sub">In progress · 2 fields</span>
+              </div>
+              <span class="phone-mock__row-chevron">›</span>
+            </div>
+
+            <!-- Templates teaser — the existence of a starting
+                 point matters; users are intimidated by blank
+                 canvas. Show 3 chips, third half-clipped to
+                 suggest "more →" without explicit chrome. -->
+            <div class="phone-mock__section">
+              <span class="phone-mock__section-label">Templates</span>
+              <span class="phone-mock__section-line"></span>
+            </div>
+
+            <div class="phone-mock__templates">
+              <div class="phone-mock__template">
+                <div class="phone-mock__template-art" style="background: var(--sky);">📊</div>
+                <span class="phone-mock__template-name">Churn</span>
+              </div>
+              <div class="phone-mock__template">
+                <div class="phone-mock__template-art" style="background: var(--cream);">🗺️</div>
+                <span class="phone-mock__template-name">Roadmap</span>
+              </div>
+              <div class="phone-mock__template">
+                <div class="phone-mock__template-art" style="background: var(--apricot);">📓</div>
+                <span class="phone-mock__template-name">Journal</span>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="phone-mock__home"></div>
+        </div>
+      </div>
+
+      <!-- Handwritten margin notes — give the scene a "made by a
+           person" feel, not a "designed by committee" one. -->
+      <span class="handwritten hero__note">made by Maya · last Sunday</span>
+
+    </div>
+  </div>
+</header>
+
+
+<!-- ═══════════════ LIKE LEGO, BUT FOR SOFTWARE ═══════════════ -->
+<section class="section section--tight kit" id="like-lego">
+  <p class="eyebrow">What is Briques</p>
+  <h2 style="font-size: var(--t-h2); margin-top: var(--s-3); max-width: 18ch;">
+    Like <em>Lego</em>, but for software.
+  </h2>
+  <p class="lede" style="margin-top: var(--s-4);">
+    A brick alone is just a brick. Snap a few together: a house, a
+    spaceship, a library for your books. Briques works the same way.
+    Pages, tables, fields, and queries are the bricks. You don't
+    write code. You describe what you want, and Briques snaps the
+    bricks together.
+  </p>
+
+  <div class="diagram">
+    <div class="diagram__pieces">
+      <div class="diagram__piece">
+        <span class="brick brick--apricot brick--2x2 brick--xl brick--tilt-l-sm"></span>
+        <span class="diagram__piece-label">Title</span>
+      </div>
+      <div class="diagram__piece">
+        <span class="brick brick--butter brick--2x1 brick--xl brick--tilt-r-sm"></span>
+        <span class="diagram__piece-label">Rating</span>
+      </div>
+      <div class="diagram__piece">
+        <span class="brick brick--sage brick--3x2 brick--xl brick--tilt-r"></span>
+        <span class="diagram__piece-label">Note</span>
+      </div>
+      <div class="diagram__piece">
+        <span class="brick brick--sky brick--2x1 brick--xl brick--tilt-l"></span>
+        <span class="diagram__piece-label">Date</span>
+      </div>
+    </div>
+
+    <div style="position: relative;">
+      <span class="diagram__annotation" style="top: -28px; left: -16px;">snap them together →</span>
+      <article class="diagram__app">
+        <p class="diagram__app-eyebrow">Your app</p>
+        <h3 class="diagram__app-title">Reading log</h3>
+        <div class="diagram__app-fields">
+          <div class="diagram__app-field">
+            <span class="diagram__app-field-name">Title</span>
+            <span class="diagram__app-field-sample">"The Goldfinch"</span>
+          </div>
+          <div class="diagram__app-field">
+            <span class="diagram__app-field-name">Rating</span>
+            <span class="diagram__app-field-sample">★★★★☆</span>
+          </div>
+          <div class="diagram__app-field">
+            <span class="diagram__app-field-name">Note</span>
+            <span class="diagram__app-field-sample">"slow start, stays with you"</span>
+          </div>
+          <div class="diagram__app-field">
+            <span class="diagram__app-field-name">Date</span>
+            <span class="diagram__app-field-sample">May 4 → May 10</span>
           </div>
         </div>
-        <div class="topbar__pill">Private beta</div>
-      </header>
+      </article>
+    </div>
+  </div>
+</section>
 
-      <section class="hero">
-        <div class="hero__copy">
-          <p class="eyebrow">Prompt to product. Sharply.</p>
-          <h1>Build a brilliant app shell from one plain-language idea.</h1>
-          <p class="lede">
-            Briques interprets your prompt, plans the structure, and shapes the
-            interface into a polished mini-app flow without dragging you through
-            boilerplate.
-          </p>
 
-          <div class="hero__signals">
-            <span class="signal signal--primary">Interpret</span>
-            <span class="signal">Plan</span>
-            <span class="signal">Generate</span>
-          </div>
+<!-- ═══════════════ AI BUILT IN ═══════════════ -->
+<section class="section section--tight kit" id="ai-built-in">
+  <p class="eyebrow">AI built in</p>
+  <h2 style="font-size: var(--t-h2); margin-top: var(--s-3); max-width: 24ch;">
+    Your apps don't just look intelligent. They <em>are</em>.
+  </h2>
+  <p class="lede" style="margin-top: var(--s-4);">
+    Briques builds your app, then AI keeps working inside it. Ask
+    your data questions in plain English. Set up workflows that
+    run on a schedule or react to changes. No SQL. No Zapier. Just
+    a sentence.
+  </p>
 
-          <div class="hero__stats">
-            <article class="stat">
-              <strong>3-step</strong>
-              <span>product flow</span>
-            </article>
-            <article class="stat">
-              <strong>1 shared</strong>
-              <span>design language</span>
-            </article>
-            <article class="stat">
-              <strong>0 drag</strong>
-              <span>from setup noise</span>
-            </article>
-          </div>
-        </div>
+  <div class="ai-features">
+    <article class="ai-feature">
+      <div class="ai-feature__head">
+        <span class="brick brick--apricot brick--2x2 brick--lg brick--tilt-l-sm"></span>
+        <h3 class="ai-feature__title">AI search</h3>
+      </div>
+      <p class="ai-feature__lede">
+        Ask questions about your own data, in your own words. Get
+        the answer, not a query language.
+      </p>
+      <div class="ai-feature__example">
+        Which books took me longer than two weeks to finish?
+      </div>
+    </article>
 
-        <div class="hero__stage">
-          <div class="stage stage--main">
-            <div class="stage__header">
-              <span class="stage__badge">Briques flow</span>
-              <span class="stage__status">live preview</span>
-            </div>
+    <article class="ai-feature">
+      <div class="ai-feature__head">
+        <span class="brick brick--sage brick--3x2 brick--lg brick--tilt-r-sm"></span>
+        <h3 class="ai-feature__title">AI workflows</h3>
+      </div>
+      <p class="ai-feature__lede">
+        Automate the boring routines. Steps that run on a schedule,
+        or react to changes in your data.
+      </p>
+      <div class="ai-feature__example">
+        Every Friday, summarise this week's entries and email them to me.
+      </div>
+    </article>
+  </div>
 
-            <div class="stage__timeline">
-              <div class="timeline__item timeline__item--active">
-                <span class="timeline__dot"></span>
-                <span class="timeline__label">Interpret prompt</span>
-              </div>
-              <div class="timeline__item timeline__item--active">
-                <span class="timeline__dot"></span>
-                <span class="timeline__label">Plan structure</span>
-              </div>
-              <div class="timeline__item">
-                <span class="timeline__dot"></span>
-                <span class="timeline__label">Generate shell</span>
-              </div>
-            </div>
+  <p style="text-align: center; margin-top: var(--s-5); font-size: var(--t-small); color: var(--ink-muted);">
+    AI search and workflows are included with the Pro plan.
+  </p>
+</section>
 
-            <div class="stage__screen">
-              <div class="screen__top">
-                <div class="screen__brand">
-                  <img src="assets/images/logo.png" alt="" />
-                  <span>Briques</span>
-                </div>
-                <span class="screen__tag">Dark shell</span>
-              </div>
 
-              <div class="screen__headline">
-                <h2>From rough prompt to clean product map.</h2>
-                <p>
-                  Shared typography, electric accents, and a compact app flow
-                  keep the experience sharp from first draft to runnable UI.
-                </p>
-              </div>
+<!-- ═══════════════ WHAT YOU BUILD ═══════════════ -->
+<section class="section section--tight kit" id="what">
+  <p class="eyebrow">What people build</p>
+  <h2 style="font-size: var(--t-h2); margin-top: var(--s-3); max-width: 28ch;">
+    The small, weird, specific app that fits exactly your life.
+  </h2>
 
-              <div class="screen__chips">
-                <span>Outfit headlines</span>
-                <span>Plus Jakarta body</span>
-                <span>Electric lime focus</span>
-              </div>
-            </div>
-          </div>
+  <div class="gallery">
+    <article class="g-card g-card--wide">
+      <p class="g-card__kind">Personal tracker</p>
+      <h3 class="g-card__title">A weather log for fishing trips</h3>
+      <p class="g-card__desc">
+        Date, location, water temperature, what was biting. Tap to
+        log, scroll to remember. The kind of thing nobody ships
+        because nobody ships an app for one person.
+      </p>
+      <span class="brick brick--apricot brick--2x2 g-card__mark"></span>
+    </article>
 
-          <aside class="stage stage--floating stage--avatars">
-            <p class="floating__label">Builder energy</p>
-            <div class="avatar-stack">
-              <img src="assets/avatars/avatar_01.jpg" alt="Builder profile" />
-              <img src="assets/avatars/avatar_03.jpg" alt="Builder profile" />
-              <img src="assets/avatars/avatar_06.jpg" alt="Builder profile" />
-            </div>
-            <p class="floating__copy">
-              Designed to feel fast, dark, and precise from the first glance.
-            </p>
-          </aside>
+    <article class="g-card g-card--small">
+      <p class="g-card__kind">Replace a spreadsheet</p>
+      <h3 class="g-card__title">Client invoices</h3>
+      <p class="g-card__desc">A simple list of who owes what.</p>
+      <span class="brick brick--sage brick--1x2 g-card__mark"></span>
+    </article>
 
-          <aside class="stage stage--floating stage--note">
-            <p class="floating__label">Frontend DNA</p>
-            <strong>Same palette. Same fonts. Same Briques edge.</strong>
-          </aside>
-        </div>
-      </section>
-    </main>
-  </body>
+    <article class="g-card g-card--medium">
+      <p class="g-card__kind">For my client work</p>
+      <h3 class="g-card__title">Project notes &amp; meeting log</h3>
+      <p class="g-card__desc">
+        One screen per client; quick add for meetings, action items,
+        and the things they always forget you said.
+      </p>
+      <span class="brick brick--rose brick--2x1 g-card__mark"></span>
+    </article>
+
+    <article class="g-card g-card--medium">
+      <p class="g-card__kind">Side project</p>
+      <h3 class="g-card__title">Reading log with notes</h3>
+      <p class="g-card__desc">
+        Books, started/finished, a paragraph of why. The thing a
+        Notes file used to be, finally with structure.
+      </p>
+      <span class="brick brick--butter brick--2x2 g-card__mark"></span>
+    </article>
+
+    <article class="g-card g-card--small">
+      <p class="g-card__kind">Just exploring</p>
+      <h3 class="g-card__title">A habit pulse</h3>
+      <p class="g-card__desc">Three habits, daily check-in.</p>
+      <span class="brick brick--sky brick--2x1 g-card__mark"></span>
+    </article>
+  </div>
+</section>
+
+
+<!-- ═══════════════ HOW IT WORKS ═══════════════ -->
+<section class="section kit" id="how">
+  <p class="eyebrow">How it works</p>
+  <h2 style="font-size: var(--t-h2); margin-top: var(--s-3); max-width: 22ch;">
+    From a sentence to a <em>real app</em>.
+  </h2>
+
+  <div class="steps">
+    <div class="step">
+      <span class="step__num">
+        <span class="brick brick--apricot brick--4x2 brick--lg"></span>
+        <span class="step__num-label">01</span>
+      </span>
+      <h3>You describe it</h3>
+      <p>
+        Plain English. "A weather log for my fishing trips, with
+        location and water temperature." That's enough.
+      </p>
+    </div>
+
+    <div class="step">
+      <span class="step__num">
+        <span class="brick brick--sage brick--4x2 brick--lg"></span>
+        <span class="step__num-label">02</span>
+      </span>
+      <h3>Briques drafts the pieces</h3>
+      <p>
+        Pages, tables, fields, and the relationships between them get
+        inferred from your sentence. Tweak any of it, or accept the
+        plan as-is.
+      </p>
+    </div>
+
+    <div class="step">
+      <span class="step__num">
+        <span class="brick brick--rose brick--4x2 brick--lg"></span>
+        <span class="step__num-label">03</span>
+      </span>
+      <h3>A real app shows up</h3>
+      <p>
+        Native-feeling, on your phone, ready to use. Iterate from
+        the same chat. No app-store re-submission to change anything.
+      </p>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════ NAMED PULL QUOTE ═══════════════ -->
+<section class="kit section--tight">
+  <div class="named-pull">
+    <span class="named-pull__avatar" aria-hidden="true">M</span>
+    <figure>
+      <blockquote class="named-pull__quote">
+        I had a Notes file called "apps I'd build if I knew how to
+        code." I built three of them in a Saturday. The first one
+        was a reading log.
+      </blockquote>
+      <figcaption class="named-pull__byline">
+        <strong>Maya R.</strong> · beta tester · made 4 apps so far
+      </figcaption>
+    </figure>
+  </div>
+</section>
+
+
+<!-- ═══════════════ PRICING TEASER ═══════════════ -->
+<section class="section kit">
+  <p class="eyebrow">Pricing</p>
+  <h2 style="font-size: var(--t-h2); margin-top: var(--s-3); max-width: 24ch;">
+    Two plans. One paid. <em>No seat math</em>.
+  </h2>
+
+  <div class="price-grid" style="margin-top: var(--s-6);">
+    <article class="plan">
+      <h3 class="plan__name">Free</h3>
+      <p class="plan__tag">Try the whole flow.</p>
+      <div class="plan__price">
+        <span class="plan__price-amount">$0</span>
+        <span class="plan__price-period">forever</span>
+      </div>
+      <a class="btn btn--ghost plan__cta" href="#cta">Get the app</a>
+      <ul class="plan__features">
+        <li class="plan__feature">1 published app</li>
+        <li class="plan__feature">100 MB row data + 5 MB files</li>
+        <li class="plan__feature">80 AI credits each month</li>
+        <li class="plan__feature">Fast model only</li>
+      </ul>
+    </article>
+
+    <article class="plan plan--accent">
+      <div class="plan__ribbon">For builders</div>
+      <h3 class="plan__name">Pro</h3>
+      <p class="plan__tag">Ship as many as you can think of.</p>
+      <div class="plan__price">
+        <span class="plan__price-amount">$9</span>
+        <span class="plan__price-period">/ month</span>
+      </div>
+      <a class="btn btn--accent plan__cta" href="#cta">Get the app</a>
+      <ul class="plan__features">
+        <li class="plan__feature"><strong>Unlimited</strong> published apps</li>
+        <li class="plan__feature">1 GB row data + 500 MB files</li>
+        <li class="plan__feature">200 AI credits / month, 2-month rollover</li>
+        <li class="plan__feature">Fast + Balanced models</li>
+        <li class="plan__feature">AI search, AI workflows</li>
+      </ul>
+    </article>
+  </div>
+
+  <p style="text-align: center; margin-top: var(--s-6);">
+    <a class="btn btn--ghost" href="pricing.html">See the full breakdown →</a>
+  </p>
+  <p style="text-align: center; margin-top: var(--s-4); font-size: var(--t-small); color: var(--ink-muted);">
+    Pro is purchased and managed inside the iOS app via Apple.
+  </p>
+</section>
+
+
+<!-- ═══════════════ CTA BAND ═══════════════ -->
+<section class="kit section" id="cta">
+  <div class="cta-band">
+    <span class="brick brick--apricot brick--2x2 brick--lg brick--tilt-l cta-band__deco cta-band__deco--tl"></span>
+    <span class="brick brick--sage brick--3x2 brick--lg brick--tilt-r-sm cta-band__deco cta-band__deco--tr"></span>
+    <span class="brick brick--butter brick--2x1 brick--lg brick--tilt-l-sm cta-band__deco cta-band__deco--bl"></span>
+    <span class="brick brick--rose brick--2x2 brick--lg brick--tilt-r cta-band__deco cta-band__deco--br"></span>
+
+    <h2 class="cta-band__title">
+      The app you've been<br>
+      describing for two years <em>ships tonight</em>.
+    </h2>
+    <p class="cta-band__lede">
+      Briques is in private beta on iPhone. We're letting in small
+      batches. Tell us what you'd build and we'll send a code.
+    </p>
+    <a class="btn btn--lg" href="contact.html">Request a beta code</a>
+  </div>
+</section>
+
+
+<!-- ═══════════════ FOOTER ═══════════════ -->
+<footer class="footer kit">
+  <div class="footer__top">
+    <div class="footer__brand">
+      <span class="footer__name">
+        <span class="brick brick--apricot brick--2x1 brick--sm">
+          <span class="studs"><i></i><i></i></span>
+        </span>
+        Briques
+      </span>
+      <p class="footer__tag">
+        Small bricks. Big things. Describe an app, ship it before
+        the idea cools.
+      </p>
+      <p class="footer__tag" style="margin-top: var(--s-2); font-size: var(--t-eyebrow); text-transform: uppercase; letter-spacing: 0.14em; color: var(--ink-muted); font-weight: 600;">
+        briques.app
+      </p>
+    </div>
+
+    <div class="footer__col">
+      <span class="footer__col-title">Product</span>
+      <a href="#what">What you build</a>
+      <a href="#how">How it works</a>
+      <a href="pricing.html">Pricing</a>
+      <a href="#cta">Beta access</a>
+    </div>
+    <div class="footer__col">
+      <span class="footer__col-title">Company</span>
+      <a href="contact.html">Contact</a>
+      <a href="mailto:hello@briques.app">hello@briques.app</a>
+      <a href="mailto:press@briques.app">Press</a>
+    </div>
+    <div class="footer__col">
+      <span class="footer__col-title">Legal</span>
+      <a href="privacy.html">Privacy</a>
+      <a href="terms.html">Terms</a>
+      <a href="mailto:privacy@briques.app">Data requests</a>
+    </div>
+  </div>
+
+  <div class="footer__base">
+    <span>© 2026 Briques. Made with ❤️.</span>
+    <span>Private beta · iPhone only</span>
+  </div>
+</footer>
+
+
+<!-- Auto-fill brick studs based on the cols×rows class. Keeps the
+     markup clean — only the size class is needed; studs are added
+     at runtime. Bricks fall back to plain coloured tiles without
+     JS, which still reads as on-brand. -->
+<script>
+  (function buildBricks() {
+    var bricks = document.querySelectorAll('.brick');
+    for (var i = 0; i < bricks.length; i++) {
+      var b = bricks[i];
+      if (b.querySelector('.studs')) continue;
+      var m = b.className.match(/brick--(\d)x(\d)/);
+      if (!m) continue;
+      var cols = +m[1], rows = +m[2];
+      var studs = document.createElement('span');
+      studs.className = 'studs';
+      for (var j = 0; j < cols * rows; j++) {
+        studs.appendChild(document.createElement('i'));
+      }
+      b.appendChild(studs);
+    }
+  })();
+
+</script>
+
+</body>
 </html>

@@ -51,6 +51,10 @@ input, textarea, select, button { font: inherit; color: inherit; }
   --sky:     #A7C7E7;     /* info, quotes */
   --rose:    #E29578;     /* second-warm */
 
+  /* Hover/pressed variants of the two interactive colors. */
+  --ink-deep:     #2A2520; /* nav cta + dark btn hover bg */
+  --apricot-deep: #ED914D; /* apricot button hover bg */
+
   /* Brick stud highlight — a touch of inner-light. */
   --stud-highlight: rgba(255, 251, 240, 0.55);
   --stud-shadow:    rgba(26, 23, 20, 0.18);
@@ -89,6 +93,41 @@ input, textarea, select, button { font: inherit; color: inherit; }
   --radius-sm:  6px;
   --radius:     12px;
   --radius-lg:  20px;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════
+   2b. SUNDOWN — dark variant
+   ───────────────────────────────────────────────────────────────
+   Same brand, after the lights go down. Warm ember dark, not cold
+   black. Cream paper becomes deep coffee; ink becomes warm cream;
+   accents stay vibrant (the dark surface lets them sing). Bricks
+   re-light: studs glow softer, edges deepen.
+   ═══════════════════════════════════════════════════════════════ */
+
+[data-theme="dark"] {
+  --paper:     #1A1411;   /* deep warm coffee — not black */
+  --cream:     #251D17;   /* one notch lighter — cards, surfaces */
+  --ink:       #F4ECD8;   /* warm cream — primary text */
+  --ink-soft:  #BAB0A0;   /* secondary text */
+  --ink-muted: #847C70;   /* tertiary text, captions */
+  --hairline:  #2C2620;   /* 1px strokes, dividers */
+
+  /* Accents: keep most vibrant (dark surfaces flatter color),
+     dim only the ones that would over-glow on dark. */
+  --apricot: #F5AC73;     /* lifted slightly for contrast */
+  --sage:    #A3B18A;     /* unchanged — already dark-friendly */
+  --butter:  #E6C76A;     /* dimmed — pure butter blows out on dark */
+  --sky:     #92B5D9;     /* slightly desaturated */
+  --rose:    #E29578;     /* unchanged */
+
+  --ink-deep:     #0E0A08; /* hover bg = even deeper than paper */
+  --apricot-deep: #E59661; /* hover variant of dark apricot */
+
+  /* Brick re-light: studs glow softer-warm, edges deepen. */
+  --stud-highlight: rgba(255, 245, 220, 0.22);
+  --stud-shadow:    rgba(0, 0, 0, 0.45);
+  --brick-edge:     rgba(0, 0, 0, 0.40);
 }
 
 
@@ -311,7 +350,7 @@ h1 em, h2 em, h3 em { font-style: italic; font-family: var(--serif); }
   justify-content: space-between;
   gap: var(--s-5);
   padding: var(--s-4) clamp(var(--s-4), 4vw, var(--s-6));
-  background: rgba(250, 247, 240, 0.85);
+  background: color-mix(in srgb, var(--paper) 85%, transparent);
   backdrop-filter: saturate(120%) blur(8px);
   -webkit-backdrop-filter: saturate(120%) blur(8px);
   border-bottom: 1px solid var(--hairline);
@@ -359,10 +398,52 @@ h1 em, h2 em, h3 em { font-style: italic; font-family: var(--serif); }
   transition: transform 220ms cubic-bezier(0.2, 0.8, 0.2, 1), background 200ms;
 }
 
-.nav__cta:hover { background: #2a2520; transform: translateY(-1px); }
+.nav__cta:hover { background: var(--ink-deep); transform: translateY(-1px); }
+
+/* Theme toggle — quiet pill in the nav. Sun/moon icons cross-fade. */
+.theme-toggle {
+  width: 36px;
+  height: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  border: 1px solid var(--hairline);
+  background: transparent;
+  color: var(--ink-soft);
+  border-radius: 999px;
+  cursor: pointer;
+  transition: color 200ms, border-color 200ms, background 200ms;
+  -webkit-tap-highlight-color: transparent;
+}
+.theme-toggle:hover {
+  color: var(--ink);
+  border-color: var(--ink-soft);
+  background: var(--cream);
+}
+.theme-toggle:focus-visible {
+  outline: 2px solid var(--apricot);
+  outline-offset: 2px;
+}
+.theme-toggle svg {
+  width: 16px;
+  height: 16px;
+  position: absolute;
+  transition: opacity 220ms ease-out, transform 320ms cubic-bezier(.5,0,.2,1);
+}
+
+/* Default (light theme): show moon (offer to switch to dark). */
+.theme-toggle__sun  { opacity: 0; transform: rotate(-90deg) scale(0.6); }
+.theme-toggle__moon { opacity: 1; transform: rotate(0) scale(1); }
+
+/* Dark theme: show sun (offer to switch to light). */
+[data-theme="dark"] .theme-toggle__sun  { opacity: 1; transform: rotate(0) scale(1); }
+[data-theme="dark"] .theme-toggle__moon { opacity: 0; transform: rotate(90deg) scale(0.6); }
 
 @media (max-width: 720px) {
   .nav__links { display: none; }
+  /* Theme toggle stays visible on mobile — keep it tight against CTA. */
+  .theme-toggle { width: 32px; height: 32px; }
 }
 
 
@@ -454,7 +535,7 @@ h1 em, h2 em, h3 em { font-style: italic; font-family: var(--serif); }
   white-space: nowrap;
 }
 
-.btn:hover { transform: translateY(-2px); background: #2a2520; }
+.btn:hover { transform: translateY(-2px); background: var(--ink-deep); }
 .btn:active { transform: translateY(0); }
 
 .btn--ghost {
@@ -467,10 +548,11 @@ h1 em, h2 em, h3 em { font-style: italic; font-family: var(--serif); }
 
 .btn--accent {
   background: var(--apricot);
-  color: var(--ink);
+  /* Apricot is light in BOTH themes — text must stay dark for contrast. */
+  color: #1A1714;
 }
 
-.btn--accent:hover { background: #ed914d; }
+.btn--accent:hover { background: var(--apricot-deep); }
 
 .btn--lg { padding: 18px 28px; font-size: 1.0625rem; }
 
@@ -673,7 +755,7 @@ h1 em, h2 em, h3 em { font-style: italic; font-family: var(--serif); }
 }
 
 .cta-band__lede {
-  color: rgba(250, 247, 240, 0.7);
+  color: color-mix(in srgb, var(--paper) 70%, transparent);
   margin-inline: auto;
   margin-bottom: var(--s-6);
   max-width: 36rem;
@@ -682,11 +764,12 @@ h1 em, h2 em, h3 em { font-style: italic; font-family: var(--serif); }
 
 .cta-band .btn {
   background: var(--apricot);
-  color: var(--ink);
+  /* Apricot is light in BOTH themes — text must stay dark for contrast. */
+  color: #1A1714;
   border-color: var(--apricot);
 }
 
-.cta-band .btn:hover { background: #f0934a; transform: translateY(-2px); }
+.cta-band .btn:hover { background: var(--apricot-deep); transform: translateY(-2px); }
 
 /* Decorative bricks scattered in corners of the dark band */
 .cta-band__deco {
@@ -825,7 +908,7 @@ h1 em, h2 em, h3 em { font-style: italic; font-family: var(--serif); }
   margin-bottom: var(--s-5);
 }
 
-.plan--accent .plan__tag { color: rgba(250, 247, 240, 0.7); }
+.plan--accent .plan__tag { color: color-mix(in srgb, var(--paper) 70%, transparent); }
 
 .plan__price {
   display: flex;
@@ -845,7 +928,7 @@ h1 em, h2 em, h3 em { font-style: italic; font-family: var(--serif); }
   color: var(--ink-muted);
 }
 
-.plan--accent .plan__price-period { color: rgba(250, 247, 240, 0.6); }
+.plan--accent .plan__price-period { color: color-mix(in srgb, var(--paper) 60%, transparent); }
 
 .plan__cta {
   align-self: stretch;

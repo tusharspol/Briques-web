@@ -2122,6 +2122,91 @@ h1 em, h2 em, h3 em { font-style: italic; font-family: var(--serif); }
 
 
 /* ═══════════════════════════════════════════════════════════════
+   24b. FAQ — honest answers
+   ───────────────────────────────────────────────────────────────
+
+   Centered head ("FAQ" eyebrow + serif display title), then a
+   list of items. Each item: small brick on the left, question +
+   answer stacked on the right, hairline above. Brick color rotates
+   for visual rhythm. Constrained max-width keeps copy readable;
+   answers cap at ~60ch.
+*/
+
+.faq__head {
+  text-align: center;
+  margin-bottom: var(--s-8);
+}
+
+.faq__title {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: var(--t-display);
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+  margin: var(--s-3) 0 0;
+}
+
+.faq__list {
+  list-style: none;
+  padding: 0;
+  margin: 0 auto;
+  max-width: 760px;
+  display: grid;
+  gap: 0;
+}
+
+.faq__item {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  column-gap: var(--s-5);
+  row-gap: var(--s-3);
+  align-items: start;
+  border-top: 1px solid var(--hairline);
+  padding: var(--s-7) 0;
+}
+
+.faq__item:last-child {
+  border-bottom: 1px solid var(--hairline);
+}
+
+.faq__brick {
+  grid-row: span 2;
+  margin-top: 8px; /* nudge down to align with first text baseline */
+}
+
+.faq__q {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: clamp(1.375rem, 1.2vw + 1rem, 1.75rem);
+  line-height: 1.2;
+  letter-spacing: -0.005em;
+  margin: 0;
+  color: var(--ink);
+}
+
+.faq__a {
+  font-size: var(--t-body);
+  line-height: 1.65;
+  color: var(--ink-soft);
+  margin: 0;
+  max-width: 60ch;
+}
+
+.faq__a a {
+  color: var(--ink);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1.5px;
+  text-decoration-color: var(--apricot);
+}
+
+.faq__a em {
+  color: var(--ink);
+  font-style: italic;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════
    25. RESPONSIVE — viewport breakpoints, refined
    ═══════════════════════════════════════════════════════════════
 
@@ -2204,6 +2289,14 @@ h1 em, h2 em, h3 em { font-style: italic; font-family: var(--serif); }
 
   /* Hero CTAs stack on very narrow */
   .hero__ctas .btn { width: 100%; justify-content: center; }
+
+  /* FAQ stacks: brick → Q → A */
+  .faq__item {
+    grid-template-columns: 1fr;
+    column-gap: 0;
+    padding: var(--s-6) 0;
+  }
+  .faq__brick { grid-row: auto; margin-top: 0; }
 }
 
 @media (max-width: 380px) {

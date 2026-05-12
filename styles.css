@@ -364,6 +364,14 @@ h1 em, h2 em, h3 em { font-style: italic; font-family: var(--serif); }
   color: var(--ink);
 }
 
+.nav__logo {
+  display: inline-block;
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
 .nav__name {
   font-family: var(--serif);
   font-size: 1.5rem;
@@ -815,6 +823,14 @@ h1 em, h2 em, h3 em { font-style: italic; font-family: var(--serif); }
   display: inline-flex;
   align-items: center;
   gap: var(--s-3);
+}
+
+.footer__logo {
+  display: inline-block;
+  width: 36px;
+  height: 36px;
+  object-fit: contain;
+  flex-shrink: 0;
 }
 
 .footer__tag {

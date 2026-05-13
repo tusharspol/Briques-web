@@ -214,6 +214,7 @@ body {
 .brick--4x1 { --brick-cols: 4; --brick-rows: 1; }
 .brick--4x2 { --brick-cols: 4; --brick-rows: 2; }
 .brick--6x2 { --brick-cols: 6; --brick-rows: 2; }
+.brick--8x2 { --brick-cols: 8; --brick-rows: 2; }
 
 /* Studs — child <i> elements positioned via grid on a .studs
    wrapper. Real LEGO studs are ~62% of the cell width with a soft
@@ -993,6 +994,227 @@ h1 em, h2 em, h3 em { font-style: italic; font-family: var(--serif); }
   padding: 6px 12px;
   border-radius: 999px;
   box-shadow: 0 4px 12px -4px rgba(26,23,20,0.2);
+}
+
+/* ───────────────────────────────────────────────────────────────
+   Credit packs — three-up showcase between Plans and Pro+
+   ───────────────────────────────────────────────────────────────
+   Visual goal: feel like a kit of parts laid out for purchase.
+   Each card is a Sunlit-tinted surface with a brick "weight"
+   indicator that scales with the pack size. The middle card is
+   featured (sage tint + ribbon). Reads top-to-bottom on mobile,
+   side-by-side on desktop.
+*/
+.packs {
+  margin-top: var(--s-8);
+  padding-top: var(--s-7);
+  border-top: 1px dashed var(--hairline);
+}
+
+.packs__head {
+  text-align: center;
+  max-width: 38rem;
+  margin-inline: auto;
+  margin-bottom: var(--s-7);
+}
+
+.packs__kicker {
+  display: inline-block;
+  font-family: var(--mono, monospace);
+  font-size: var(--t-eyebrow, 0.75rem);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: var(--ink-muted);
+  background: var(--cream);
+  padding: 4px 10px;
+  border-radius: 999px;
+  margin-bottom: var(--s-3);
+}
+
+.packs__title {
+  font-family: var(--serif);
+  font-size: clamp(2rem, 4.5vw, 2.75rem);
+  line-height: 1.05;
+  color: var(--ink);
+  margin-bottom: var(--s-3);
+  font-weight: 400;
+  letter-spacing: -0.01em;
+}
+
+.packs__title em {
+  font-style: italic;
+  color: var(--apricot);
+  font-weight: 500;
+}
+
+.packs__sub {
+  font-size: 1.0625rem;
+  line-height: 1.6;
+  color: var(--ink-soft);
+  max-width: 36rem;
+  margin-inline: auto;
+}
+
+.packs__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--s-5);
+  align-items: stretch;
+}
+
+@media (max-width: 860px) {
+  .packs__grid { grid-template-columns: 1fr; gap: var(--s-4); }
+}
+
+.packs__foot {
+  margin-top: var(--s-6);
+  text-align: center;
+  font-size: var(--t-small);
+  color: var(--ink-muted);
+  letter-spacing: 0.01em;
+}
+
+.packs__foot strong {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+/* ── Individual pack card ─────────────────────────────────── */
+
+.pack {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  background: var(--paper);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius-lg);
+  padding: var(--s-6) var(--s-5) var(--s-5);
+  transition:
+    transform 240ms cubic-bezier(0.2, 0.8, 0.2, 1),
+    box-shadow 240ms cubic-bezier(0.2, 0.8, 0.2, 1),
+    border-color 240ms ease;
+}
+
+.pack:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 18px 42px -22px rgba(26, 23, 20, 0.25);
+  border-color: color-mix(in srgb, var(--ink-muted) 35%, var(--hairline));
+}
+
+/* Brand-tint accents — subtle background wash so the row reads
+   as three siblings, not three identical cards. Apricot is
+   warmest (small pack), sage is calm (mid), butter is brightest
+   (large) — same ordering as the brick palette below. */
+.pack--apricot {
+  background:
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--apricot) 8%, var(--paper)) 0%,
+      var(--paper) 60%
+    );
+}
+.pack--sage {
+  background:
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--sage) 10%, var(--paper)) 0%,
+      var(--paper) 60%
+    );
+}
+.pack--butter {
+  background:
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--butter) 12%, var(--paper)) 0%,
+      var(--paper) 60%
+    );
+}
+
+/* Featured (middle) card — gets a tighter border and a small lift
+   so the eye lands here first. Same role as plan--accent but
+   without going fully dark, since these are "add-on" purchases
+   that should feel approachable, not premium. */
+.pack--featured {
+  border-color: color-mix(in srgb, var(--sage) 60%, var(--hairline));
+  box-shadow: 0 14px 30px -18px rgba(26, 23, 20, 0.18);
+}
+
+.pack__ribbon {
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--ink);
+  color: var(--paper);
+  font-size: var(--t-eyebrow, 0.7rem);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  padding: 6px 14px;
+  border-radius: 999px;
+  white-space: nowrap;
+  box-shadow: 0 6px 14px -4px rgba(26, 23, 20, 0.28);
+}
+
+/* Brick visual at the top — gives each card a tangible weight
+   that scales with the pack size. The bricks are decorative
+   (aria-hidden) but they're the strongest signal that "this
+   pack is bigger than that one." */
+.pack__brick {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 76px;
+  margin-bottom: var(--s-4);
+}
+
+.pack__body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--s-1);
+  flex: 1;
+  width: 100%;
+}
+
+.pack__amount {
+  font-family: var(--serif);
+  font-size: clamp(2.75rem, 6vw, 3.5rem);
+  font-weight: 400;
+  line-height: 1;
+  color: var(--ink);
+  letter-spacing: -0.02em;
+}
+
+.pack__amount-label {
+  font-size: var(--t-small);
+  color: var(--ink-muted);
+  text-transform: lowercase;
+  letter-spacing: 0.06em;
+  margin-bottom: var(--s-3);
+}
+
+.pack__price {
+  font-family: var(--mono, monospace);
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--ink);
+  padding: var(--s-2) var(--s-4);
+  background: var(--cream);
+  border-radius: 999px;
+  letter-spacing: -0.01em;
+  margin-bottom: var(--s-4);
+}
+
+.pack__note {
+  font-size: var(--t-small);
+  line-height: 1.5;
+  color: var(--ink-soft);
+  max-width: 24ch;
+  margin-top: auto;
 }
 
 /* Pricing footnotes */

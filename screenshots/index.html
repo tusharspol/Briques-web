@@ -1,0 +1,1540 @@
+<!doctype html>
+<!--
+  ════════════════════════════════════════════════════════════════
+  Briques — App Store + Play Store screenshots (Sunlit register)
+  ════════════════════════════════════════════════════════════════
+
+  Each .slide is exactly iPhone 6.9" dimensions: 1320 × 2868 px.
+  Apple accepts that size for the 6.9" screenshot slot and scales
+  for smaller devices. Google Play accepts any portrait between
+  9:16 and 9:32 — 1320×2868 is well inside that window, so the
+  same images work for both stores.
+
+  How to capture (Chrome):
+    1. Open this file in Chrome.
+    2. DevTools (Cmd+Opt+I) → Toggle device toolbar (Cmd+Shift+M).
+    3. "Edit…" device list → "Add custom device":
+         Name: iPhone 6.9
+         Width: 1320  Height: 2868  DPR: 1
+    4. Pick that device. Reload.
+    5. For each slide:
+         - Scroll until the slide fully fills the viewport.
+         - DevTools 3-dot menu → Run command → "Capture screenshot".
+         - File saves as <slide-id>.png in your Downloads.
+    6. Submit those PNGs to App Store Connect / Play Console.
+
+  Or — simpler — press `1`–`9` or `0` to jump to a slide; the
+  page locks the viewport to that one slide so you can take a
+  full-window screenshot (Cmd+Shift+4 then space, then click).
+-->
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Briques — Store screenshots</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet" />
+
+  <!-- Reuse the marketing site's Sunlit tokens + brick CSS so the
+       screenshots stay perfectly on-palette. styles.css declares
+       --paper / --ink / --sage / --apricot / --butter / --sky /
+       --rose plus the .brick component used here. -->
+  <link rel="stylesheet" href="../styles.css" />
+
+  <style>
+    /* ────────────────────────────────────────────────────────────
+       Reset / page chrome
+       ────────────────────────────────────────────────────────── */
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: #555;            /* dark gutter between slides */
+      font-family: var(--sans);
+      color: var(--ink);
+    }
+
+    /* Each slide is exactly the iPhone 6.9" screenshot size. */
+    .slide {
+      position: relative;
+      width: 1320px;
+      height: 2868px;
+      margin: 32px auto;
+      background: var(--paper);
+      overflow: hidden;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
+    }
+
+    /* `?single=N` mode (set by the keyboard shortcut script
+       below): hide the dark gutter, show only one slide, no
+       margin — perfect for a window-area Cmd+Shift+4 capture. */
+    body.single {
+      background: var(--paper);
+    }
+    body.single .slide { display: none; }
+    body.single .slide.is-visible {
+      display: block;
+      margin: 0;
+      box-shadow: none;
+    }
+    body.single .help { display: none; }
+
+    /* Tiny help bubble — visible while browsing all slides. */
+    .help {
+      position: fixed;
+      top: 12px;
+      left: 12px;
+      z-index: 100;
+      background: var(--ink);
+      color: var(--paper);
+      padding: 12px 16px;
+      border-radius: 10px;
+      font-size: 13px;
+      max-width: 360px;
+      line-height: 1.4;
+    }
+    .help kbd {
+      background: var(--paper);
+      color: var(--ink);
+      padding: 1px 6px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-family: ui-monospace, monospace;
+    }
+
+    /* Index marker on each slide for development browsing. */
+    .slide__num {
+      position: absolute;
+      top: 24px;
+      right: 36px;
+      font-family: var(--sans);
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--ink-muted);
+      letter-spacing: 0.4px;
+      opacity: 0.5;
+    }
+    body.single .slide__num { display: none; }
+
+
+    /* ────────────────────────────────────────────────────────────
+       SHARED ELEMENTS — eyebrow, headlines, body, brick scatter,
+       phone mock. These are tuned to look right at the GIANT scale
+       of a 1320×2868 portrait — desktop scale would feel anaemic.
+       ────────────────────────────────────────────────────────── */
+
+    .eyebrow {
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--ink-muted);
+      display: inline-flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .eyebrow__dot {
+      width: 14px;
+      height: 14px;
+      background: var(--sage);
+      border-radius: 50%;
+    }
+
+    .display {
+      font-family: var(--serif);
+      font-weight: 400;
+      font-size: 168px;
+      line-height: 0.96;
+      letter-spacing: -0.02em;
+      color: var(--ink);
+      margin: 0;
+    }
+    .display em {
+      font-style: italic;
+      color: var(--ink);
+    }
+    .display--md { font-size: 132px; }
+    .display--sm { font-size: 96px; }
+
+    .lede {
+      font-size: 36px;
+      line-height: 1.45;
+      color: var(--ink-soft);
+      max-width: 1000px;
+      font-weight: 400;
+    }
+
+    .small-eyebrow {
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--ink-muted);
+    }
+
+    /* ── Phone mock ──────────────────────────────────────────────
+       Scaled to dominate a 1320×2868 slide. Default 940px wide
+       gives a ~2037px tall device — about 70% of slide height,
+       which leaves room for a strong headline above. Inner content
+       sized accordingly. */
+    .phone {
+      position: relative;
+      width: 940px;
+      aspect-ratio: 9 / 19.5;
+      margin: 0 auto;
+      background: #1A1714;
+      border-radius: 110px;
+      padding: 20px;
+      box-shadow:
+        0 2px 0 rgba(255,255,255,0.18) inset,
+        0 -2px 0 rgba(0,0,0,0.6) inset,
+        0 80px 160px -52px rgba(26,23,20,0.5),
+        0 36px 70px -28px rgba(26,23,20,0.35);
+    }
+    .phone__notch {
+      position: absolute;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 280px;
+      height: 64px;
+      background: #1A1714;
+      border-radius: 0 0 38px 38px;
+      z-index: 5;
+    }
+    .phone__screen {
+      width: 100%;
+      height: 100%;
+      background: var(--paper);
+      border-radius: 90px;
+      overflow: hidden;
+      position: relative;
+      padding: 110px 56px 56px;
+    }
+    .phone--lg { width: 1020px; }
+    .phone--xl { width: 1100px; }
+
+    /* In-phone content — sized for a 940px-wide phone mock. Bumping
+       these in lockstep with the phone scale keeps the in-screen UI
+       readable at App Store thumbnail size and not tiny on the full
+       screenshot. */
+    .ph-bar {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      margin-bottom: 44px;
+    }
+    .ph-bar__logo {
+      width: 48px;
+      height: 48px;
+      object-fit: contain;
+    }
+    .ph-bar__name {
+      font-family: var(--serif);
+      font-style: italic;
+      font-size: 44px;
+      color: var(--ink);
+      letter-spacing: -0.01em;
+    }
+    .ph-bar__avatar {
+      margin-left: auto;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: var(--sage);
+      color: var(--paper);
+      font-size: 22px;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .ph-greeting-eyebrow {
+      font-size: 22px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--ink-muted);
+      font-weight: 700;
+      margin: 0 0 14px;
+    }
+    .ph-greeting {
+      font-family: var(--serif);
+      font-size: 64px;
+      line-height: 1.06;
+      color: var(--ink);
+      margin: 0;
+      letter-spacing: -0.01em;
+    }
+    .ph-greeting em { font-style: italic; color: var(--ink-soft); }
+
+    /* In-phone prompt input mock. */
+    .ph-prompt {
+      margin-top: 44px;
+      background: var(--cream);
+      border: 1px solid var(--hairline);
+      border-radius: 28px;
+      padding: 32px;
+      min-height: 240px;
+      position: relative;
+    }
+    .ph-prompt__placeholder {
+      font-size: 30px;
+      color: var(--ink-muted);
+      line-height: 1.4;
+    }
+    .ph-prompt__send {
+      position: absolute;
+      bottom: 22px;
+      right: 22px;
+      width: 68px;
+      height: 68px;
+      border-radius: 50%;
+      background: var(--apricot);
+      color: var(--ink);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 30px;
+    }
+    .ph-prompt__chips {
+      display: flex;
+      gap: 14px;
+      margin-top: 22px;
+      flex-wrap: wrap;
+    }
+    .ph-prompt__chips span {
+      font-size: 22px;
+      padding: 12px 20px;
+      border-radius: 999px;
+      background: var(--paper);
+      border: 1px solid var(--hairline);
+      color: var(--ink-soft);
+    }
+
+    /* Generic "row" inside the phone screen — list-style items. */
+    .ph-row {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      padding: 28px 0;
+      border-bottom: 1px solid var(--hairline);
+    }
+    .ph-row:last-child { border-bottom: none; }
+    .ph-row__label {
+      font-family: var(--serif);
+      font-size: 36px;
+      color: var(--ink);
+    }
+    .ph-row__hint {
+      font-size: 22px;
+      color: var(--ink-muted);
+      margin-top: 4px;
+    }
+
+
+    /* ────────────────────────────────────────────────────────────
+       SLIDE-SPECIFIC LAYOUTS
+       ────────────────────────────────────────────────────────── */
+
+    /* Generic "padded slide" container so each slide has its own
+       breathing room. Padding scales with slide width. */
+    .slide__pad {
+      width: 100%;
+      height: 100%;
+      padding: 200px 110px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Slide 1 — hero hook */
+    .slide--hook .slide__pad {
+      padding-top: 280px;
+      align-items: flex-start;
+      justify-content: flex-start;
+    }
+    .slide--hook .display {
+      font-size: 220px;
+      line-height: 0.92;
+    }
+    /* Brick pile, anchored to the bottom of the slide. Wider gaps
+       and a bit more rotation than the standard scatter so the
+       composition feels arranged-by-hand. */
+    .slide--hook .scatter {
+      position: absolute;
+      bottom: 240px;
+      left: 110px;
+      right: 110px;
+      height: 480px;
+      pointer-events: none;
+    }
+    .slide--hook .scatter > .brick {
+      position: absolute;
+    }
+    .slide--hook .scatter > .brick:nth-child(1) { left: 4%;  bottom: 0;   }
+    .slide--hook .scatter > .brick:nth-child(2) { left: 28%; bottom: 60px;}
+    .slide--hook .scatter > .brick:nth-child(3) { left: 60%; bottom: 0;   }
+    .slide--hook .scatter > .brick:nth-child(4) { left: 75%; bottom: 80px;}
+
+    /* Slide 2 — pain → promise */
+    .slide--pain .slide__pad {
+      padding: 320px 110px 0;
+    }
+    .slide--pain .strike {
+      font-size: 56px;
+      color: var(--ink-muted);
+      text-decoration: line-through;
+      text-decoration-color: var(--ink-faint);
+      text-decoration-thickness: 2px;
+      line-height: 1.4;
+      margin: 0 0 12px;
+      font-weight: 500;
+    }
+    .slide--pain .pain-divider {
+      margin: 60px 0;
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      color: var(--ink-muted);
+      font-style: italic;
+      font-family: var(--serif);
+      font-size: 36px;
+    }
+    .slide--pain .pain-divider::before,
+    .slide--pain .pain-divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--hairline);
+    }
+    .slide--pain .prompt-quotes {
+      margin-top: 80px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+    .slide--pain .prompt-quote {
+      font-family: var(--serif);
+      font-style: italic;
+      font-size: 42px;
+      color: var(--ink);
+      letter-spacing: -0.005em;
+      line-height: 1.25;
+      padding-left: 0;
+      position: relative;
+    }
+    .slide--pain .prompt-quote__mark {
+      color: var(--apricot);
+      font-size: 56px;
+      line-height: 0;
+      vertical-align: -0.18em;
+      margin-right: 10px;
+      font-weight: 600;
+    }
+    .pain-bricks {
+      position: absolute;
+      bottom: 200px;
+      left: 110px;
+      right: 110px;
+      display: flex;
+      gap: 80px;
+      align-items: flex-end;
+      justify-content: center;
+    }
+
+    /* Slide 3 — the promise + phone */
+    .slide--promise .slide__pad {
+      padding: 200px 110px 0;
+      gap: 60px;
+      align-items: stretch;
+    }
+    .slide--promise .display { text-align: left; }
+
+    /* Phone-led slides (4–9) — phone dominates, headline on top.
+       Reduced top/side padding because the phone is the hero. */
+    .slide--phone-led .slide__pad {
+      padding: 180px 110px 0;
+      gap: 60px;
+    }
+    .slide--phone-led .lede {
+      max-width: 1000px;
+      font-size: 30px;
+    }
+    .slide--phone-led .display {
+      font-size: 116px;
+      line-height: 0.96;
+    }
+
+    /* Slide 8 — Lego (no phone, pure brick) */
+    .slide--lego .slide__pad {
+      padding-top: 320px;
+      align-items: flex-start;
+    }
+    .slide--lego .lego-stack {
+      position: absolute;
+      bottom: 240px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
+
+    /* Slide 10 — closing CTA */
+    .slide--cta .slide__pad {
+      padding: 320px 110px 200px;
+      align-items: stretch;
+      justify-content: space-between;
+    }
+    .slide--cta .cta-button {
+      align-self: stretch;
+      background: var(--ink);
+      color: var(--paper);
+      border-radius: 36px;
+      padding: 56px 64px;
+      font-family: var(--sans);
+      font-weight: 700;
+      font-size: 56px;
+      text-align: center;
+      letter-spacing: -0.02em;
+      margin-top: 40px;
+    }
+    .slide--cta .cta-sub {
+      align-self: center;
+      font-size: 28px;
+      color: var(--ink-muted);
+      margin-top: 32px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+    .slide--cta .logo-img {
+      width: 220px;
+      height: 220px;
+      object-fit: contain;
+      margin-bottom: 56px;
+    }
+    .slide--cta .cta-bricks {
+      display: flex;
+      gap: 60px;
+      align-items: flex-end;
+      justify-content: center;
+      margin: 60px 0;
+    }
+
+
+    /* Brick decoration overrides for the screenshot scale.
+       Scale via --brick-cell so studs (which are sized off the
+       cell) grow with the brick. 110px cell → 2x1 = 220×110,
+       2x2 = 220×220, 3x2 = 330×220 — matches the deck targets
+       while keeping studs proportional. */
+    .brick--xxl  { --brick-cell: 110px; }
+    .brick--xl2  { --brick-cell: 88px;  }
+    .brick--md   { --brick-cell: 32px;  }
+    .brick--sm   { --brick-cell: 18px;  }
+
+
+    /* ── Per-slide phone-mock content ──────────────────────────
+       All sized to read at the 940px-wide phone scale. */
+
+    /* Slide 4 — sentence → app: typed prompt + result hint */
+    .ph-typed {
+      font-size: 38px;
+      color: var(--ink);
+      line-height: 1.4;
+      margin: 0;
+    }
+    .ph-typed-caret {
+      display: inline-block;
+      width: 3px;
+      height: 1em;
+      background: var(--apricot);
+      vertical-align: text-bottom;
+      margin-left: 4px;
+    }
+
+    /* Slide 4 — "Building" checklist */
+    .build-list {
+      margin-top: 56px;
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+    }
+    .build-list__item {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      font-size: 28px;
+      color: var(--ink-soft);
+      line-height: 1.3;
+    }
+    .build-list__item strong {
+      color: var(--ink);
+      font-weight: 600;
+    }
+    .build-list__check {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: rgba(127, 169, 138, 0.18);
+      color: var(--sage);
+      font-weight: 800;
+      font-size: 22px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .build-list__item--active {
+      color: var(--ink);
+    }
+    .build-list__spinner {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      border: 4px solid rgba(244, 162, 97, 0.3);
+      border-top-color: var(--apricot);
+      display: inline-block;
+      flex-shrink: 0;
+    }
+    .build-progress {
+      margin-top: 64px;
+      height: 14px;
+      background: var(--hairline);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+    .build-progress__bar {
+      width: 74%;
+      height: 100%;
+      background: linear-gradient(
+        90deg,
+        var(--apricot) 0%,
+        var(--butter) 100%
+      );
+      border-radius: 999px;
+    }
+    .build-progress__caption {
+      margin: 16px 0 0;
+      font-size: 22px;
+      color: var(--ink-muted);
+      letter-spacing: 0.04em;
+      font-weight: 600;
+    }
+
+    /* Slide 5 — AI search modal mock */
+    .ai-search-modal {
+      position: absolute;
+      left: 28px;
+      right: 28px;
+      bottom: 28px;
+      top: 420px;
+      background: var(--paper);
+      border-top-left-radius: 56px;
+      border-top-right-radius: 56px;
+      padding: 42px 42px 56px;
+      box-shadow: 0 -16px 60px rgba(0,0,0,0.15);
+    }
+    .ai-search-modal__handle {
+      width: 110px;
+      height: 8px;
+      background: var(--hairline);
+      border-radius: 4px;
+      margin: 0 auto 32px;
+    }
+    .ai-search-modal__title {
+      font-family: var(--serif);
+      font-style: italic;
+      font-size: 60px;
+      color: var(--ink);
+      margin: 0 0 28px;
+      letter-spacing: -0.01em;
+    }
+    .ai-search-input {
+      background: white;
+      border: 1px solid var(--hairline);
+      border-radius: 24px;
+      padding: 24px 28px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      margin-bottom: 32px;
+    }
+    .ai-search-input__icon {
+      color: var(--ink-muted);
+      font-size: 32px;
+    }
+    .ai-search-input__text {
+      font-size: 28px;
+      color: var(--ink);
+      flex: 1;
+    }
+    .ai-search-input__send {
+      background: var(--ink);
+      color: var(--paper);
+      border-radius: 14px;
+      padding: 14px 22px;
+      font-size: 22px;
+      font-weight: 700;
+    }
+    .ai-search-result {
+      padding: 24px 6px;
+      border-bottom: 1px solid var(--hairline);
+    }
+    .ai-search-result__head {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 10px;
+    }
+    .ai-search-result__table {
+      font-size: 18px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      font-weight: 700;
+      color: var(--ink-muted);
+    }
+    .ai-search-result__match {
+      background: rgba(127, 169, 138, 0.18);
+      color: var(--sage);
+      font-size: 18px;
+      font-weight: 800;
+      padding: 4px 14px;
+      border-radius: 999px;
+    }
+    .ai-search-result__title {
+      font-family: var(--serif);
+      font-size: 36px;
+      color: var(--ink);
+      margin: 0 0 6px;
+    }
+    .ai-search-result__sub {
+      font-size: 22px;
+      color: var(--ink-muted);
+    }
+
+    /* Slide 5 — small "Pro toggle" pill above the modal */
+    .pro-toggle {
+      position: absolute;
+      top: 220px;
+      right: 56px;
+      background: var(--cream);
+      border: 1px solid var(--hairline);
+      border-radius: 999px;
+      padding: 14px 24px;
+      display: inline-flex;
+      align-items: center;
+      gap: 16px;
+      font-size: 22px;
+      color: var(--ink);
+      font-weight: 600;
+    }
+    .pro-toggle__switch {
+      width: 54px;
+      height: 32px;
+      background: var(--sage);
+      border-radius: 999px;
+      position: relative;
+    }
+    .pro-toggle__switch::after {
+      content: '';
+      position: absolute;
+      right: 3px;
+      top: 3px;
+      width: 26px;
+      height: 26px;
+      background: var(--paper);
+      border-radius: 50%;
+    }
+
+    /* Slide 6 — page builder mock */
+    .builder-tab-bar {
+      display: flex;
+      gap: 0;
+      margin-bottom: 36px;
+      border-bottom: 1px solid var(--hairline);
+    }
+    .builder-tab {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--ink-muted);
+      padding: 18px 24px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .builder-tab--active {
+      color: var(--ink);
+      border-bottom: 3px solid var(--ink);
+    }
+    .builder-block {
+      background: white;
+      border: 1px solid var(--hairline);
+      border-radius: 22px;
+      padding: 28px 28px;
+      margin-bottom: 22px;
+      display: flex;
+      align-items: center;
+      gap: 22px;
+    }
+    .builder-block__handle {
+      width: 12px;
+      height: 52px;
+      background: var(--cream);
+      border-radius: 4px;
+    }
+    .builder-block__icon {
+      width: 56px;
+      height: 56px;
+      background: var(--cream);
+      border-radius: 14px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--ink);
+      font-size: 22px;
+      font-weight: 700;
+    }
+    .builder-block__name {
+      font-family: var(--serif);
+      font-size: 32px;
+      color: var(--ink);
+      flex: 1;
+    }
+    .builder-block__type {
+      font-size: 18px;
+      color: var(--ink-muted);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+
+    /* Slide 7 — AI chat refining */
+    .chat-msg {
+      max-width: 82%;
+      padding: 22px 28px;
+      border-radius: 32px;
+      font-size: 26px;
+      line-height: 1.4;
+      margin-bottom: 18px;
+    }
+    .chat-msg--user {
+      align-self: flex-end;
+      background: var(--ink);
+      color: var(--paper);
+      border-bottom-right-radius: 8px;
+    }
+    .chat-msg--ai {
+      align-self: flex-start;
+      background: var(--cream);
+      color: var(--ink);
+      border-bottom-left-radius: 8px;
+    }
+    .chat-stack {
+      display: flex;
+      flex-direction: column;
+      margin-top: 22px;
+    }
+    .chat-typing {
+      align-self: flex-start;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 18px 26px;
+      border-radius: 28px;
+      background: var(--cream);
+      border: 1px solid var(--hairline);
+      font-size: 22px;
+      color: var(--ink-soft);
+    }
+    .chat-typing__dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--ink-muted);
+    }
+
+    /* Slide 9 — tables view */
+    .tables-toolbar {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      margin-bottom: 28px;
+    }
+    .tables-toolbar__title {
+      font-family: var(--serif);
+      font-size: 48px;
+      color: var(--ink);
+      flex: 1;
+      letter-spacing: -0.01em;
+    }
+    .tables-toolbar__btn {
+      width: 60px;
+      height: 60px;
+      background: var(--ink);
+      color: var(--paper);
+      border-radius: 16px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      font-weight: 800;
+    }
+    .table-cell {
+      display: grid;
+      grid-template-columns: 110px 1fr 150px;
+      align-items: center;
+      gap: 24px;
+      padding: 24px 6px;
+      border-bottom: 1px solid var(--hairline);
+    }
+    .table-cell__date {
+      font-family: var(--serif);
+      font-size: 30px;
+      color: var(--ink);
+      text-align: center;
+      letter-spacing: -0.01em;
+    }
+    .table-cell__date small {
+      display: block;
+      font-size: 16px;
+      color: var(--ink-muted);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-top: 4px;
+    }
+    .table-cell__name {
+      font-size: 26px;
+      color: var(--ink);
+      font-weight: 600;
+    }
+    .table-cell__sub {
+      font-size: 20px;
+      color: var(--ink-muted);
+      margin-top: 4px;
+    }
+    .table-cell__chip {
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 8px 14px;
+      border-radius: 999px;
+      text-align: center;
+    }
+    .chip--good { background: rgba(244, 162, 97, 0.18); color: #8a5523; }
+    .chip--great { background: rgba(127, 169, 138, 0.20); color: #4d6b3a; }
+    .chip--ok { background: rgba(180, 175, 165, 0.25); color: #777775; }
+  </style>
+</head>
+<body>
+
+<div class="help">
+  <strong>Briques store screenshots.</strong>
+  Press <kbd>1</kbd>–<kbd>9</kbd> or <kbd>0</kbd> for slide 10 to
+  isolate one slide. Press <kbd>esc</kbd> to see them all again.
+  See the comment at the top of the source for capture instructions.
+</div>
+
+
+<!-- ════════════════════════════════════════════════════════════════
+     SLIDE 1 — Hook: "Ever wished one app existed?"
+     ════════════════════════════════════════════════════════════════ -->
+<section class="slide slide--hook" id="slide-1">
+  <div class="slide__num">01 / 10</div>
+  <div class="slide__pad">
+    <p class="eyebrow">
+      <span class="eyebrow__dot"></span>
+      Briques
+    </p>
+    <h1 class="display" style="margin-top: 80px;">
+      Ever<br>
+      wished<br>
+      one app<br>
+      <em>existed?</em>
+    </h1>
+    <p class="lede" style="margin-top: 60px;">
+      The kind only you would build. The little tool you'd
+      actually use, every day.
+    </p>
+  </div>
+
+  <!-- A pair of bricks floating near the headline, then the bigger
+       scatter at the bottom. Breaks up the negative space without
+       drowning the type. -->
+  <span class="brick brick--sky brick--2x1 brick--xxl"
+    style="position: absolute; top: 540px; right: 110px;
+           transform: rotate(14deg);"></span>
+  <span class="brick brick--butter brick--1x1 brick--xxl"
+    style="position: absolute; top: 1380px; left: 110px;
+           transform: rotate(-12deg);"></span>
+  <span class="brick brick--rose brick--2x1 brick--xxl"
+    style="position: absolute; top: 1620px; right: 160px;
+           transform: rotate(8deg);"></span>
+
+  <div class="scatter">
+    <span class="brick brick--apricot brick--2x2 brick--xxl"
+      style="transform: rotate(-8deg);"></span>
+    <span class="brick brick--sage brick--3x2 brick--xxl"
+      style="transform: rotate(6deg);"></span>
+    <span class="brick brick--rose brick--2x2 brick--xxl"
+      style="transform: rotate(-4deg);"></span>
+    <span class="brick brick--butter brick--2x1 brick--xxl"
+      style="transform: rotate(10deg);"></span>
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════════════════════════════════════
+     SLIDE 2 — Pain → promise: building used to be hard
+     ════════════════════════════════════════════════════════════════ -->
+<section class="slide slide--pain" id="slide-2">
+  <div class="slide__num">02 / 10</div>
+  <div class="slide__pad">
+    <p class="small-eyebrow">Used to be hard</p>
+    <div style="margin-top: 40px;">
+      <p class="strike">Code. Tools. Tutorials.</p>
+      <p class="strike">40-step setup wizards.</p>
+      <p class="strike">Every no-code thing built for teams.</p>
+    </div>
+    <div class="pain-divider">then</div>
+    <h1 class="display display--md" style="margin: 0;">
+      Now it's<br>
+      <em>one sentence.</em>
+    </h1>
+
+    <!-- A trio of typed-prompt examples to make the "one sentence"
+         claim concrete. Each looks like a real thing a person
+         would type into the prompt box. -->
+    <div class="prompt-quotes">
+      <div class="prompt-quote">
+        <span class="prompt-quote__mark">"</span>
+        A grocery list shared with my partner.
+      </div>
+      <div class="prompt-quote">
+        <span class="prompt-quote__mark">"</span>
+        Track every concert I see this year.
+      </div>
+      <div class="prompt-quote">
+        <span class="prompt-quote__mark">"</span>
+        A reading log with star ratings.
+      </div>
+    </div>
+  </div>
+
+  <!-- Closing brick scatter, low and small, leaves room for the
+       prompts above and keeps the eye moving down the slide. -->
+  <div class="pain-bricks">
+    <span class="brick brick--apricot brick--2x1 brick--xxl"
+      style="transform: rotate(-5deg);"></span>
+    <span class="brick brick--sage brick--2x2 brick--xxl"
+      style="transform: rotate(8deg);"></span>
+    <span class="brick brick--butter brick--3x2 brick--xxl"
+      style="transform: rotate(-3deg);"></span>
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════════════════════════════════════
+     SLIDE 3 — Promise + phone reveal
+     ════════════════════════════════════════════════════════════════ -->
+<section class="slide slide--promise" id="slide-3">
+  <div class="slide__num">03 / 10</div>
+  <div class="slide__pad">
+    <h1 class="display display--md" style="margin: 0;">
+      Briques builds<br>
+      the app you<br>
+      <em>wish existed.</em>
+    </h1>
+    <p class="lede">
+      Type what you want. A working mini app lands on your phone in
+      about a minute. No code, no boilerplate, no tutorials.
+    </p>
+    <div style="display: flex; justify-content: center; margin-top: 80px;">
+      <div class="phone phone--lg">
+        <div class="phone__notch"></div>
+        <div class="phone__screen">
+          <div class="ph-bar">
+            <img class="ph-bar__logo" src="../assets/images/logo.png" alt="">
+            <span class="ph-bar__name">Briques</span>
+            <span class="ph-bar__avatar">T</span>
+          </div>
+          <p class="ph-greeting-eyebrow">Good evening</p>
+          <h2 class="ph-greeting">
+            Hi, Tushar.<br>
+            <em>What shall we build?</em>
+          </h2>
+          <div class="ph-prompt">
+            <p class="ph-prompt__placeholder">A weather log for fishing trips</p>
+            <div class="ph-prompt__chips">
+              <span>Mileage log</span>
+              <span>Reading list</span>
+              <span>Habit tracker</span>
+            </div>
+            <div class="ph-prompt__send">→</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════════════════════════════════════
+     SLIDE 4 — Build in a sentence
+     ════════════════════════════════════════════════════════════════ -->
+<section class="slide slide--phone-led" id="slide-4">
+  <div class="slide__num">04 / 10</div>
+  <div class="slide__pad">
+    <h1 class="display display--md" style="margin: 0;">
+      Type a<br>
+      <em>sentence.</em><br>
+      Ship the app.
+    </h1>
+    <p class="lede">One prompt in plain English. A working
+      mini app, generated, rendered, ready to use.</p>
+    <div style="display: flex; justify-content: center;">
+      <div class="phone phone--lg">
+        <div class="phone__notch"></div>
+        <div class="phone__screen">
+          <div class="ph-bar">
+            <img class="ph-bar__logo" src="../assets/images/logo.png" alt="">
+            <span class="ph-bar__name">Briques</span>
+            <span class="ph-bar__avatar">T</span>
+          </div>
+          <p class="ph-greeting-eyebrow">Building</p>
+          <h2 class="ph-greeting">
+            <em>"A reading log,<br>
+            books and pages."</em>
+          </h2>
+          <div class="build-list">
+            <div class="build-list__item">
+              <span class="build-list__check">✓</span> Drafted the
+              <strong>Books</strong> table
+            </div>
+            <div class="build-list__item">
+              <span class="build-list__check">✓</span> Designed the
+              <strong>home</strong> view
+            </div>
+            <div class="build-list__item">
+              <span class="build-list__check">✓</span> Wired the
+              <strong>Add book</strong> form
+            </div>
+            <div class="build-list__item build-list__item--active">
+              <span class="build-list__spinner"></span>
+              Composing the layout…
+            </div>
+          </div>
+
+          <div class="build-progress">
+            <div class="build-progress__bar"></div>
+          </div>
+          <p class="build-progress__caption">Almost ready · 38 sec</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════════════════════════════════════
+     SLIDE 5 — AI search (with the per-app toggle)
+     ════════════════════════════════════════════════════════════════ -->
+<section class="slide slide--phone-led" id="slide-5">
+  <div class="slide__num">05 / 10</div>
+  <div class="slide__pad">
+    <p class="small-eyebrow"><span style="color: var(--sage);">●</span>&nbsp;&nbsp;Pro feature</p>
+    <h1 class="display display--md" style="margin: 16px 0 0;">
+      Talk to your<br>
+      data, not just<br>
+      <em>store it.</em>
+    </h1>
+    <p class="lede">Ask in plain English. Briques finds the
+      rows that match the meaning. Per-app toggle, off by default.</p>
+    <div style="display: flex; justify-content: center;">
+      <div class="phone phone--lg" style="position: relative;">
+        <div class="phone__notch"></div>
+        <div class="phone__screen">
+          <div class="ph-bar">
+            <span class="brick brick--apricot brick--2x1 brick--sm"
+              style="transform: scale(1.3);"></span>
+            <span class="ph-bar__name">Fishing log</span>
+            <span class="ph-bar__avatar">T</span>
+          </div>
+          <div class="pro-toggle">
+            AI search
+            <span class="pro-toggle__switch"></span>
+          </div>
+          <div class="ai-search-modal">
+            <div class="ai-search-modal__handle"></div>
+            <h3 class="ai-search-modal__title">AI search.</h3>
+            <div class="ai-search-input">
+              <span class="ai-search-input__icon">⌕</span>
+              <span class="ai-search-input__text">Trips with cold water and good catch</span>
+              <span class="ai-search-input__send">↑</span>
+            </div>
+            <div class="ai-search-result">
+              <div class="ai-search-result__head">
+                <span class="ai-search-result__table">Trips</span>
+                <span class="ai-search-result__match">94%</span>
+              </div>
+              <h4 class="ai-search-result__title">Kolad backwaters</h4>
+              <p class="ai-search-result__sub">Overcast · 16°C water · 6 caught</p>
+            </div>
+            <div class="ai-search-result">
+              <div class="ai-search-result__head">
+                <span class="ai-search-result__table">Trips</span>
+                <span class="ai-search-result__match">87%</span>
+              </div>
+              <h4 class="ai-search-result__title">Powai lake, north pier</h4>
+              <p class="ai-search-result__sub">Drizzle · 14°C water · 4 caught</p>
+            </div>
+            <div class="ai-search-result" style="border-bottom: none;">
+              <div class="ai-search-result__head">
+                <span class="ai-search-result__table">Trips</span>
+                <span class="ai-search-result__match">81%</span>
+              </div>
+              <h4 class="ai-search-result__title">Bhandup pumping station</h4>
+              <p class="ai-search-result__sub">Cloudy · 17°C water · 5 caught</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════════════════════════════════════
+     SLIDE 6 — Tinker the flow
+     ════════════════════════════════════════════════════════════════ -->
+<section class="slide slide--phone-led" id="slide-6">
+  <div class="slide__num">06 / 10</div>
+  <div class="slide__pad">
+    <p class="small-eyebrow">Tinkerer?</p>
+    <h1 class="display display--md" style="margin: 16px 0 0;">
+      Tweak it.<br>
+      <em>Your rules.</em>
+    </h1>
+    <p class="lede">Pages, fields, actions: every piece of every
+      mini app is editable. No code required, none rejected.</p>
+    <div style="display: flex; justify-content: center;">
+      <div class="phone phone--lg">
+        <div class="phone__notch"></div>
+        <div class="phone__screen">
+          <div class="ph-bar">
+            <span class="brick brick--sage brick--2x1 brick--sm"
+              style="transform: scale(1.3);"></span>
+            <span class="ph-bar__name">Edit Trip</span>
+            <span class="ph-bar__avatar">T</span>
+          </div>
+          <div class="builder-tab-bar">
+            <div class="builder-tab">Layout</div>
+            <div class="builder-tab builder-tab--active">Fields</div>
+            <div class="builder-tab">Actions</div>
+          </div>
+          <div class="builder-block">
+            <div class="builder-block__handle"></div>
+            <div class="builder-block__icon">Aa</div>
+            <div style="flex: 1;">
+              <p class="builder-block__name">location</p>
+              <p class="builder-block__type">Short text</p>
+            </div>
+          </div>
+          <div class="builder-block">
+            <div class="builder-block__handle"></div>
+            <div class="builder-block__icon">📅</div>
+            <div style="flex: 1;">
+              <p class="builder-block__name">date</p>
+              <p class="builder-block__type">Calendar date</p>
+            </div>
+          </div>
+          <div class="builder-block">
+            <div class="builder-block__handle"></div>
+            <div class="builder-block__icon">#</div>
+            <div style="flex: 1;">
+              <p class="builder-block__name">water_temp</p>
+              <p class="builder-block__type">Number</p>
+            </div>
+          </div>
+          <div class="builder-block">
+            <div class="builder-block__handle"></div>
+            <div class="builder-block__icon">⭐</div>
+            <div style="flex: 1;">
+              <p class="builder-block__name">rating</p>
+              <p class="builder-block__type">Star rating</p>
+            </div>
+          </div>
+          <div class="builder-block" style="border-style: dashed; background: transparent;">
+            <div style="margin: 0 auto; color: var(--ink-muted); font-size: 16px;">
+              + Add field
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════════════════════════════════════
+     SLIDE 7 — Refine via AI chat
+     ════════════════════════════════════════════════════════════════ -->
+<section class="slide slide--phone-led" id="slide-7">
+  <div class="slide__num">07 / 10</div>
+  <div class="slide__pad">
+    <p class="small-eyebrow">Not right yet?</p>
+    <h1 class="display display--md" style="margin: 16px 0 0;">
+      <em>Just say so.</em>
+    </h1>
+    <p class="lede">Chat with Briques to refine. It re-shapes the
+      app from your feedback. No need to start over.</p>
+    <div style="display: flex; justify-content: center;">
+      <div class="phone phone--lg">
+        <div class="phone__notch"></div>
+        <div class="phone__screen">
+          <div class="ph-bar">
+            <span class="brick brick--butter brick--2x1 brick--sm"
+              style="transform: scale(1.3);"></span>
+            <span class="ph-bar__name">Refining</span>
+            <span class="ph-bar__avatar">T</span>
+          </div>
+          <div class="chat-stack">
+            <div class="chat-msg chat-msg--ai">
+              The Books table is set up. Want to add anything?
+            </div>
+            <div class="chat-msg chat-msg--user">
+              Add a field for "currently reading" (yes/no).
+            </div>
+            <div class="chat-msg chat-msg--ai">
+              Done. Added a "currently_reading" toggle field
+              to Books, defaults to false.
+            </div>
+            <div class="chat-msg chat-msg--user">
+              And let me filter the home list by it.
+            </div>
+            <div class="chat-typing" style="margin-top: 4px;">
+              <span class="chat-typing__dot"></span>
+              <span class="chat-typing__dot"></span>
+              <span class="chat-typing__dot"></span>
+              Thinking…
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════════════════════════════════════
+     SLIDE 8 — Lego metaphor
+     ════════════════════════════════════════════════════════════════ -->
+<section class="slide slide--lego" id="slide-8">
+  <div class="slide__num">08 / 10</div>
+  <div class="slide__pad">
+    <h1 class="display" style="margin: 0;">
+      Apps,<br>
+      like<br>
+      <em>Lego.</em>
+    </h1>
+    <p class="lede" style="margin-top: 60px;">
+      Pages, tables, fields, actions: small honest pieces that snap
+      together. You can see what you have, point at it, and change it.
+    </p>
+  </div>
+  <div class="lego-stack">
+    <div style="display: flex; gap: 24px; align-items: flex-end;">
+      <span class="brick brick--apricot brick--3x2 brick--xxl" style="transform: rotate(-4deg);"></span>
+      <span class="brick brick--sage brick--2x2 brick--xxl" style="transform: rotate(3deg);"></span>
+    </div>
+    <div style="display: flex; gap: 32px; align-items: flex-end; margin-top: -20px;">
+      <span class="brick brick--butter brick--2x1 brick--xxl" style="transform: rotate(-7deg);"></span>
+      <span class="brick brick--sky brick--3x2 brick--xxl" style="transform: rotate(5deg);"></span>
+      <span class="brick brick--rose brick--2x2 brick--xxl" style="transform: rotate(-2deg);"></span>
+    </div>
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════════════════════════════════════
+     SLIDE 9 — Tables view
+     ════════════════════════════════════════════════════════════════ -->
+<section class="slide slide--phone-led" id="slide-9">
+  <div class="slide__num">09 / 10</div>
+  <div class="slide__pad">
+    <h1 class="display display--md" style="margin: 0;">
+      Your data,<br>
+      <em>your way.</em>
+    </h1>
+    <p class="lede">View as tables. Reshape the schema on the
+      fly. Add a field today, remove one tomorrow. Briques moves
+      with you.</p>
+    <div style="display: flex; justify-content: center;">
+      <div class="phone phone--lg">
+        <div class="phone__notch"></div>
+        <div class="phone__screen">
+          <div class="ph-bar">
+            <span class="brick brick--sky brick--2x1 brick--sm"
+              style="transform: scale(1.3);"></span>
+            <span class="ph-bar__name">Trips</span>
+            <span class="ph-bar__avatar">T</span>
+          </div>
+          <div class="tables-toolbar">
+            <span class="tables-toolbar__title">12 trips</span>
+            <span class="tables-toolbar__btn">⌕</span>
+            <span class="tables-toolbar__btn">+</span>
+          </div>
+          <div class="table-cell">
+            <div class="table-cell__date">12<small>May</small></div>
+            <div>
+              <p class="table-cell__name">Kolad backwaters</p>
+              <p class="table-cell__sub">Overcast · 24°C · 4 caught</p>
+            </div>
+            <span class="table-cell__chip chip--good">Good</span>
+          </div>
+          <div class="table-cell">
+            <div class="table-cell__date">08<small>May</small></div>
+            <div>
+              <p class="table-cell__name">Powai lake</p>
+              <p class="table-cell__sub">Clear · 27°C · 6 caught</p>
+            </div>
+            <span class="table-cell__chip chip--great">Great</span>
+          </div>
+          <div class="table-cell">
+            <div class="table-cell__date">02<small>May</small></div>
+            <div>
+              <p class="table-cell__name">Bhandup pumping</p>
+              <p class="table-cell__sub">Drizzle · 22°C · 1 caught</p>
+            </div>
+            <span class="table-cell__chip chip--ok">Slow</span>
+          </div>
+          <div class="table-cell">
+            <div class="table-cell__date">28<small>Apr</small></div>
+            <div>
+              <p class="table-cell__name">Vasai creek</p>
+              <p class="table-cell__sub">Sunny · 26°C · 3 caught</p>
+            </div>
+            <span class="table-cell__chip chip--good">Good</span>
+          </div>
+          <div class="table-cell">
+            <div class="table-cell__date">21<small>Apr</small></div>
+            <div>
+              <p class="table-cell__name">Karnala dam</p>
+              <p class="table-cell__sub">Cloudy · 21°C · 7 caught</p>
+            </div>
+            <span class="table-cell__chip chip--great">Great</span>
+          </div>
+          <div class="table-cell">
+            <div class="table-cell__date">14<small>Apr</small></div>
+            <div>
+              <p class="table-cell__name">Pen river bend</p>
+              <p class="table-cell__sub">Mist · 19°C · 2 caught</p>
+            </div>
+            <span class="table-cell__chip chip--ok">Slow</span>
+          </div>
+          <div class="table-cell">
+            <div class="table-cell__date">06<small>Apr</small></div>
+            <div>
+              <p class="table-cell__name">Bhivpuri falls</p>
+              <p class="table-cell__sub">Cloudy · 23°C · 5 caught</p>
+            </div>
+            <span class="table-cell__chip chip--good">Good</span>
+          </div>
+          <div class="table-cell" style="border-bottom: none;">
+            <div class="table-cell__date">29<small>Mar</small></div>
+            <div>
+              <p class="table-cell__name">Tansa dam east</p>
+              <p class="table-cell__sub">Sunny · 28°C · 9 caught</p>
+            </div>
+            <span class="table-cell__chip chip--great">Great</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════════════════════════════════════
+     SLIDE 10 — Closing CTA
+     ════════════════════════════════════════════════════════════════ -->
+<section class="slide slide--cta" id="slide-10">
+  <div class="slide__num">10 / 10</div>
+  <div class="slide__pad">
+    <div>
+      <img class="logo-img" src="../assets/images/logo.png" alt="" />
+      <h1 class="display" style="margin: 0;">
+        Start with<br>
+        a <em>sentence.</em>
+      </h1>
+      <p class="lede" style="margin-top: 40px;">
+        The little tool you've been meaning to build for months.
+        Ship it tonight.
+      </p>
+    </div>
+
+    <div class="cta-bricks">
+      <span class="brick brick--apricot brick--2x2 brick--xxl"
+        style="transform: rotate(-6deg);"></span>
+      <span class="brick brick--sage brick--3x2 brick--xxl"
+        style="transform: rotate(4deg);"></span>
+      <span class="brick brick--sky brick--2x2 brick--xxl"
+        style="transform: rotate(-3deg);"></span>
+    </div>
+
+    <div>
+      <div class="cta-button">Get Briques  →</div>
+      <p class="cta-sub">Free during beta · iOS + Android</p>
+    </div>
+  </div>
+</section>
+
+
+<!-- ────────────────────────────────────────────────────────────────
+     Keyboard nav: 1–9, 0 (=10) jumps to one slide; esc returns
+     to all. Useful for taking individual screenshots.
+     ──────────────────────────────────────────────────────────── -->
+<script>
+  function showOnly(n) {
+    document.body.classList.add('single');
+    document.querySelectorAll('.slide').forEach((s) => {
+      s.classList.toggle('is-visible', s.id === 'slide-' + n);
+    });
+    window.scrollTo(0, 0);
+  }
+  function showAll() {
+    document.body.classList.remove('single');
+    document.querySelectorAll('.slide').forEach((s) => s.classList.remove('is-visible'));
+  }
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') return showAll();
+    if (e.key === '0') return showOnly(10);
+    const n = parseInt(e.key, 10);
+    if (n >= 1 && n <= 9) return showOnly(n);
+  });
+
+  // Brick studs: inject <span class="studs"><i/>…</span> based on the
+  // brick--CxR size class so every brick reads as Lego, not a flat
+  // colored tile. Mirrors the IIFE on the main marketing page.
+  (function buildBricks() {
+    var bricks = document.querySelectorAll('.brick');
+    for (var i = 0; i < bricks.length; i++) {
+      var b = bricks[i];
+      if (b.querySelector('.studs')) continue;
+      var m = b.className.match(/brick--(\d)x(\d)/);
+      if (!m) continue;
+      var cols = +m[1], rows = +m[2];
+      var studs = document.createElement('span');
+      studs.className = 'studs';
+      for (var j = 0; j < cols * rows; j++) {
+        studs.appendChild(document.createElement('i'));
+      }
+      b.appendChild(studs);
+    }
+  })();
+</script>
+
+</body>
+</html>

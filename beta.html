@@ -1,0 +1,317 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Join the Briques iOS TestFlight beta. Build one small personal app and send honest feedback." />
+
+  <title>Briques iOS beta</title>
+
+  <link rel="icon" href="/favicon.ico" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <meta property="og:image" content="https://briques.app/assets/images/logo.png" />
+  <meta property="og:image:type" content="image/png" />
+  <meta property="og:image:width" content="1024" />
+  <meta property="og:image:height" content="1024" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:image" content="https://briques.app/assets/images/logo.png" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
+
+  <meta name="color-scheme" content="light dark" />
+  <meta name="theme-color" content="#FAF7F0" media="(prefers-color-scheme: light)" />
+  <meta name="theme-color" content="#1A1411" media="(prefers-color-scheme: dark)" />
+  <script>
+    (function () {
+      try {
+        var stored = localStorage.getItem('theme');
+        var theme = stored || 'light';
+        document.documentElement.setAttribute('data-theme', theme);
+      } catch (e) {
+        document.documentElement.setAttribute('data-theme', 'light');
+      }
+    })();
+    function toggleTheme() {
+      var current = document.documentElement.getAttribute('data-theme') === 'dark'
+        ? 'dark' : 'light';
+      var next = current === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      try { localStorage.setItem('theme', next); } catch (e) {}
+      var btn = document.querySelector('.theme-toggle');
+      if (btn) btn.setAttribute('aria-label',
+        next === 'dark' ? 'Switch to light theme' : 'Switch to dark theme');
+      var meta = document.querySelector('meta[name="theme-color"]:not([media])');
+      if (!meta) {
+        meta = document.createElement('meta');
+        meta.setAttribute('name', 'theme-color');
+        document.head.appendChild(meta);
+      }
+      meta.setAttribute('content', next === 'dark' ? '#1A1411' : '#FAF7F0');
+    }
+  </script>
+
+  <link rel="stylesheet" href="styles.css" />
+  <script src="site.js" defer></script>
+</head>
+<body>
+
+<nav class="nav">
+  <a class="nav__brand" href="index.html">
+    <span class="brand-mark brand-mark--nav" aria-hidden="true"><i></i><i></i></span>
+    <span class="nav__name">Briques</span>
+  </a>
+  <div class="nav__links">
+    <a href="index.html#what">What you build</a>
+    <a href="index.html#how">How it works</a>
+    <a href="pricing.html">Pricing</a>
+    <a href="beta.html" class="is-active">Beta</a>
+    <a href="contact.html">Contact</a>
+  </div>
+  <button type="button" class="theme-toggle" aria-label="Switch to dark theme" onclick="toggleTheme()">
+    <svg class="theme-toggle__moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    <svg class="theme-toggle__sun"  viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+  </button>
+  <a class="nav__cta" href="#join">Join beta</a>
+</nav>
+
+<main>
+  <header class="beta-hero kit">
+    <div class="beta-hero__copy">
+      <p class="eyebrow">
+        <span class="eyebrow-dot" aria-hidden="true"></span>
+        iOS TestFlight beta
+      </p>
+      <h1 class="beta-hero__title">
+        Build one small app this week.
+      </h1>
+      <p class="beta-hero__lede">
+        Briques is ready for outside testers. Try it on iPhone, make
+        one personal tool, and tell us where the flow feels sharp,
+        confusing, or surprisingly useful.
+      </p>
+      <form class="beta-form" id="join" novalidate>
+        <label class="beta-form__field">
+          <span class="beta-form__label">Email</span>
+          <input class="beta-form__input" type="email" name="email" id="beta-email"
+                 inputmode="email" autocomplete="email" required
+                 placeholder="you@example.com" />
+        </label>
+        <fieldset class="beta-form__os">
+          <legend class="beta-form__label">Your phone</legend>
+          <div class="beta-form__os-options">
+            <label class="beta-form__radio">
+              <input type="radio" name="os_type" value="ios" required />
+              <span>iOS</span>
+            </label>
+            <label class="beta-form__radio">
+              <input type="radio" name="os_type" value="android" />
+              <span>Android</span>
+            </label>
+          </div>
+        </fieldset>
+        <div class="hero__ctas">
+          <button class="btn btn--lg" type="submit" id="beta-submit">Request beta access</button>
+          <a class="btn btn--ghost btn--lg" href="#mission">What to test</a>
+        </div>
+        <p class="beta-form__status" id="beta-status" role="status" aria-live="polite"></p>
+      </form>
+      <p class="hero__sub">iPhone first. Free during beta. We read every reply.</p>
+    </div>
+
+    <aside class="beta-panel" aria-label="Beta overview">
+      <span class="brick brick--apricot brick--3x2 brick--lg beta-panel__brick beta-panel__brick--one"></span>
+      <span class="brick brick--sage brick--2x1 brick--lg beta-panel__brick beta-panel__brick--two"></span>
+      <div class="beta-panel__screen">
+        <p class="beta-panel__kicker">First 20 minutes</p>
+        <ol class="beta-panel__list">
+          <li>
+            <strong>Install</strong>
+            <span>Open the TestFlight invite on your iPhone.</span>
+          </li>
+          <li>
+            <strong>Describe</strong>
+            <span>Ask for one tiny app you would actually use.</span>
+          </li>
+          <li>
+            <strong>Build</strong>
+            <span>Accept the plan, tweak it, then publish.</span>
+          </li>
+          <li>
+            <strong>Reply</strong>
+            <span>Send the rough edges, not the polite version.</span>
+          </li>
+        </ol>
+      </div>
+    </aside>
+  </header>
+
+  <section class="section--tight kit" id="mission">
+    <div class="beta-section-head">
+      <p class="eyebrow">Beta mission</p>
+      <h2>Use Briques for one real thing.</h2>
+      <p>
+        The best feedback comes from a real little problem. Bring the
+        list, log, tracker, or journal you keep putting in Notes.
+      </p>
+    </div>
+
+    <div class="beta-grid">
+      <article class="beta-card">
+        <span class="brick brick--apricot brick--2x1 beta-card__brick" aria-hidden="true"></span>
+        <h3>Try a personal tracker</h3>
+        <p>A fishing log, reading list, medication tracker, mileage book, or plant care sheet.</p>
+      </article>
+      <article class="beta-card">
+        <span class="brick brick--sage brick--2x1 beta-card__brick" aria-hidden="true"></span>
+        <h3>Push the planner</h3>
+        <p>Change fields, rename pages, reject a plan, and see whether the app still makes sense.</p>
+      </article>
+      <article class="beta-card">
+        <span class="brick brick--butter brick--2x1 beta-card__brick" aria-hidden="true"></span>
+        <h3>Send blunt notes</h3>
+        <p>Tell us where you paused, where the copy lied, and what you expected to happen next.</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="section--tight kit">
+    <div class="beta-feedback">
+      <div>
+        <p class="eyebrow">How to reach us</p>
+        <h2>One email thread beats a form.</h2>
+        <p>
+          Ask for the invite, then keep replying to the same thread
+          with screenshots, weird ideas, and app requests. It is
+          deliberately personal while the beta group is small.
+        </p>
+      </div>
+      <div class="beta-feedback__actions">
+        <a class="btn btn--lg" href="mailto:hello@briques.app?subject=Briques%20iOS%20TestFlight%20beta&amp;body=Hi%20Briques%2C%0A%0AI%27d%20like%20to%20try%20the%20iOS%20TestFlight%20beta.%0A%0AThe%20small%20app%20I%27d%20build%3A%20">
+          Email for invite
+        </a>
+        <a class="btn btn--ghost btn--lg" href="mailto:support@briques.app?subject=Briques%20beta%20feedback">
+          Send feedback
+        </a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer kit">
+  <div class="footer__top">
+    <div class="footer__brand">
+      <span class="footer__name">
+        <span class="brand-mark brand-mark--footer" aria-hidden="true"><i></i><i></i></span>
+        Briques
+      </span>
+      <p class="footer__tag">
+        Describe an app. Ship it before the idea cools.
+      </p>
+      <p class="footer__tag" style="margin-top: var(--s-2); font-size: var(--t-eyebrow); text-transform: uppercase; letter-spacing: 0.14em; color: var(--ink-muted); font-weight: 600;">
+        briques.app
+      </p>
+    </div>
+    <div class="footer__col">
+      <span class="footer__col-title">Product</span>
+      <a href="index.html#what">What you build</a>
+      <a href="index.html#how">How it works</a>
+      <a href="pricing.html">Pricing</a>
+      <a href="beta.html">iOS beta</a>
+    </div>
+    <div class="footer__col">
+      <span class="footer__col-title">Company</span>
+      <a href="contact.html">Contact</a>
+      <a href="mailto:hello@briques.app">hello@briques.app</a>
+      <a href="mailto:press@briques.app">Press</a>
+    </div>
+    <div class="footer__col">
+      <span class="footer__col-title">Legal</span>
+      <a href="privacy.html">Privacy</a>
+      <a href="terms.html">Terms</a>
+      <a href="mailto:privacy@briques.app">Data requests</a>
+    </div>
+  </div>
+  <div class="footer__base">
+    <span>&copy; 2026 Briques. Made with care.</span>
+    <span>iOS TestFlight beta</span>
+  </div>
+</footer>
+
+<!-- Beta interest signup → Supabase (public anon insert; table is RLS-locked to
+     INSERT-only). No bot protection by design while this page is temporary. -->
+<script>
+(function () {
+  var form = document.getElementById('beta-form') || document.getElementById('join');
+  if (!form || form.tagName !== 'FORM') return;
+  var statusEl = document.getElementById('beta-status');
+  var submitBtn = document.getElementById('beta-submit');
+  var SUPABASE_URL = 'https://knzezfbvkmstwijuuinh.supabase.co';
+  var SUPABASE_KEY = 'sb_publishable_4f1NDBOuBPbpss0gmPj9Dg_6gmw_7bK';
+  var EMAIL_RE = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
+
+  function setStatus(msg, kind) {
+    if (!statusEl) return;
+    statusEl.textContent = msg;
+    statusEl.className = 'beta-form__status' + (kind ? ' is-' + kind : '');
+  }
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var email = (form.email && form.email.value || '').trim();
+    var checked = form.querySelector('input[name="os_type"]:checked');
+    var os = checked ? checked.value : '';
+
+    if (!EMAIL_RE.test(email)) {
+      setStatus('Enter a valid email address.', 'error');
+      if (form.email) form.email.focus();
+      return;
+    }
+    if (os !== 'ios' && os !== 'android') {
+      setStatus('Pick iOS or Android.', 'error');
+      return;
+    }
+
+    var original = submitBtn ? submitBtn.textContent : '';
+    if (submitBtn) { submitBtn.disabled = true; submitBtn.textContent = 'Sending…'; }
+    setStatus('', '');
+
+    fetch(SUPABASE_URL + '/rest/v1/beta_signups', {
+      method: 'POST',
+      headers: {
+        'apikey': SUPABASE_KEY,
+        'Authorization': 'Bearer ' + SUPABASE_KEY,
+        'Content-Type': 'application/json',
+        'Prefer': 'return=minimal'
+      },
+      body: JSON.stringify({
+        email: email,
+        os_type: os,
+        user_agent: navigator.userAgent,
+        source: 'beta_page'
+      })
+    }).then(function (res) {
+      // 409 = duplicate email (unique index) → already registered.
+      if (res.ok || res.status === 409) {
+        form.reset();
+        setStatus(
+          res.status === 409
+            ? "You're already on the list — invite coming soon."
+            : "You're on the list — we'll email your invite soon.",
+          'ok'
+        );
+        if (submitBtn) submitBtn.textContent = 'Requested ✓';
+        return;
+      }
+      throw new Error('HTTP ' + res.status);
+    }).catch(function () {
+      setStatus("Something went wrong. Email hello@briques.app and we'll add you.", 'error');
+      if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = original; }
+    });
+  });
+})();
+</script>
+
+</body>
+</html>

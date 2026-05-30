@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="description" content="The app you wish existed. An AI builder for small, personal mobile apps. Describe what you want. Briques builds it." />
 
-  <title>Briques — The app you wish existed.</title>
+  <title>Briques - The app you wish existed.</title>
 
   <link rel="icon" href="/favicon.ico" />
   <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
@@ -18,7 +18,7 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
 
   <!-- Theme: set data-theme BEFORE stylesheets to avoid FOUC. -->
   <meta name="color-scheme" content="light dark" />
@@ -28,9 +28,7 @@
     (function () {
       try {
         var stored = localStorage.getItem('theme');
-        var prefersDark = window.matchMedia &&
-          window.matchMedia('(prefers-color-scheme: dark)').matches;
-        var theme = stored || (prefersDark ? 'dark' : 'light');
+        var theme = stored || 'light';
         document.documentElement.setAttribute('data-theme', theme);
       } catch (e) {
         document.documentElement.setAttribute('data-theme', 'light');
@@ -56,8 +54,9 @@
   </script>
 
   <link rel="stylesheet" href="styles.css" />
+  <script src="site.js" defer></script>
 
-  <meta property="og:title" content="Briques — The app you wish existed." />
+  <meta property="og:title" content="Briques - The app you wish existed." />
   <meta property="og:description" content="An AI builder for the small, personal apps in your head. Describe it; Briques ships it." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://briques.app" />
@@ -67,20 +66,21 @@
 <!-- ═══════════════ NAV ═══════════════ -->
 <nav class="nav">
   <a class="nav__brand" href="/">
-    <img class="nav__logo" src="/assets/images/logo.png" alt="" />
+    <span class="brand-mark brand-mark--nav" aria-hidden="true"><i></i><i></i></span>
     <span class="nav__name">Briques</span>
   </a>
   <div class="nav__links">
     <a href="#what">What you build</a>
     <a href="#how">How it works</a>
     <a href="pricing.html">Pricing</a>
+    <a href="beta.html">Beta</a>
     <a href="contact.html">Contact</a>
   </div>
   <button type="button" class="theme-toggle" aria-label="Switch to dark theme" onclick="toggleTheme()">
     <svg class="theme-toggle__moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
     <svg class="theme-toggle__sun"  viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
   </button>
-  <a class="nav__cta" href="#cta">Get the app</a>
+  <a class="nav__cta" href="beta.html">Join beta</a>
 </nav>
 
 
@@ -89,8 +89,8 @@
   <div class="hero__inner">
     <div>
       <p class="eyebrow" style="margin-bottom: var(--s-5)">
-        <span style="display:inline-block; width:8px; height:8px; background:var(--sage); border-radius:50%; margin-right:8px; vertical-align:middle;"></span>
-        Now in beta · iOS + Android
+        <span class="eyebrow-dot" aria-hidden="true"></span>
+        iOS TestFlight beta
       </p>
       <h1 class="hero__title">
         The app you<br>
@@ -103,10 +103,10 @@
         a minute.
       </p>
       <div class="hero__ctas">
-        <a class="btn btn--lg" href="#cta">Get the app →</a>
+        <a class="btn btn--lg" href="beta.html">Join beta</a>
         <a class="btn btn--ghost btn--lg" href="#how">See how it works</a>
       </div>
-      <p class="hero__sub">Single-user. Yours alone. Free during beta.</p>
+      <p class="hero__sub">Single-user. Yours alone. iPhone first during beta.</p>
     </div>
 
     <!-- Phone mockup centerpiece. Brick scatter positions itself
@@ -152,7 +152,7 @@
             <!-- Greeting — eyebrow + name + italic prompt -->
             <div class="phone-mock__greet">
               <div class="phone-mock__greet-eyebrow">Tuesday morning</div>
-              <h2 class="phone-mock__greet-name">Hi, Maya.</h2>
+              <div class="phone-mock__greet-name">Hi, Maya.</div>
               <p class="phone-mock__greet-prompt">What shall we build?</p>
             </div>
 
@@ -503,7 +503,7 @@
         <span class="plan__price-amount">$0</span>
         <span class="plan__price-period">forever</span>
       </div>
-      <a class="btn btn--ghost plan__cta" href="#cta">Get the app</a>
+      <a class="btn btn--ghost plan__cta" href="beta.html">Join beta</a>
       <ul class="plan__features">
         <li class="plan__feature">1 published app</li>
         <li class="plan__feature">100 MB row data + 5 MB files</li>
@@ -520,7 +520,7 @@
         <span class="plan__price-amount">$8.99</span>
         <span class="plan__price-period">/ month</span>
       </div>
-      <a class="btn btn--accent plan__cta" href="#cta">Get the app</a>
+      <a class="btn btn--accent plan__cta" href="beta.html">Join beta</a>
       <ul class="plan__features">
         <li class="plan__feature"><strong>7-day free trial</strong></li>
         <li class="plan__feature"><strong>Unlimited</strong> published apps</li>
@@ -533,10 +533,10 @@
   </div>
 
   <p style="text-align: center; margin-top: var(--s-6);">
-    <a class="btn btn--ghost" href="pricing.html">See the full breakdown →</a>
+    <a class="btn btn--ghost" href="pricing.html">See the full breakdown</a>
   </p>
   <p style="text-align: center; margin-top: var(--s-4); font-size: var(--t-small); color: var(--ink-muted);">
-    Pro is purchased and managed inside the app — via Apple on iOS, Google on Android.
+    Pro is purchased and managed inside the app, via Apple on iOS and Google on Android.
   </p>
 </section>
 
@@ -560,7 +560,7 @@
         A weather log for fishing trips. A medication tracker. A mileage
         log. A workout journal. A home inventory. A water-the-plants
         reminder. Rule of thumb: if you currently track it on paper, in
-        Notes, or in a spreadsheet — Briques is the right size for it.
+        Notes, or in a spreadsheet. Briques is the right size for it.
       </p>
     </li>
 
@@ -570,12 +570,12 @@
       </span>
       <h3 class="faq__q">How is this different from Notion or Airtable?</h3>
       <p class="faq__a">
-        Those are tools you use to build something for a team — clients,
+        Those are tools you use to build something for a team: clients,
         coworkers, customers. Briques is the opposite: it builds an app
         for one person. You. Single-user, on your phone, no sharing, no
         collaboration, no logins for other people. If you've ever
         thought <em>I just want this one tiny tool for me, but
-        everything I find is built for teams</em> — that's the gap
+        everything I find is built for teams</em>. That's the gap
         Briques fills.
       </p>
     </li>
@@ -616,7 +616,7 @@
         Your apps and the data inside them are yours. We don't read
         them, we don't train on them, we don't sell them. AI generation
         runs through OpenAI and Anthropic and is governed by our
-        <a href="privacy.html">Privacy Policy</a> — give it a read if
+        <a href="privacy.html">Privacy Policy</a>. Give it a read if
         data privacy matters to you (it should).
       </p>
     </li>
@@ -627,7 +627,7 @@
       </span>
       <h3 class="faq__q">What platforms does Briques run on?</h3>
       <p class="faq__a">
-        iPhone and Android, mobile only. There's no web app — we think
+        iPhone and Android, mobile only. There's no web app. We think
         a phone tool deserves to actually be a phone app. iPad and
         other platforms aren't on the immediate roadmap.
       </p>
@@ -650,10 +650,11 @@
       describing for two years <em>ships tonight</em>.
     </h2>
     <p class="cta-band__lede">
-      Briques is in private beta. We're letting in small batches.
-      Tell us what you'd build and we'll send a code.
+      The iOS TestFlight build is ready for outside testers. Bring
+      one small app idea, build it, then tell us where the flow needs
+      sanding.
     </p>
-    <a class="btn btn--lg" href="contact.html">Request a beta code</a>
+    <a class="btn btn--lg" href="beta.html">Join the iOS beta</a>
   </div>
 </section>
 
@@ -663,7 +664,7 @@
   <div class="footer__top">
     <div class="footer__brand">
       <span class="footer__name">
-        <img class="footer__logo" src="/assets/images/logo.png" alt="" />
+        <span class="brand-mark brand-mark--footer" aria-hidden="true"><i></i><i></i></span>
         Briques
       </span>
       <p class="footer__tag">
@@ -680,7 +681,7 @@
       <a href="#what">What you build</a>
       <a href="#how">How it works</a>
       <a href="pricing.html">Pricing</a>
-      <a href="#cta">Beta access</a>
+      <a href="beta.html">iOS beta</a>
     </div>
     <div class="footer__col">
       <span class="footer__col-title">Company</span>
@@ -697,35 +698,12 @@
   </div>
 
   <div class="footer__base">
-    <span>© 2026 Briques. Made with ❤️.</span>
-    <span>Private beta · iOS + Android</span>
+    <span>© 2026 Briques. Made with care.</span>
+    <span>iOS TestFlight beta</span>
   </div>
 </footer>
 
 
-<!-- Auto-fill brick studs based on the cols×rows class. Keeps the
-     markup clean — only the size class is needed; studs are added
-     at runtime. Bricks fall back to plain coloured tiles without
-     JS, which still reads as on-brand. -->
-<script>
-  (function buildBricks() {
-    var bricks = document.querySelectorAll('.brick');
-    for (var i = 0; i < bricks.length; i++) {
-      var b = bricks[i];
-      if (b.querySelector('.studs')) continue;
-      var m = b.className.match(/brick--(\d)x(\d)/);
-      if (!m) continue;
-      var cols = +m[1], rows = +m[2];
-      var studs = document.createElement('span');
-      studs.className = 'studs';
-      for (var j = 0; j < cols * rows; j++) {
-        studs.appendChild(document.createElement('i'));
-      }
-      b.appendChild(studs);
-    }
-  })();
-
-</script>
 
 </body>
 </html>

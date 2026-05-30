@@ -107,11 +107,15 @@ across product + marketing.
 
 ### Typography
 
-- **Display**: Instrument Serif (400 + italic). The italic cut is
-  unusually beautiful — lean into it for inline emphasis. One word
-  in italic does more than five words in bold.
-- **Body**: Inter (400 / 500 / 700)
-- **Two families only.** No mono. No third typeface.
+- **Body / UI**: Geist (400 / 500 / 600 / 700), self-hosted from
+  `assets/fonts`. This mirrors the Flutter app so the website and
+  installed product feel like one system.
+- **Display accent**: Instrument Serif (400 + italic). Use it for
+  controlled editorial moments, especially italic emphasis and
+  large brand-led headlines. One word in italic does more than
+  five words in bold.
+- **Two families only.** Geist + Instrument Serif. No mono. No
+  third typeface.
 - Scale ratio ≥1.25 between steps. Aggressive contrast on display
   sizes (clamp to 6rem on hero).
 - Body line length capped at 65–75ch.
@@ -122,17 +126,18 @@ The brick is the signature decorative element. Used as:
 - Header bands at the top of pages (a row of 4–6 bricks of varying
   sizes/colors)
 - Section dividers (single brick or short brick band)
-- Brand mark in the nav (a small 2×1 brick + the wordmark)
+- Brand mark in the nav (the transparent yellow Briques mark + the wordmark)
 - Numbered list "leading bullets" (brick with a number on it)
 
-Web bricks are **CSS-rendered**, never PNG. Each brick is a
-colored rectangle with stud circles on top + a 1px darker side
-edge for depth. No exhaustive 3D rendering — clean, slightly
-cartoonish, instantly readable as a LEGO brick.
+Web bricks are **PNG-backed CSS components** using transparent
+source assets in `assets/bricks`. Use those files as-is: no recolor,
+no generated variants, no non-uniform stretching. The existing
+`.brick--{cols}x{rows}` class vocabulary chooses the closest original
+asset while preserving its natural aspect ratio.
 
 The Flutter side renders bricks via a CustomPainter
 (`brick.dart`) — the web reproduction matches the visual
-language but is implemented as CSS only.
+language while using web image assets for more realistic depth.
 
 ---
 
@@ -174,6 +179,7 @@ language but is implemented as CSS only.
 ## Pages on this site
 
 - `/` (index) — landing
+- `/beta` — iOS TestFlight beta signup and feedback route
 - `/pricing` — Free + Pro tier comparison
 - `/privacy` — privacy policy (legal, must be kept current)
 - `/terms` — terms of service (legal, must be kept current)
@@ -188,11 +194,11 @@ a proper /about (the in-app About screen covers it for now).
 
 - **Static site.** No build step. HTML + CSS + minimal vanilla JS.
   Deploys to Cloudflare Pages by uploading the directory.
-- **No PNG decoration.** The `assets/images/logo.png` reference
-  in the legacy code is wrong; brick decoration is CSS-rendered.
-  Real photo assets (screenshots, brand imagery) can be PNGs/WEBPs
-  later, but decoration is not.
-- **Two webfonts only.** Instrument Serif + Inter. Both via Google
-  Fonts.
+- **Asset-backed decoration.** The nav mark and social image use the
+  transparent `assets/images/logo.png`; decorative bricks use the
+  original transparent PNG assets under `assets/bricks`.
+- **Two webfont families only.** Geist is self-hosted in
+  `assets/fonts`; Instrument Serif loads from Google Fonts for
+  editorial accents.
 - **No JS frameworks.** Vanilla `<script>` tags only, and only
   where strictly needed (form validation, tab switching).

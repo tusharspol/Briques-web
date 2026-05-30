@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="description" content="Get in touch with the Briques team." />
 
-  <title>Contact — Briques</title>
+  <title>Contact - Briques</title>
 
   <link rel="icon" href="/favicon.ico" />
   <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
@@ -18,7 +18,7 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
 
   <!-- Theme: set data-theme BEFORE stylesheets to avoid FOUC. -->
   <meta name="color-scheme" content="light dark" />
@@ -28,9 +28,7 @@
     (function () {
       try {
         var stored = localStorage.getItem('theme');
-        var prefersDark = window.matchMedia &&
-          window.matchMedia('(prefers-color-scheme: dark)').matches;
-        var theme = stored || (prefersDark ? 'dark' : 'light');
+        var theme = stored || 'light';
         document.documentElement.setAttribute('data-theme', theme);
       } catch (e) {
         document.documentElement.setAttribute('data-theme', 'light');
@@ -56,25 +54,27 @@
   </script>
 
   <link rel="stylesheet" href="styles.css" />
+  <script src="site.js" defer></script>
 </head>
 <body>
 
 <nav class="nav">
   <a class="nav__brand" href="index.html">
-    <img class="nav__logo" src="/assets/images/logo.png" alt="" />
+    <span class="brand-mark brand-mark--nav" aria-hidden="true"><i></i><i></i></span>
     <span class="nav__name">Briques</span>
   </a>
   <div class="nav__links">
     <a href="index.html#what">What you build</a>
     <a href="index.html#how">How it works</a>
     <a href="pricing.html">Pricing</a>
+    <a href="beta.html">Beta</a>
     <a href="contact.html" class="is-active">Contact</a>
   </div>
   <button type="button" class="theme-toggle" aria-label="Switch to dark theme" onclick="toggleTheme()">
     <svg class="theme-toggle__moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
     <svg class="theme-toggle__sun"  viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
   </button>
-  <a class="nav__cta" href="index.html#cta">Get the app</a>
+  <a class="nav__cta" href="beta.html">Join beta</a>
 </nav>
 
 <main>
@@ -97,42 +97,42 @@
 
       <article class="contact-card">
         <span class="brick brick--apricot brick--2x1 contact-card__brick"></span>
-        <h3>General</h3>
+        <h2>General</h2>
         <p>Hi, ideas, questions, anything you'd like to say.</p>
         <a href="mailto:hello@briques.app">hello@briques.app</a>
       </article>
 
       <article class="contact-card">
         <span class="brick brick--sage brick--2x1 contact-card__brick"></span>
-        <h3>Beta access</h3>
-        <p>Tell us what you'd build. We'll send a code if it's a fit.</p>
-        <a href="mailto:hello@briques.app?subject=Beta%20access%20%E2%80%94%20what%20I%27d%20build">hello@briques.app</a>
+        <h2>Beta access</h2>
+        <p>Tell us what you'd build. We'll send the TestFlight invite if there is room.</p>
+        <a href="mailto:hello@briques.app?subject=Briques%20iOS%20TestFlight%20beta">hello@briques.app</a>
       </article>
 
       <article class="contact-card">
         <span class="brick brick--butter brick--2x1 contact-card__brick"></span>
-        <h3>Support</h3>
+        <h2>Support</h2>
         <p>Bugs, problems with your apps, anything not working.</p>
         <a href="mailto:support@briques.app">support@briques.app</a>
       </article>
 
       <article class="contact-card">
         <span class="brick brick--sky brick--2x1 contact-card__brick"></span>
-        <h3>Privacy &amp; data</h3>
+        <h2>Privacy &amp; data</h2>
         <p>Data requests, deletion, GDPR / CCPA rights.</p>
         <a href="mailto:privacy@briques.app">privacy@briques.app</a>
       </article>
 
       <article class="contact-card">
         <span class="brick brick--rose brick--2x1 contact-card__brick"></span>
-        <h3>Press</h3>
+        <h2>Press</h2>
         <p>Stories, interviews, screenshots, brand assets.</p>
         <a href="mailto:press@briques.app">press@briques.app</a>
       </article>
 
       <article class="contact-card">
         <span class="brick brick--cream brick--2x1 contact-card__brick"></span>
-        <h3>Partnerships</h3>
+        <h2>Partnerships</h2>
         <p>Integrations, distribution, anything that takes a call.</p>
         <a href="mailto:hello@briques.app?subject=Partnership">hello@briques.app</a>
       </article>
@@ -152,7 +152,7 @@
   <div class="footer__top">
     <div class="footer__brand">
       <span class="footer__name">
-        <img class="footer__logo" src="/assets/images/logo.png" alt="" />
+        <span class="brand-mark brand-mark--footer" aria-hidden="true"><i></i><i></i></span>
         Briques
       </span>
       <p class="footer__tag">
@@ -167,7 +167,7 @@
       <a href="index.html#what">What you build</a>
       <a href="index.html#how">How it works</a>
       <a href="pricing.html">Pricing</a>
-      <a href="index.html#cta">Beta access</a>
+      <a href="beta.html">iOS beta</a>
     </div>
     <div class="footer__col">
       <span class="footer__col-title">Company</span>
@@ -183,29 +183,11 @@
     </div>
   </div>
   <div class="footer__base">
-    <span>© 2026 Briques. Made with ❤️.</span>
-    <span>Private beta · iOS + Android</span>
+    <span>© 2026 Briques. Made with care.</span>
+    <span>iOS TestFlight beta</span>
   </div>
 </footer>
 
-<script>
-  (function buildBricks() {
-    var bricks = document.querySelectorAll('.brick');
-    for (var i = 0; i < bricks.length; i++) {
-      var b = bricks[i];
-      if (b.querySelector('.studs')) continue;
-      var m = b.className.match(/brick--(\d)x(\d)/);
-      if (!m) continue;
-      var cols = +m[1], rows = +m[2];
-      var studs = document.createElement('span');
-      studs.className = 'studs';
-      for (var j = 0; j < cols * rows; j++) {
-        studs.appendChild(document.createElement('i'));
-      }
-      b.appendChild(studs);
-    }
-  })();
-</script>
 
 </body>
 </html>

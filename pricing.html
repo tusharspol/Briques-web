@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="description" content="Two plans. Free, $0 forever. Pro, $8.99 a month with a 7-day free trial. No seat math." />
 
-  <title>Pricing — Briques</title>
+  <title>Pricing - Briques</title>
 
   <link rel="icon" href="/favicon.ico" />
   <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
@@ -18,7 +18,7 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
 
   <!-- Theme: set data-theme BEFORE stylesheets to avoid FOUC. -->
   <meta name="color-scheme" content="light dark" />
@@ -28,9 +28,7 @@
     (function () {
       try {
         var stored = localStorage.getItem('theme');
-        var prefersDark = window.matchMedia &&
-          window.matchMedia('(prefers-color-scheme: dark)').matches;
-        var theme = stored || (prefersDark ? 'dark' : 'light');
+        var theme = stored || 'light';
         document.documentElement.setAttribute('data-theme', theme);
       } catch (e) {
         document.documentElement.setAttribute('data-theme', 'light');
@@ -56,25 +54,27 @@
   </script>
 
   <link rel="stylesheet" href="styles.css" />
+  <script src="site.js" defer></script>
 </head>
 <body>
 
 <nav class="nav">
   <a class="nav__brand" href="index.html">
-    <img class="nav__logo" src="/assets/images/logo.png" alt="" />
+    <span class="brand-mark brand-mark--nav" aria-hidden="true"><i></i><i></i></span>
     <span class="nav__name">Briques</span>
   </a>
   <div class="nav__links">
     <a href="index.html#what">What you build</a>
     <a href="index.html#how">How it works</a>
     <a href="pricing.html" class="is-active">Pricing</a>
+    <a href="beta.html">Beta</a>
     <a href="contact.html">Contact</a>
   </div>
   <button type="button" class="theme-toggle" aria-label="Switch to dark theme" onclick="toggleTheme()">
     <svg class="theme-toggle__moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
     <svg class="theme-toggle__sun"  viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
   </button>
-  <a class="nav__cta" href="index.html#cta">Get the app</a>
+  <a class="nav__cta" href="beta.html">Join beta</a>
 </nav>
 
 <main>
@@ -103,7 +103,7 @@
           <span class="plan__price-amount">$0</span>
           <span class="plan__price-period">forever</span>
         </div>
-        <a class="btn btn--ghost plan__cta" href="index.html#cta">Get the app</a>
+        <a class="btn btn--ghost plan__cta" href="beta.html">Join beta</a>
         <ul class="plan__features">
           <li class="plan__feature"><strong>1</strong> published app (drafts unlimited)</li>
           <li class="plan__feature"><strong>100 MB</strong> app data</li>
@@ -124,7 +124,7 @@
           <span class="plan__price-amount">$8.99</span>
           <span class="plan__price-period">/ month</span>
         </div>
-        <a class="btn btn--accent plan__cta" href="index.html#cta">Get the app</a>
+        <a class="btn btn--accent plan__cta" href="beta.html">Join beta</a>
         <ul class="plan__features">
           <li class="plan__feature"><strong>7 days free</strong>, then $8.99 / month</li>
           <li class="plan__feature"><strong>Unlimited</strong> published apps</li>
@@ -240,7 +240,7 @@
     <!-- ── Pro+ signpost ────────────────────────────────── -->
     <div class="proplus">
       <div>
-        <h4>Pro+ later</h4>
+        <h3>Pro+ later</h3>
         <p>
           Larger storage, the "Best" model tier, custom domains.
           We'll signpost it when it ships.
@@ -253,7 +253,7 @@
     <!-- ── Footnote cards ───────────────────────────────── -->
     <div class="price-notes">
       <div class="price-note">
-        <h4>What's a credit?</h4>
+        <h3>What's a credit?</h3>
         <p>
           A credit is the unit of AI work. Generating an app costs
           ~40 credits on the Fast model. Editing one screen, ~10.
@@ -262,7 +262,7 @@
         </p>
       </div>
       <div class="price-note">
-        <h4>Top up anytime</h4>
+        <h3>Top up anytime</h3>
         <p>
           Run out mid-build? One-time packs from $3.
           Pack credits never expire and stay yours through
@@ -270,7 +270,7 @@
         </p>
       </div>
       <div class="price-note">
-        <h4>No surprise bills</h4>
+        <h3>No surprise bills</h3>
         <p>
           Credits cap your AI spend at the plan's allowance.
           Storage and bandwidth aren't separately billable. The
@@ -281,7 +281,7 @@
 
 
     <p style="text-align: center; margin-top: var(--s-7); color: var(--ink-muted); font-size: var(--t-small); max-width: 44rem; margin-inline: auto;">
-      Pro subscriptions are purchased and managed inside the app —
+      Pro subscriptions are purchased and managed inside the app,
       via Apple on iOS, Google on Android. Pricing on this page is for
       reference. Refunds for system failures are automatic. See
       <a href="terms.html" style="color: var(--ink); text-decoration: underline; text-decoration-color: var(--apricot); text-decoration-thickness: 2px; text-underline-offset: 3px;">terms</a>
@@ -296,7 +296,7 @@
   <div class="footer__top">
     <div class="footer__brand">
       <span class="footer__name">
-        <img class="footer__logo" src="/assets/images/logo.png" alt="" />
+        <span class="brand-mark brand-mark--footer" aria-hidden="true"><i></i><i></i></span>
         Briques
       </span>
       <p class="footer__tag">
@@ -311,7 +311,7 @@
       <a href="index.html#what">What you build</a>
       <a href="index.html#how">How it works</a>
       <a href="pricing.html">Pricing</a>
-      <a href="index.html#cta">Beta access</a>
+      <a href="beta.html">iOS beta</a>
     </div>
     <div class="footer__col">
       <span class="footer__col-title">Company</span>
@@ -327,29 +327,11 @@
     </div>
   </div>
   <div class="footer__base">
-    <span>© 2026 Briques. Made with ❤️.</span>
-    <span>Private beta · iOS + Android</span>
+    <span>© 2026 Briques. Made with care.</span>
+    <span>iOS TestFlight beta</span>
   </div>
 </footer>
 
-<script>
-  (function buildBricks() {
-    var bricks = document.querySelectorAll('.brick');
-    for (var i = 0; i < bricks.length; i++) {
-      var b = bricks[i];
-      if (b.querySelector('.studs')) continue;
-      var m = b.className.match(/brick--(\d)x(\d)/);
-      if (!m) continue;
-      var cols = +m[1], rows = +m[2];
-      var studs = document.createElement('span');
-      studs.className = 'studs';
-      for (var j = 0; j < cols * rows; j++) {
-        studs.appendChild(document.createElement('i'));
-      }
-      b.appendChild(studs);
-    }
-  })();
-</script>
 
 </body>
 </html>

@@ -34,7 +34,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
-    href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700;800&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap"
     rel="stylesheet" />
 
   <!-- Reuse the marketing site's Sunlit tokens + brick CSS so the
@@ -526,15 +526,12 @@
     }
 
 
-    /* Brick decoration overrides for the screenshot scale.
-       Scale via --brick-cell so studs (which are sized off the
-       cell) grow with the brick. 110px cell → 2x1 = 220×110,
-       2x2 = 220×220, 3x2 = 330×220 — matches the deck targets
-       while keeping studs proportional. */
-    .brick--xxl  { --brick-cell: 110px; }
-    .brick--xl2  { --brick-cell: 88px;  }
-    .brick--md   { --brick-cell: 32px;  }
-    .brick--sm   { --brick-cell: 18px;  }
+    /* Brick decoration overrides for the screenshot scale. 110px cell
+       gives 2x1 = 220×110, 2x2 = 220×220, 3x2 = 330×220. */
+    .brick--xxl  { --brick-scale: 2.291667; }
+    .brick--xl2  { --brick-scale: 1.833333; }
+    .brick--md   { --brick-scale: 0.666667; }
+    .brick--sm   { --brick-scale: 0.375; }
 
 
     /* ── Per-slide phone-mock content ──────────────────────────
@@ -1515,24 +1512,8 @@
     if (n >= 1 && n <= 9) return showOnly(n);
   });
 
-  // Brick studs: inject <span class="studs"><i/>…</span> based on the
-  // brick--CxR size class so every brick reads as Lego, not a flat
-  // colored tile. Mirrors the IIFE on the main marketing page.
   (function buildBricks() {
-    var bricks = document.querySelectorAll('.brick');
-    for (var i = 0; i < bricks.length; i++) {
-      var b = bricks[i];
-      if (b.querySelector('.studs')) continue;
-      var m = b.className.match(/brick--(\d)x(\d)/);
-      if (!m) continue;
-      var cols = +m[1], rows = +m[2];
-      var studs = document.createElement('span');
-      studs.className = 'studs';
-      for (var j = 0; j < cols * rows; j++) {
-        studs.appendChild(document.createElement('i'));
-      }
-      b.appendChild(studs);
-    }
+    // Kept for parity with the marketing pages. Bricks are PNG-backed CSS.
   })();
 </script>
 

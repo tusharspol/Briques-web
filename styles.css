@@ -5,7 +5,7 @@
 
   Design system in three pieces:
     1. tokens — Sunlit palette + type + spacing scale
-    2. brick — the signature decorative component (CSS-only LEGO)
+    2. brick — the signature decorative component (PNG-backed LEGO)
     3. layout primitives + page sections
 
   No build step. No utility framework. Single stylesheet, ordered
@@ -36,13 +36,53 @@ input, textarea, select, button { font: inherit; color: inherit; }
    2. TOKENS
    ═══════════════════════════════════════════════════════════════ */
 
+@font-face {
+  font-family: "Geist";
+  src: url("assets/fonts/Geist-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Geist";
+  src: url("assets/fonts/Geist-Italic.ttf") format("truetype");
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Geist";
+  src: url("assets/fonts/Geist-Medium.ttf") format("truetype");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Geist";
+  src: url("assets/fonts/Geist-SemiBold.ttf") format("truetype");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Geist";
+  src: url("assets/fonts/Geist-Bold.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
 :root {
   /* ── Sunlit palette — mirrors lib/widgets/brick.dart ──────── */
   --paper:     #FAF7F0;   /* default background everywhere */
   --cream:     #F4ECD8;   /* slightly darker tinted surface */
   --ink:       #1A1714;   /* primary text */
   --ink-soft:  #5A5246;   /* secondary text */
-  --ink-muted: #857F76;   /* tertiary text, captions */
+  --ink-muted: #766F65;   /* tertiary text, captions */
   --hairline:  #E8E2D2;   /* 1px strokes, dividers */
 
   --apricot: #F4A261;     /* primary accent — CTAs */
@@ -62,7 +102,7 @@ input, textarea, select, button { font: inherit; color: inherit; }
 
   /* ── Type ───────────────────────────────────────────────── */
   --serif: "Instrument Serif", "Iowan Old Style", Georgia, serif;
-  --sans:  "Inter", -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+  --sans:  "Geist", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
 
   /* Modular scale — fluid clamp on display sizes. Ratio is 1.30
      between body steps, larger jumps on display. */
@@ -101,8 +141,8 @@ input, textarea, select, button { font: inherit; color: inherit; }
    ───────────────────────────────────────────────────────────────
    Same brand, after the lights go down. Warm ember dark, not cold
    black. Cream paper becomes deep coffee; ink becomes warm cream;
-   accents stay vibrant (the dark surface lets them sing). Bricks
-   re-light: studs glow softer, edges deepen.
+   accents stay vibrant (the dark surface lets them sing). Brick
+   shadows settle deeper against the darker paper.
    ═══════════════════════════════════════════════════════════════ */
 
 [data-theme="dark"] {
@@ -110,7 +150,7 @@ input, textarea, select, button { font: inherit; color: inherit; }
   --cream:     #251D17;   /* one notch lighter — cards, surfaces */
   --ink:       #F4ECD8;   /* warm cream — primary text */
   --ink-soft:  #BAB0A0;   /* secondary text */
-  --ink-muted: #847C70;   /* tertiary text, captions */
+  --ink-muted: #9A9284;   /* tertiary text, captions */
   --hairline:  #2C2620;   /* 1px strokes, dividers */
 
   /* Accents: keep most vibrant (dark surfaces flatter color),
@@ -124,7 +164,7 @@ input, textarea, select, button { font: inherit; color: inherit; }
   --ink-deep:     #0E0A08; /* hover bg = even deeper than paper */
   --apricot-deep: #E59661; /* hover variant of dark apricot */
 
-  /* Brick re-light: studs glow softer-warm, edges deepen. */
+  /* Legacy brick-paint tokens kept for older local experiments. */
   --stud-highlight: rgba(255, 245, 220, 0.22);
   --stud-shadow:    rgba(0, 0, 0, 0.45);
   --brick-edge:     rgba(0, 0, 0, 0.40);
@@ -166,96 +206,69 @@ body {
    4. THE BRICK — signature decorative component
    ═══════════════════════════════════════════════════════════════
 
-   A LEGO brick rendered in pure CSS:
-     • Body: a colored rectangle with rounded corners.
-     • Studs: round dots positioned via CSS grid on top.
-     • Side highlight: 1px inner ring giving plastic-edge depth.
-     • Optional rotation via .brick--tilt-{n} for "hand-placed" feel.
-
-   Sizing comes from --brick-cell (one stud cell) + the cols/rows
-   utility classes. cols×rows defines the stud grid. The body
-   dimensions follow.
-
-   Example:
-     <span class="brick brick--apricot brick--2x2 brick--tilt-l">
-       <span class="studs"><i></i><i></i><i></i><i></i></span>
-     </span>
+   Texture-backed LEGO bricks. Existing .brick--{cols}x{rows}
+   classes now choose the closest original PNG from /assets/bricks.
+   The image is never recolored or non-uniformly stretched.
 */
 
 .brick {
-  --brick-cell: 22px;            /* one stud cell side */
-  --brick-cols: 2;
-  --brick-rows: 2;
-  --brick-color: var(--apricot);
+  --brick-scale: 0.458333; /* 22px per 48px source stud */
+  --brick-width: 96px;
+  --brick-height: 96px;
+  --brick-asset: url("assets/bricks/2x2.png");
 
   position: relative;
   display: inline-block;
-  width: calc(var(--brick-cell) * var(--brick-cols));
-  height: calc(var(--brick-cell) * var(--brick-rows));
-  background: var(--brick-color);
-  border-radius: 4px;
-  /* Plastic-edge depth: inner highlight + outer shadow. The shadow
-     gives it a tiny lift off the page. */
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.35),
-    inset 0 -1px 0 var(--brick-edge),
-    0 1px 0 var(--brick-edge),
-    0 4px 10px -4px rgba(26, 23, 20, 0.18);
-  transition: transform 220ms cubic-bezier(0.2, 0.8, 0.2, 1);
+  width: calc(var(--brick-width) * var(--brick-scale));
+  height: calc(var(--brick-height) * var(--brick-scale));
+  background: transparent var(--brick-asset) center / contain no-repeat;
+  filter: drop-shadow(0 8px 10px rgba(26, 23, 20, 0.12));
+  transition:
+    filter 220ms cubic-bezier(0.2, 0.8, 0.2, 1),
+    transform 220ms cubic-bezier(0.2, 0.8, 0.2, 1);
   vertical-align: middle;
 }
 
-/* Sizing modifiers — cols×rows defines stud grid + total dims */
-.brick--1x1 { --brick-cols: 1; --brick-rows: 1; }
-.brick--1x2 { --brick-cols: 1; --brick-rows: 2; }
-.brick--2x1 { --brick-cols: 2; --brick-rows: 1; }
-.brick--2x2 { --brick-cols: 2; --brick-rows: 2; }
-.brick--3x2 { --brick-cols: 3; --brick-rows: 2; }
-.brick--4x1 { --brick-cols: 4; --brick-rows: 1; }
-.brick--4x2 { --brick-cols: 4; --brick-rows: 2; }
-.brick--6x2 { --brick-cols: 6; --brick-rows: 2; }
-.brick--8x2 { --brick-cols: 8; --brick-rows: 2; }
-
-/* Studs — child <i> elements positioned via grid on a .studs
-   wrapper. Real LEGO studs are ~62% of the cell width with a soft
-   highlight and a thin shadow. */
-.brick .studs {
-  position: absolute;
-  inset: calc(var(--brick-cell) * 0.10) calc(var(--brick-cell) * 0.10) auto;
-  height: calc(var(--brick-cell) * var(--brick-rows) - var(--brick-cell) * 0.20);
-  display: grid;
-  grid-template-columns: repeat(var(--brick-cols), 1fr);
-  grid-template-rows: repeat(var(--brick-rows), 1fr);
-  gap: calc(var(--brick-cell) * 0.06);
-  pointer-events: none;
+.brick--1x1 {
+  --brick-width: 48px;
+  --brick-height: 48px;
+  --brick-asset: url("assets/bricks/1x1.png");
+}
+.brick--1x2 {
+  --brick-width: 48px;
+  --brick-height: 96px;
+  --brick-asset: url("assets/bricks/2x1.png");
+}
+.brick--2x1 {
+  --brick-width: 96px;
+  --brick-height: 48px;
+  --brick-asset: url("assets/bricks/1x2-2.png");
+}
+.brick--2x2 {
+  --brick-width: 96px;
+  --brick-height: 96px;
+  --brick-asset: url("assets/bricks/2x2.png");
+}
+.brick--3x2 {
+  --brick-width: 96px;
+  --brick-height: 144px;
+  --brick-asset: url("assets/bricks/3x2-2.png");
+}
+.brick--4x1,
+.brick--4x2,
+.brick--6x2,
+.brick--8x2 {
+  --brick-width: 144px;
+  --brick-height: 48px;
+  --brick-asset: url("assets/bricks/1x3.png");
+}
+.brick--ink {
+  --brick-width: 96px;
+  --brick-height: 48px;
+  --brick-asset: url("assets/bricks/1x2.png");
 }
 
-.brick .studs i {
-  width: 62%;
-  height: 62%;
-  border-radius: 50%;
-  background:
-    radial-gradient(
-      ellipse at 32% 30%,
-      var(--stud-highlight) 0%,
-      transparent 45%
-    ),
-    var(--brick-color);
-  box-shadow:
-    inset 0 -1px 0 var(--stud-shadow),
-    0 1px 0 var(--stud-shadow);
-  align-self: center;
-  justify-self: center;
-}
-
-/* Color modifiers */
-.brick--apricot { --brick-color: var(--apricot); }
-.brick--sage    { --brick-color: var(--sage); }
-.brick--butter  { --brick-color: var(--butter); }
-.brick--sky     { --brick-color: var(--sky); }
-.brick--rose    { --brick-color: var(--rose); }
-.brick--cream   { --brick-color: var(--cream); }
-.brick--ink     { --brick-color: var(--ink); }
+.brick .studs { display: none; }
 
 /* Hand-placed wobble — small rotations make a row feel placed by
    hand instead of plotted by a designer's grid. Use sparingly:
@@ -268,11 +281,13 @@ body {
 .brick--tilt-l-lg { transform: rotate(-10deg); }
 
 /* Sizes */
-.brick--lg { --brick-cell: 32px; }
-.brick--xl { --brick-cell: 44px; }
-.brick--xxl { --brick-cell: 56px; }
-.brick--sm { --brick-cell: 16px; }
-.brick--xs { --brick-cell: 12px; }
+.brick--lg { --brick-scale: 0.666667; }
+.brick--xl { --brick-scale: 0.916667; }
+.brick--xxl { --brick-scale: 1.166667; }
+.brick--sm { --brick-scale: 0.333333; }
+.brick--xs { --brick-scale: 0.25; }
+.brick--sm,
+.brick--xs { filter: drop-shadow(0 4px 5px rgba(26, 23, 20, 0.12)); }
 
 /* The brick band — a row of mixed bricks, used as section header
    decoration. Wraps gracefully on small screens. */
@@ -298,6 +313,16 @@ body {
   letter-spacing: 0.16em;
   font-weight: 600;
   color: var(--ink-soft);
+}
+
+.eyebrow-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  margin-right: 8px;
+  border-radius: 50%;
+  background: var(--sage);
+  vertical-align: middle;
 }
 
 .lede {
@@ -349,7 +374,7 @@ h1 em, h2 em, h3 em { font-style: italic; font-family: var(--serif); }
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: var(--s-5);
+  gap: var(--s-4);
   padding: var(--s-4) clamp(var(--s-4), 4vw, var(--s-6));
   background: color-mix(in srgb, var(--paper) 85%, transparent);
   backdrop-filter: saturate(120%) blur(8px);
@@ -365,12 +390,27 @@ h1 em, h2 em, h3 em { font-style: italic; font-family: var(--serif); }
   color: var(--ink);
 }
 
-.nav__logo {
+.brand-mark {
   display: inline-block;
-  width: 28px;
-  height: 28px;
-  object-fit: contain;
+  width: 44px;
+  height: 44px;
   flex-shrink: 0;
+  background: transparent url("assets/images/logo.png") center / contain no-repeat;
+  filter: drop-shadow(0 3px 4px rgba(26, 23, 20, 0.14));
+}
+
+.brand-mark i {
+  display: none;
+}
+
+.brand-mark--nav {
+  width: 44px;
+  height: 44px;
+}
+
+.brand-mark--footer {
+  width: 54px;
+  height: 54px;
 }
 
 .nav__name {
@@ -381,7 +421,7 @@ h1 em, h2 em, h3 em { font-style: italic; font-family: var(--serif); }
 
 .nav__links {
   display: flex;
-  gap: var(--s-5);
+  gap: var(--s-4);
   font-size: var(--t-small);
   font-weight: 500;
 }
@@ -461,7 +501,7 @@ h1 em, h2 em, h3 em { font-style: italic; font-family: var(--serif); }
    ═══════════════════════════════════════════════════════════════ */
 
 .hero {
-  padding-block: clamp(var(--s-8), 9vw, 7rem) clamp(var(--s-7), 6vw, var(--s-9));
+  padding-block: clamp(var(--s-6), 6vw, var(--s-8)) clamp(var(--s-7), 6vw, var(--s-9));
 }
 
 .hero__inner {
@@ -584,36 +624,28 @@ h1 em, h2 em, h3 em { font-style: italic; font-family: var(--serif); }
   gap: var(--s-4);
 }
 
-/* Step number = a real brick (with studs) + number painted on top.
-   Reusing the .brick component keeps the studs aligned exactly with
-   the rest of the page's bricks; positioning a number absolutely on
-   top of it lets the studs stay readable as LEGO. */
+/* Step number = a real brick texture + number painted on top. */
 .step__num {
   position: relative;
-  display: inline-block;
+  display: inline-grid;
+  align-items: center;
+  justify-items: center;
   align-self: flex-start;
-  /* Match the natural size of the brick inside (4x2 @ lg cell=32px =
-     128w × 64h). Setting explicit width/height on the wrapper keeps
-     the absolutely-positioned number centered over the brick. */
-  width: 128px;
-  height: 64px;
+  width: max-content;
+  height: max-content;
 }
 
 .step__num .brick {
-  /* The brick fills the wrapper. Studs are auto-injected by the
-     bricks helper script. */
-  width: 100%;
-  height: 100%;
+  --brick-scale: 0.9;
+  grid-area: 1 / 1;
 }
 
 .step__num-label {
-  /* The numeric label sits below the studs (stud row is the top
-     ~50% of a 4x2 brick), centred horizontally. */
-  position: absolute;
-  inset: auto 0 4px 0;
+  position: relative;
+  grid-area: 1 / 1;
   text-align: center;
   font-family: var(--serif);
-  font-size: 1.625rem;
+  font-size: 1.375rem;
   color: var(--ink);
   line-height: 1;
   pointer-events: none;
@@ -826,14 +858,6 @@ h1 em, h2 em, h3 em { font-style: italic; font-family: var(--serif); }
   gap: var(--s-3);
 }
 
-.footer__logo {
-  display: inline-block;
-  width: 36px;
-  height: 36px;
-  object-fit: contain;
-  flex-shrink: 0;
-}
-
 .footer__tag {
   font-size: var(--t-small);
   color: var(--ink-soft);
@@ -1020,7 +1044,7 @@ h1 em, h2 em, h3 em { font-style: italic; font-family: var(--serif); }
 
 .packs__kicker {
   display: inline-block;
-  font-family: var(--mono, monospace);
+  font-family: var(--sans);
   font-size: var(--t-eyebrow, 0.75rem);
   font-weight: 600;
   text-transform: uppercase;
@@ -1044,7 +1068,7 @@ h1 em, h2 em, h3 em { font-style: italic; font-family: var(--serif); }
 
 .packs__title em {
   font-style: italic;
-  color: var(--apricot);
+  color: var(--ink);
   font-weight: 500;
 }
 
@@ -1171,6 +1195,10 @@ h1 em, h2 em, h3 em { font-style: italic; font-family: var(--serif); }
   margin-bottom: var(--s-4);
 }
 
+.pack__brick .brick--4x2 { --brick-scale: 0.75; }
+.pack__brick .brick--6x2 { --brick-scale: 1; }
+.pack__brick .brick--8x2 { --brick-scale: 1.25; }
+
 .pack__body {
   display: flex;
   flex-direction: column;
@@ -1198,7 +1226,7 @@ h1 em, h2 em, h3 em { font-style: italic; font-family: var(--serif); }
 }
 
 .pack__price {
-  font-family: var(--mono, monospace);
+  font-family: var(--sans);
   font-size: 1.5rem;
   font-weight: 600;
   color: var(--ink);
@@ -1234,7 +1262,7 @@ h1 em, h2 em, h3 em { font-style: italic; font-family: var(--serif); }
   border: 1px solid var(--hairline);
 }
 
-.price-note h4 {
+.price-note h3 {
   font-family: var(--serif);
   font-size: 1.25rem;
   margin-bottom: var(--s-3);
@@ -1260,7 +1288,7 @@ h1 em, h2 em, h3 em { font-style: italic; font-family: var(--serif); }
   gap: var(--s-4);
 }
 
-.proplus h4 {
+.proplus h3 {
   font-family: var(--serif);
   font-size: 1.375rem;
   margin-bottom: var(--s-1);
@@ -1462,7 +1490,7 @@ h1 em, h2 em, h3 em { font-style: italic; font-family: var(--serif); }
   gap: var(--s-2);
 }
 
-.contact-card h3 {
+.contact-card h2 {
   font-family: var(--serif);
   font-size: 1.625rem;
   color: var(--ink);
@@ -1490,6 +1518,211 @@ h1 em, h2 em, h3 em { font-style: italic; font-family: var(--serif); }
   top: var(--s-5);
   right: var(--s-5);
   opacity: 0.8;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════
+   17b. BETA
+   ═══════════════════════════════════════════════════════════════ */
+
+.beta-hero {
+  min-height: calc(100svh - 74px);
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(320px, 0.95fr);
+  gap: clamp(var(--s-7), 7vw, var(--s-10));
+  align-items: center;
+  padding-block: clamp(var(--s-8), 8vw, var(--s-10));
+}
+
+.beta-hero__title {
+  font-size: var(--t-mega);
+  letter-spacing: -0.02em;
+  line-height: 0.96;
+  max-width: 10ch;
+  margin-block: var(--s-5);
+}
+
+.beta-hero__lede {
+  font-size: var(--t-lede);
+  line-height: 1.5;
+  color: var(--ink-soft);
+  max-width: 35rem;
+  margin-bottom: var(--s-6);
+}
+
+.beta-panel {
+  position: relative;
+  min-height: 520px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.beta-panel__brick {
+  position: absolute;
+  z-index: 0;
+}
+
+.beta-panel__brick--one {
+  top: 12%;
+  right: 4%;
+  transform: rotate(5deg);
+}
+
+.beta-panel__brick--two {
+  bottom: 14%;
+  left: 2%;
+  transform: rotate(-4deg);
+}
+
+.beta-panel__screen {
+  position: relative;
+  z-index: 1;
+  width: min(100%, 420px);
+  background: var(--ink);
+  color: var(--paper);
+  border-radius: var(--radius-lg);
+  padding: clamp(var(--s-6), 4vw, var(--s-7));
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.08) inset,
+    0 30px 80px -38px rgba(26, 23, 20, 0.4);
+}
+
+.beta-panel__kicker {
+  font-size: var(--t-eyebrow);
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  font-weight: 700;
+  color: color-mix(in srgb, var(--paper) 72%, transparent);
+  margin-bottom: var(--s-5);
+}
+
+.beta-panel__list {
+  list-style: none;
+  display: grid;
+  gap: var(--s-4);
+  counter-reset: beta-step;
+}
+
+.beta-panel__list li {
+  counter-increment: beta-step;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: var(--s-3) var(--s-4);
+  align-items: start;
+  padding-bottom: var(--s-4);
+  border-bottom: 1px solid color-mix(in srgb, var(--paper) 18%, transparent);
+}
+
+.beta-panel__list li:last-child {
+  padding-bottom: 0;
+  border-bottom: 0;
+}
+
+.beta-panel__list li::before {
+  content: counter(beta-step, decimal-leading-zero);
+  width: 48px;
+  height: 28px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--butter);
+  color: #1A1714;
+  border-radius: 5px;
+  font-family: var(--serif);
+  line-height: 1;
+  box-shadow: inset 0 -1px 0 var(--brick-edge);
+}
+
+.beta-panel__list strong {
+  display: block;
+  color: var(--paper);
+  font-family: var(--serif);
+  font-size: 1.375rem;
+  font-weight: 400;
+  line-height: 1.1;
+}
+
+.beta-panel__list span {
+  display: block;
+  grid-column: 2;
+  margin-top: var(--s-1);
+  color: color-mix(in srgb, var(--paper) 72%, transparent);
+  font-size: var(--t-small);
+  line-height: 1.5;
+}
+
+.beta-section-head {
+  max-width: 47rem;
+  margin-bottom: var(--s-7);
+}
+
+.beta-section-head h2,
+.beta-feedback h2 {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: var(--t-h2);
+  line-height: 1.05;
+  margin-block: var(--s-3) var(--s-4);
+}
+
+.beta-section-head p,
+.beta-feedback p {
+  color: var(--ink-soft);
+  font-size: var(--t-lede);
+  line-height: 1.55;
+  max-width: 42rem;
+}
+
+.beta-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--s-5);
+}
+
+.beta-card {
+  position: relative;
+  min-height: 220px;
+  padding: var(--s-6);
+  background: var(--cream);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius);
+}
+
+.beta-card__brick {
+  margin-bottom: var(--s-5);
+}
+
+.beta-card h3 {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: 1.5rem;
+  line-height: 1.1;
+  margin-bottom: var(--s-3);
+}
+
+.beta-card p {
+  color: var(--ink-soft);
+  font-size: var(--t-small);
+  line-height: 1.55;
+}
+
+.beta-feedback {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: var(--s-7);
+  align-items: center;
+  padding: clamp(var(--s-6), 5vw, var(--s-8));
+  background: var(--cream);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius-lg);
+}
+
+.beta-feedback__actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-3);
+  min-width: 250px;
 }
 
 
@@ -2477,6 +2710,27 @@ h1 em, h2 em, h3 em { font-style: italic; font-family: var(--serif); }
 
   /* Steps: 3-up still fits on iPad portrait */
   .steps { grid-template-columns: repeat(3, 1fr); gap: var(--s-5); }
+
+  .beta-hero {
+    grid-template-columns: 1fr;
+    min-height: 0;
+  }
+
+  .beta-panel {
+    min-height: 420px;
+  }
+
+  .beta-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .beta-feedback {
+    grid-template-columns: 1fr;
+  }
+
+  .beta-feedback__actions {
+    min-width: 0;
+  }
 }
 
 /* ── Hero stack threshold ────────────────────────────────────── */
@@ -2528,6 +2782,24 @@ h1 em, h2 em, h3 em { font-style: italic; font-family: var(--serif); }
   /* Hero CTAs stack on very narrow */
   .hero__ctas .btn { width: 100%; justify-content: center; }
 
+  .beta-hero {
+    padding-block: var(--s-7);
+  }
+
+  .beta-hero__title {
+    max-width: 9ch;
+  }
+
+  .beta-panel {
+    min-height: 360px;
+  }
+
+  .beta-panel__screen,
+  .beta-card,
+  .beta-feedback {
+    padding: var(--s-5);
+  }
+
   /* FAQ stacks: brick → Q → A */
   .faq__item {
     grid-template-columns: 1fr;
@@ -2552,3 +2824,76 @@ h1 em, h2 em, h3 em { font-style: italic; font-family: var(--serif); }
     transition-duration: 0.01ms !important;
   }
 }
+
+
+/* ═══════════════════════════════════════════════════════════════
+   Beta signup form (beta.html hero)
+   ═══════════════════════════════════════════════════════════════ */
+.beta-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-4);
+  max-width: 30rem;
+  margin-top: var(--s-2);
+}
+
+.beta-form__field { display: flex; flex-direction: column; gap: var(--s-2); }
+
+.beta-form__label {
+  font-size: var(--t-eyebrow);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-weight: 600;
+  color: var(--ink-soft);
+}
+
+.beta-form__input {
+  width: 100%;
+  padding: 14px var(--s-4);
+  background: var(--paper);
+  color: var(--ink);
+  border: 1.5px solid var(--hairline);
+  border-radius: var(--radius);
+  font-size: var(--t-body);
+  transition: border-color 150ms ease, box-shadow 150ms ease;
+}
+.beta-form__input::placeholder { color: var(--ink-muted); }
+.beta-form__input:focus {
+  outline: none;
+  border-color: var(--apricot);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--apricot) 28%, transparent);
+}
+
+.beta-form__os {
+  border: 0; padding: 0; margin: 0;
+  display: flex; flex-direction: column; gap: var(--s-2);
+}
+.beta-form__os-options { display: flex; gap: var(--s-3); flex-wrap: wrap; }
+
+.beta-form__radio {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-2);
+  padding: 10px var(--s-4);
+  border: 1.5px solid var(--hairline);
+  border-radius: var(--radius);
+  cursor: pointer;
+  font-weight: 500;
+  color: var(--ink);
+  transition: border-color 150ms ease, background 150ms ease;
+}
+.beta-form__radio:hover { border-color: var(--ink-soft); }
+.beta-form__radio:has(input:checked) {
+  border-color: var(--ink);
+  background: color-mix(in srgb, var(--butter) 30%, transparent);
+}
+.beta-form__radio input { accent-color: var(--ink); margin: 0; }
+
+.beta-form__status {
+  font-size: var(--t-small);
+  color: var(--ink-soft);
+  min-height: 1.25em;
+  margin: 0;
+}
+.beta-form__status.is-ok    { color: var(--sage); font-weight: 600; }
+.beta-form__status.is-error { color: var(--rose); font-weight: 600; }

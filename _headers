@@ -1,0 +1,6 @@
+# Cloudflare Pages cache policy.
+# Fonts and brick PNGs never change in place (rename on change),
+# so repeat visitors serve them straight from disk cache instead
+# of paying conditional-revalidation round trips.
+/assets/*
+  Cache-Control: public, max-age=31536000, immutable

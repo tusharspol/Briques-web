@@ -3,12 +3,17 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <meta name="description" content="Get in touch with the Briques team." />
+  <meta name="description" content="How to permanently delete your Briques account and all of your data." />
 
-  <title>Contact - Briques</title>
+  <title>Delete your account - Briques Help</title>
 
+  <link rel="canonical" href="https://briques.app/help/delete-your-account" />
   <link rel="icon" href="/favicon.ico" />
   <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <meta property="og:title" content="Delete your account - Briques Help" />
+  <meta property="og:description" content="How to permanently delete your Briques account and all of your data." />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://briques.app/help/delete-your-account" />
   <meta property="og:image" content="https://briques.app/assets/images/logo.png" />
   <meta property="og:image:type" content="image/png" />
   <meta property="og:image:width" content="1024" />
@@ -18,8 +23,8 @@
 
   <!-- Fonts are fully self-hosted — no third-party request on the
        critical path. Preload the serif that paints the headlines. -->
-  <link rel="preload" href="assets/fonts/InstrumentSerif-Regular.woff2" as="font" type="font/woff2" crossorigin />
-  <link rel="preload" href="assets/fonts/InstrumentSerif-Italic.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="/assets/fonts/InstrumentSerif-Regular.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="/assets/fonts/InstrumentSerif-Italic.woff2" as="font" type="font/woff2" crossorigin />
 
   <!-- Theme: set data-theme BEFORE stylesheets to avoid FOUC. -->
   <meta name="color-scheme" content="light dark" />
@@ -56,30 +61,30 @@
     }
   </script>
 
-  <link rel="stylesheet" href="styles.css" />
-  <script src="site.js" defer></script>
+  <link rel="stylesheet" href="/styles.css" />
+  <script src="/site.js" defer></script>
 </head>
 <body>
 
 <a class="skip-link" href="#main">Skip to content</a>
 
 <nav class="nav">
-  <a class="nav__brand" href="index.html">
+  <a class="nav__brand" href="/">
     <span class="brand-mark brand-mark--nav" aria-hidden="true"><i></i><i></i></span>
     <span class="nav__name">Briques</span>
   </a>
   <div class="nav__links" id="site-menu">
-    <a href="index.html#what">What you build</a>
-    <a href="index.html#how">How it works</a>
-    <a href="pricing.html">Pricing</a>
-    <a href="beta.html">Beta</a>
-    <a href="contact.html" class="is-active" aria-current="page">Contact</a>
+    <a href="/#what">What you build</a>
+    <a href="/#how">How it works</a>
+    <a href="/pricing">Pricing</a>
+    <a href="/beta">Beta</a>
+    <a href="/contact">Contact</a>
   </div>
   <button type="button" class="theme-toggle" aria-label="Switch to dark theme" onclick="toggleTheme()">
     <svg class="theme-toggle__moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
     <svg class="theme-toggle__sun"  viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
   </button>
-  <a class="nav__cta" href="beta.html">Join beta</a>
+  <a class="nav__cta" href="/beta">Join beta</a>
   <button type="button" class="nav__menu-btn" aria-expanded="false" aria-controls="site-menu" aria-label="Open menu">
     <span></span><span></span><span></span>
   </button>
@@ -91,70 +96,72 @@
     <div class="page-head__bricks" aria-hidden="true">
       <span class="brick brick--apricot brick--2x1 brick--lg brick--tilt-l-sm"></span>
       <span class="brick brick--butter brick--3x2 brick--lg"></span>
-      <span class="brick brick--rose brick--2x1 brick--lg brick--tilt-r-sm"></span>
+      <span class="brick brick--sage brick--2x1 brick--lg brick--tilt-r-sm"></span>
     </div>
-    <p class="page-head__kicker">Contact</p>
-    <h1 class="page-head__title">Say hello.<br><em>We read everything.</em></h1>
-    <p class="page-head__meta">
-      Pick a reason below. Real humans (well, one) read these and reply within two days.
-    </p>
+    <p class="page-head__kicker">Your account</p>
+    <h1 class="page-head__title">Delete your account</h1>
   </header>
 
-  <section class="kit">
-    <div class="contact-grid">
+  <section class="kit-narrow">
+    <a class="help-back" href="/help">
+      <span aria-hidden="true">←</span> All help articles
+    </a>
 
-      <article class="contact-card">
-        <span class="brick brick--apricot brick--2x1 contact-card__brick"></span>
-        <h2>General</h2>
-        <p>Hi, ideas, questions, anything you'd like to say.</p>
-        <a href="mailto:hello@briques.app">hello@briques.app</a>
-      </article>
+    <article class="prose">
 
-      <article class="contact-card">
-        <span class="brick brick--sage brick--2x1 contact-card__brick"></span>
-        <h2>Beta access</h2>
-        <p>Tell us what you'd build. We'll send the TestFlight invite if there is room.</p>
-        <a href="mailto:hello@briques.app?subject=Briques%20iOS%20TestFlight%20beta">hello@briques.app</a>
-      </article>
+<p>You can delete your Briques account at any time. Deletion is <strong>permanent</strong> — it removes your account, every Mini App you've built, all the records and files inside them, and your settings.</p>
 
-      <article class="contact-card">
-        <span class="brick brick--butter brick--2x1 contact-card__brick"></span>
-        <h2>Support</h2>
-        <p>Bugs, problems with your apps, anything not working.</p>
-        <a href="mailto:support@briques.app">support@briques.app</a>
-      </article>
+<h2>Delete from the app</h2>
+<p>This is the fastest way, and it works on both iOS and Android:</p>
+<ol>
+  <li>Open Briques and go to <strong>Account</strong> (your profile).</li>
+  <li>Tap <strong>Delete account</strong>.</li>
+  <li>Confirm. Your account and data are then scheduled for permanent deletion.</li>
+</ol>
 
-      <article class="contact-card">
-        <span class="brick brick--sky brick--2x1 contact-card__brick"></span>
-        <h2>Privacy &amp; data</h2>
-        <p>Data requests, deletion, GDPR / CCPA rights.</p>
-        <a href="mailto:privacy@briques.app">privacy@briques.app</a>
-      </article>
+<h2>Delete by email</h2>
+<p>If you can't open the app, email <a href="mailto:privacy@briques.app">privacy@briques.app</a> from the address on your account and ask us to delete it. We'll verify it's you, then process the request.</p>
 
-      <article class="contact-card">
-        <span class="brick brick--rose brick--2x1 contact-card__brick"></span>
-        <h2>Press</h2>
-        <p>Stories, interviews, screenshots, brand assets.</p>
-        <a href="mailto:press@briques.app">press@briques.app</a>
-      </article>
+<h2>What gets deleted, and when</h2>
+<ul>
+  <li>Your account, Mini Apps, app records, and uploaded files are permanently removed from our production systems within <strong>30 days</strong>.</li>
+  <li>Backup copies are purged within a further <strong>60 days</strong>.</li>
+  <li>A small set of records (such as billing reconciliation and fraud-prevention logs) may be retained longer where the law requires. These are minimized and never reused for anything else.</li>
+</ul>
 
-      <article class="contact-card">
-        <span class="brick brick--cream brick--2x1 contact-card__brick"></span>
-        <h2>Partnerships</h2>
-        <p>Integrations, distribution, anything that takes a call.</p>
-        <a href="mailto:hello@briques.app?subject=Partnership">hello@briques.app</a>
-      </article>
+<div class="callout callout--warn"><strong>This can't be undone.</strong> Once deletion runs, your apps and their data can't be recovered. If there's anything you want to keep, <a href="/help/export-your-data">export your data</a> first.</div>
 
+<h2>Cancel your subscription separately</h2>
+<p>Deleting your account does <strong>not</strong> automatically cancel a paid subscription, because billing is handled by the app store, not by Briques. To stop renewals, also cancel through the store:</p>
+<ul>
+  <li><strong>iPhone or iPad:</strong> Settings → your name → Subscriptions → Briques → Cancel Subscription.</li>
+  <li><strong>Android:</strong> Play Store → profile → Payments &amp; subscriptions → Subscriptions → Briques → Cancel.</li>
+</ul>
+<p>More detail in <a href="/help/manage-your-subscription">manage your subscription</a>.</p>
+
+<h2>Questions</h2>
+<p>Anything about deletion or your data: <a href="mailto:privacy@briques.app">privacy@briques.app</a>. The full policy is in our <a href="/privacy">privacy policy</a>.</p>
+    </article>
+
+    <div class="help-cta">
+      <div>
+        <h2>Still need help?</h2>
+        <p>Can't find what you need? Email us and a human replies within about two days.</p>
+      </div>
+      <a class="btn btn--accent" href="/help/contact-support">Contact support</a>
     </div>
 
-    <p style="text-align:center; margin-top: var(--s-7); color: var(--ink-muted); font-size: var(--t-small); max-width: 40rem; margin-inline: auto;">
-      No contact form on purpose. A direct email lets you tell the
-      story your way, and gives us a real thread to reply on.
-    </p>
+      <nav class="help-related" aria-label="Related articles">
+        <p class="help-related__title">Related</p>
+        <ul>
+        <li><a href="/help/export-your-data">Export your data</a></li>
+        <li><a href="/help/manage-your-subscription">Manage or cancel your subscription</a></li>
+        <li><a href="/help/sign-in-and-account">Sign in to Briques</a></li>
+        </ul>
+      </nav>
   </section>
 
 </main>
-
 
 <footer class="footer kit">
   <div class="footer__top">
@@ -172,22 +179,22 @@
     </div>
     <div class="footer__col">
       <span class="footer__col-title">Product</span>
-      <a href="index.html#what">What you build</a>
-      <a href="index.html#how">How it works</a>
-      <a href="pricing.html">Pricing</a>
-      <a href="beta.html">iOS beta</a>
+      <a href="/#what">What you build</a>
+      <a href="/#how">How it works</a>
+      <a href="/pricing">Pricing</a>
+      <a href="/beta">iOS beta</a>
     </div>
     <div class="footer__col">
       <span class="footer__col-title">Company</span>
-      <a href="contact.html">Contact</a>
+      <a href="/contact">Contact</a>
       <a href="/help">Help center</a>
       <a href="mailto:hello@briques.app">hello@briques.app</a>
       <a href="mailto:press@briques.app">Press</a>
     </div>
     <div class="footer__col">
       <span class="footer__col-title">Legal</span>
-      <a href="privacy.html">Privacy</a>
-      <a href="terms.html">Terms</a>
+      <a href="/privacy">Privacy</a>
+      <a href="/terms">Terms</a>
       <a href="mailto:privacy@briques.app">Data requests</a>
     </div>
   </div>

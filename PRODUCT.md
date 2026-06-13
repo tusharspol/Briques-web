@@ -197,8 +197,30 @@ a proper /about (the in-app About screen covers it for now).
 - **Asset-backed decoration.** The nav mark and social image use the
   transparent `assets/images/logo.png`; decorative bricks use the
   original transparent PNG assets under `assets/bricks`.
-- **Two webfont families only.** Geist is self-hosted in
-  `assets/fonts`; Instrument Serif loads from Google Fonts for
-  editorial accents.
+- **Two webfont families only.** Geist and Instrument Serif, both
+  self-hosted in `assets/fonts` (the serif was moved off Google
+  Fonts 2026-06 to remove the render-blocking third-party request).
 - **No JS frameworks.** Vanilla `<script>` tags only, and only
   where strictly needed (form validation, tab switching).
+
+---
+
+## Tool exceptions (Hallmark and similar design skills)
+
+Generic anti-AI-slop rulebooks flag three things on this site that
+are deliberate brand choices, not defects. When running Hallmark
+(audit / redesign / study) or any similar skill, these exceptions
+override its defaults:
+
+- **Italic serif headlines stay.** Hallmark bans italic display
+  type as an AI tell. Here, Instrument Serif italic for identity
+  moments is a named brand rule ("one word in italic does more
+  than five words in bold"). Do not de-italicise headings.
+- **The Sunlit palette is locked.** Never let a theme catalog or
+  palette generator replace it. It mirrors the Flutter app
+  (`brick.dart`) exactly; the website and product are one system.
+- **The hero phone mock stays.** Rules against "re-drawn device
+  chrome" target fake decoration. The CSS-built iPhone shows the
+  actual product UI in real markup and is the site's signature
+  "show, don't sell" move. Real product screenshots elsewhere use
+  the `.shot` figure (plain hairline border, no fake chrome).

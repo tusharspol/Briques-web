@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <meta name="description" content="The app you wish existed. An AI builder for small, personal mobile apps. Describe what you want. Briques builds it." />
+  <meta name="description" content="The app you wish existed. Small, personal apps for an audience of one. Describe the app you need and use it on your phone in about a minute." />
 
   <title>Briques - The app you wish existed.</title>
 
@@ -16,9 +16,10 @@
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:image" content="https://briques.app/assets/images/logo.png" />
 
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
+  <!-- Fonts are fully self-hosted — no third-party request on the
+       critical path. Preload the serif that paints the headlines. -->
+  <link rel="preload" href="assets/fonts/InstrumentSerif-Regular.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="assets/fonts/InstrumentSerif-Italic.woff2" as="font" type="font/woff2" crossorigin />
 
   <!-- Theme: set data-theme BEFORE stylesheets to avoid FOUC. -->
   <meta name="color-scheme" content="light dark" />
@@ -28,7 +29,9 @@
     (function () {
       try {
         var stored = localStorage.getItem('theme');
-        var theme = stored || 'light';
+        var theme = stored ||
+          (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+            ? 'dark' : 'light');
         document.documentElement.setAttribute('data-theme', theme);
       } catch (e) {
         document.documentElement.setAttribute('data-theme', 'light');
@@ -57,11 +60,13 @@
   <script src="site.js" defer></script>
 
   <meta property="og:title" content="Briques - The app you wish existed." />
-  <meta property="og:description" content="An AI builder for the small, personal apps in your head. Describe it; Briques ships it." />
+  <meta property="og:description" content="They build apps for millions. Briques builds the one for you. Small, personal apps on your phone, from a sentence." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://briques.app" />
 </head>
 <body>
+
+<a class="skip-link" href="#main">Skip to content</a>
 
 <!-- ═══════════════ NAV ═══════════════ -->
 <nav class="nav">
@@ -69,7 +74,7 @@
     <span class="brand-mark brand-mark--nav" aria-hidden="true"><i></i><i></i></span>
     <span class="nav__name">Briques</span>
   </a>
-  <div class="nav__links">
+  <div class="nav__links" id="site-menu">
     <a href="#what">What you build</a>
     <a href="#how">How it works</a>
     <a href="pricing.html">Pricing</a>
@@ -81,8 +86,12 @@
     <svg class="theme-toggle__sun"  viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
   </button>
   <a class="nav__cta" href="beta.html">Join beta</a>
+  <button type="button" class="nav__menu-btn" aria-expanded="false" aria-controls="site-menu" aria-label="Open menu">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
 
+<main id="main">
 
 <!-- ═══════════════ HERO — phone mockup + brick scatter ═══════════════ -->
 <header class="hero kit">
@@ -97,10 +106,10 @@
         <em>wish</em> existed.
       </h1>
       <p class="hero__lede">
-        An AI builder for the small, personal apps in your head. A
-        weather log, a client tracker, a fishing journal. Describe
-        what you want and Briques builds it, on your phone, in about
-        a minute.
+        For the small, personal apps in your head: a weather log, a
+        client tracker, a fishing journal. Describe the one you want
+        and it shows up on your phone, yours alone, in about a
+        minute.
       </p>
       <div class="hero__ctas">
         <a class="btn btn--lg" href="beta.html">Join beta</a>
@@ -254,6 +263,75 @@
 </header>
 
 
+<!-- ═══════════════ WHAT YOU BUILD ═══════════════
+     Leads the page: visitors should see themselves before they
+     see features. Header carries the positioning line. -->
+<section class="section section--tight kit" id="what">
+  <p class="eyebrow">What people build</p>
+  <h2 style="font-size: var(--t-h2); margin-top: var(--s-3); max-width: 26ch;">
+    They build apps for millions. Briques builds the one <em>for you</em>.
+  </h2>
+  <p class="lede" style="margin-top: var(--s-4);">
+    The small, weird, specific app that fits exactly your life.
+  </p>
+
+  <div class="gallery">
+    <article class="g-card g-card--wide">
+      <p class="g-card__kind">Personal tracker</p>
+      <h3 class="g-card__title">A weather log for fishing trips</h3>
+      <p class="g-card__desc">
+        Date, location, water temperature, what was biting. Tap to
+        log, scroll to remember. The kind of thing nobody ships
+        because nobody ships an app for one person.
+      </p>
+      <figure class="shot shot--ph shot--landscape" data-asset="gallery-fishing-log">
+        <span class="brick brick--apricot brick--2x1 brick--sm" aria-hidden="true"></span>
+        <figcaption class="shot__hint">App screenshot: fishing weather log, landscape crop</figcaption>
+      </figure>
+      <span class="brick brick--apricot brick--2x2 g-card__mark"></span>
+    </article>
+
+    <article class="g-card g-card--small">
+      <p class="g-card__kind">Replace a spreadsheet</p>
+      <h3 class="g-card__title">Client invoices</h3>
+      <p class="g-card__desc">A simple list of who owes what.</p>
+      <span class="brick brick--sage brick--1x2 g-card__mark"></span>
+    </article>
+
+    <article class="g-card g-card--medium">
+      <p class="g-card__kind">For my client work</p>
+      <h3 class="g-card__title">Project notes &amp; meeting log</h3>
+      <p class="g-card__desc">
+        One screen per client; quick add for meetings, action items,
+        and the things they always forget you said.
+      </p>
+      <span class="brick brick--rose brick--2x1 g-card__mark"></span>
+    </article>
+
+    <article class="g-card g-card--medium">
+      <p class="g-card__kind">Side project</p>
+      <h3 class="g-card__title">Reading log with notes</h3>
+      <p class="g-card__desc">
+        Books, started/finished, a paragraph of why. The thing a
+        Notes file used to be, finally with structure.
+      </p>
+      <figure class="shot shot--ph shot--landscape" data-asset="gallery-reading-log">
+        <span class="brick brick--butter brick--2x1 brick--sm" aria-hidden="true"></span>
+        <figcaption class="shot__hint">App screenshot: reading log, landscape crop</figcaption>
+      </figure>
+      <span class="brick brick--butter brick--2x2 g-card__mark"></span>
+    </article>
+
+    <article class="g-card g-card--small">
+      <p class="g-card__kind">Just exploring</p>
+      <h3 class="g-card__title">A habit pulse</h3>
+      <p class="g-card__desc">Three habits, daily check-in.</p>
+      <span class="brick brick--sky brick--2x1 g-card__mark"></span>
+    </article>
+  </div>
+</section>
+
+
 <!-- ═══════════════ LIKE LEGO, BUT FOR SOFTWARE ═══════════════ -->
 <section class="section section--tight kit" id="like-lego">
   <p class="eyebrow">What is Briques</p>
@@ -317,6 +395,62 @@
 </section>
 
 
+<!-- ═══════════════ HOW IT WORKS ═══════════════ -->
+<section class="section kit" id="how">
+  <p class="eyebrow">How it works</p>
+  <h2 style="font-size: var(--t-h2); margin-top: var(--s-3); max-width: 22ch;">
+    From a sentence to a <em>real app</em>.
+  </h2>
+
+  <div class="steps">
+    <div class="step">
+      <span class="step__num">
+        <span class="brick brick--apricot brick--4x2 brick--lg"></span>
+        <span class="step__num-label">01</span>
+      </span>
+      <h3>You describe it</h3>
+      <p>
+        Plain English. "A weather log for my fishing trips, with
+        location and water temperature." That's enough.
+      </p>
+    </div>
+
+    <div class="step">
+      <span class="step__num">
+        <span class="brick brick--sage brick--4x2 brick--lg"></span>
+        <span class="step__num-label">02</span>
+      </span>
+      <h3>Briques drafts the pieces</h3>
+      <p>
+        Pages, tables, fields, and the relationships between them get
+        inferred from your sentence. Tweak any of it, or accept the
+        plan as-is.
+      </p>
+      <figure class="shot shot--ph shot--portrait" data-asset="step-plan-review">
+        <span class="brick brick--sage brick--2x1 brick--sm" aria-hidden="true"></span>
+        <figcaption class="shot__hint">App screenshot: plan review, tables and fields drafted</figcaption>
+      </figure>
+    </div>
+
+    <div class="step">
+      <span class="step__num">
+        <span class="brick brick--rose brick--4x2 brick--lg"></span>
+        <span class="step__num-label">03</span>
+      </span>
+      <h3>A real app shows up</h3>
+      <p>
+        Native-feeling, on your phone, ready to use. Iterate from
+        the same chat. No app-store re-submission to change anything.
+      </p>
+      <figure class="shot shot--ph shot--portrait" data-asset="step-published-app">
+        <span class="brick brick--rose brick--2x1 brick--sm" aria-hidden="true"></span>
+        <figcaption class="shot__hint">App screenshot: a published app running, list and detail</figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+
 <!-- ═══════════════ AI BUILT IN ═══════════════ -->
 <section class="section section--tight kit" id="ai-built-in">
   <p class="eyebrow">AI built in</p>
@@ -366,106 +500,18 @@
 </section>
 
 
-<!-- ═══════════════ WHAT YOU BUILD ═══════════════ -->
-<section class="section section--tight kit" id="what">
-  <p class="eyebrow">What people build</p>
-  <h2 style="font-size: var(--t-h2); margin-top: var(--s-3); max-width: 28ch;">
-    The small, weird, specific app that fits exactly your life.
-  </h2>
-
-  <div class="gallery">
-    <article class="g-card g-card--wide">
-      <p class="g-card__kind">Personal tracker</p>
-      <h3 class="g-card__title">A weather log for fishing trips</h3>
-      <p class="g-card__desc">
-        Date, location, water temperature, what was biting. Tap to
-        log, scroll to remember. The kind of thing nobody ships
-        because nobody ships an app for one person.
-      </p>
-      <span class="brick brick--apricot brick--2x2 g-card__mark"></span>
-    </article>
-
-    <article class="g-card g-card--small">
-      <p class="g-card__kind">Replace a spreadsheet</p>
-      <h3 class="g-card__title">Client invoices</h3>
-      <p class="g-card__desc">A simple list of who owes what.</p>
-      <span class="brick brick--sage brick--1x2 g-card__mark"></span>
-    </article>
-
-    <article class="g-card g-card--medium">
-      <p class="g-card__kind">For my client work</p>
-      <h3 class="g-card__title">Project notes &amp; meeting log</h3>
-      <p class="g-card__desc">
-        One screen per client; quick add for meetings, action items,
-        and the things they always forget you said.
-      </p>
-      <span class="brick brick--rose brick--2x1 g-card__mark"></span>
-    </article>
-
-    <article class="g-card g-card--medium">
-      <p class="g-card__kind">Side project</p>
-      <h3 class="g-card__title">Reading log with notes</h3>
-      <p class="g-card__desc">
-        Books, started/finished, a paragraph of why. The thing a
-        Notes file used to be, finally with structure.
-      </p>
-      <span class="brick brick--butter brick--2x2 g-card__mark"></span>
-    </article>
-
-    <article class="g-card g-card--small">
-      <p class="g-card__kind">Just exploring</p>
-      <h3 class="g-card__title">A habit pulse</h3>
-      <p class="g-card__desc">Three habits, daily check-in.</p>
-      <span class="brick brick--sky brick--2x1 g-card__mark"></span>
-    </article>
-  </div>
-</section>
-
-
-<!-- ═══════════════ HOW IT WORKS ═══════════════ -->
-<section class="section kit" id="how">
-  <p class="eyebrow">How it works</p>
-  <h2 style="font-size: var(--t-h2); margin-top: var(--s-3); max-width: 22ch;">
-    From a sentence to a <em>real app</em>.
-  </h2>
-
-  <div class="steps">
-    <div class="step">
-      <span class="step__num">
-        <span class="brick brick--apricot brick--4x2 brick--lg"></span>
-        <span class="step__num-label">01</span>
-      </span>
-      <h3>You describe it</h3>
-      <p>
-        Plain English. "A weather log for my fishing trips, with
-        location and water temperature." That's enough.
-      </p>
-    </div>
-
-    <div class="step">
-      <span class="step__num">
-        <span class="brick brick--sage brick--4x2 brick--lg"></span>
-        <span class="step__num-label">02</span>
-      </span>
-      <h3>Briques drafts the pieces</h3>
-      <p>
-        Pages, tables, fields, and the relationships between them get
-        inferred from your sentence. Tweak any of it, or accept the
-        plan as-is.
-      </p>
-    </div>
-
-    <div class="step">
-      <span class="step__num">
-        <span class="brick brick--rose brick--4x2 brick--lg"></span>
-        <span class="step__num-label">03</span>
-      </span>
-      <h3>A real app shows up</h3>
-      <p>
-        Native-feeling, on your phone, ready to use. Iterate from
-        the same chat. No app-store re-submission to change anything.
-      </p>
-    </div>
+<!-- ═══════════════ THE SUBSCRIPTION PILE ═══════════════ -->
+<section class="section--tight kit" id="pile">
+  <div class="pile-band">
+    <h2 class="pile-band__title">
+      You don't need another <em>app subscription</em>.
+    </h2>
+    <p class="pile-band__copy">
+      There's an app for habits, an app for invoices, an app for
+      your reading list. Each costs a few dollars a month, and each
+      makes you work its way. <strong>Briques replaces the
+      pile:</strong> your apps, your way, one price.
+    </p>
   </div>
 </section>
 
@@ -570,13 +616,28 @@
       </span>
       <h3 class="faq__q">How is this different from Notion or Airtable?</h3>
       <p class="faq__a">
-        Those are tools you use to build something for a team: clients,
-        coworkers, customers. Briques is the opposite: it builds an app
-        for one person. You. Single-user, on your phone, no sharing, no
-        collaboration, no logins for other people. If you've ever
-        thought <em>I just want this one tiny tool for me, but
-        everything I find is built for teams</em>. That's the gap
-        Briques fills.
+        Notion and Airtable hand you a box of parts and ask you to
+        build the system. Briques hands you the finished app. And
+        they're built for teams: clients, coworkers, customers.
+        Briques is the opposite: one app, one person. You. Single-user,
+        on your phone, no sharing, no collaboration, no logins for
+        other people. If you've ever thought <em>I just want this one
+        tiny tool for me, but everything I find is built for
+        teams</em>. That's the gap Briques fills.
+      </p>
+    </li>
+
+    <li class="faq__item">
+      <span class="brick brick--rose brick--2x1 brick--sm faq__brick" aria-hidden="true">
+        <span class="studs"><i></i><i></i></span>
+      </span>
+      <h3 class="faq__q">Why not just download a habit tracker?</h3>
+      <p class="faq__a">
+        You can, and it will work the way its developer imagined. A
+        purpose-built app makes you fit its model. Briques builds the
+        one that matches how you actually do it: your fields, your
+        views, your rules. And one plan covers every little app you
+        make, instead of a few dollars a month for each.
       </p>
     </li>
 
@@ -658,6 +719,7 @@
   </div>
 </section>
 
+</main>
 
 <!-- ═══════════════ FOOTER ═══════════════ -->
 <footer class="footer kit">
@@ -686,6 +748,7 @@
     <div class="footer__col">
       <span class="footer__col-title">Company</span>
       <a href="contact.html">Contact</a>
+      <a href="/help">Help center</a>
       <a href="mailto:hello@briques.app">hello@briques.app</a>
       <a href="mailto:press@briques.app">Press</a>
     </div>

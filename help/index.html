@@ -1,0 +1,311 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Guides for building, publishing, and managing your Briques apps. Account, billing, privacy, and troubleshooting." />
+
+  <title>Help center - Briques</title>
+
+  <link rel="canonical" href="https://briques.app/help" />
+  <link rel="icon" href="/favicon.ico" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <meta property="og:title" content="Help center - Briques" />
+  <meta property="og:description" content="Guides for building, publishing, and managing your Briques apps. Account, billing, privacy, and troubleshooting." />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://briques.app/help" />
+  <meta property="og:image" content="https://briques.app/assets/images/logo.png" />
+  <meta property="og:image:type" content="image/png" />
+  <meta property="og:image:width" content="1024" />
+  <meta property="og:image:height" content="1024" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:image" content="https://briques.app/assets/images/logo.png" />
+
+  <!-- Fonts are fully self-hosted — no third-party request on the
+       critical path. Preload the serif that paints the headlines. -->
+  <link rel="preload" href="/assets/fonts/InstrumentSerif-Regular.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="/assets/fonts/InstrumentSerif-Italic.woff2" as="font" type="font/woff2" crossorigin />
+
+  <!-- Theme: set data-theme BEFORE stylesheets to avoid FOUC. -->
+  <meta name="color-scheme" content="light dark" />
+  <meta name="theme-color" content="#FAF7F0" media="(prefers-color-scheme: light)" />
+  <meta name="theme-color" content="#1A1411" media="(prefers-color-scheme: dark)" />
+  <script>
+    (function () {
+      try {
+        var stored = localStorage.getItem('theme');
+        var theme = stored ||
+          (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+            ? 'dark' : 'light');
+        document.documentElement.setAttribute('data-theme', theme);
+      } catch (e) {
+        document.documentElement.setAttribute('data-theme', 'light');
+      }
+    })();
+    function toggleTheme() {
+      var current = document.documentElement.getAttribute('data-theme') === 'dark'
+        ? 'dark' : 'light';
+      var next = current === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      try { localStorage.setItem('theme', next); } catch (e) {}
+      var btn = document.querySelector('.theme-toggle');
+      if (btn) btn.setAttribute('aria-label',
+        next === 'dark' ? 'Switch to light theme' : 'Switch to dark theme');
+      var meta = document.querySelector('meta[name="theme-color"]:not([media])');
+      if (!meta) {
+        meta = document.createElement('meta');
+        meta.setAttribute('name', 'theme-color');
+        document.head.appendChild(meta);
+      }
+      meta.setAttribute('content', next === 'dark' ? '#1A1411' : '#FAF7F0');
+    }
+  </script>
+
+  <link rel="stylesheet" href="/styles.css" />
+  <script src="/site.js" defer></script>
+</head>
+<body>
+
+<a class="skip-link" href="#main">Skip to content</a>
+
+<nav class="nav">
+  <a class="nav__brand" href="/">
+    <span class="brand-mark brand-mark--nav" aria-hidden="true"><i></i><i></i></span>
+    <span class="nav__name">Briques</span>
+  </a>
+  <div class="nav__links" id="site-menu">
+    <a href="/#what">What you build</a>
+    <a href="/#how">How it works</a>
+    <a href="/pricing">Pricing</a>
+    <a href="/beta">Beta</a>
+    <a href="/contact">Contact</a>
+  </div>
+  <button type="button" class="theme-toggle" aria-label="Switch to dark theme" onclick="toggleTheme()">
+    <svg class="theme-toggle__moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    <svg class="theme-toggle__sun"  viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+  </button>
+  <a class="nav__cta" href="/beta">Join beta</a>
+  <button type="button" class="nav__menu-btn" aria-expanded="false" aria-controls="site-menu" aria-label="Open menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<main id="main">
+
+  <header class="page-head kit">
+    <div class="page-head__bricks" aria-hidden="true">
+      <span class="brick brick--apricot brick--2x1 brick--lg brick--tilt-l-sm"></span>
+      <span class="brick brick--butter brick--3x2 brick--lg"></span>
+      <span class="brick brick--sage brick--2x1 brick--lg brick--tilt-r-sm"></span>
+    </div>
+    <p class="page-head__kicker">Help center</p>
+    <h1 class="page-head__title">How can we <em>help?</em></h1>
+    <p class="page-head__meta">
+      Guides for building, publishing, and managing your Briques apps.
+    </p>
+  </header>
+
+  <section class="kit">
+    <div class="help-search-wrap">
+      <label class="visually-hidden" for="help-search">Search help articles</label>
+      <input id="help-search" class="help-search" type="search" autocomplete="off"
+             placeholder="Search help articles…" />
+    </div>
+
+    <p class="help-noresults" hidden>No articles match “<span></span>”. Try another word, or <a href="/contact">contact us</a>.</p>
+
+    <section class="help-cat" data-cat>
+      <h2 class="help-cat__title">Getting started</h2>
+      <div class="help-grid">
+        <a class="help-card" href="/help/what-is-briques" data-title="What is Briques?" data-keywords="about overview intro mini app builder no code what">
+          <span class="help-card__title">What is Briques?</span>
+          <span class="help-card__desc">Briques turns a plain-language description into a small, private app you can use on your phone.</span>
+          <span class="help-card__arrow" aria-hidden="true">→</span>
+        </a>
+        <a class="help-card" href="/help/create-your-first-app" data-title="Create your first app" data-keywords="create new build start first app generate describe">
+          <span class="help-card__title">Create your first app</span>
+          <span class="help-card__desc">Two ways to start: describe it to the AI, or build it screen by screen.</span>
+          <span class="help-card__arrow" aria-hidden="true">→</span>
+        </a>
+      </div>
+    </section>
+
+    <section class="help-cat" data-cat>
+      <h2 class="help-cat__title">Building apps</h2>
+      <div class="help-grid">
+        <a class="help-card" href="/help/build-and-edit-pages" data-title="Build and edit pages" data-keywords="pages page builder screens edit layout widgets elements buttons forms">
+          <span class="help-card__title">Build and edit pages</span>
+          <span class="help-card__desc">Use the page builder to lay out screens with text, lists, buttons, and forms.</span>
+          <span class="help-card__arrow" aria-hidden="true">→</span>
+        </a>
+        <a class="help-card" href="/help/tables-and-data" data-title="Tables and data" data-keywords="tables data fields records database columns rows reference number date">
+          <span class="help-card__title">Tables and data</span>
+          <span class="help-card__desc">Tables hold your records. Define fields, then read and write them from your pages.</span>
+          <span class="help-card__arrow" aria-hidden="true">→</span>
+        </a>
+        <a class="help-card" href="/help/publish-your-app" data-title="Publish and unpublish your app" data-keywords="publish unpublish live draft release ready edit">
+          <span class="help-card__title">Publish and unpublish your app</span>
+          <span class="help-card__desc">Publishing turns your draft into a live app. Unpublish to edit again.</span>
+          <span class="help-card__arrow" aria-hidden="true">→</span>
+        </a>
+      </div>
+    </section>
+
+    <section class="help-cat" data-cat>
+      <h2 class="help-cat__title">Your account</h2>
+      <div class="help-grid">
+        <a class="help-card" href="/help/sign-in-and-account" data-title="Sign in to Briques" data-keywords="sign in login google apple account switch device hide my email">
+          <span class="help-card__title">Sign in to Briques</span>
+          <span class="help-card__desc">Sign in with Google or Apple. One account, all your apps.</span>
+          <span class="help-card__arrow" aria-hidden="true">→</span>
+        </a>
+        <a class="help-card" href="/help/delete-your-account" data-title="Delete your account" data-keywords="delete account remove erase close data deletion gdpr privacy permanent wipe">
+          <span class="help-card__title">Delete your account</span>
+          <span class="help-card__desc">How to permanently delete your Briques account and all of your data.</span>
+          <span class="help-card__arrow" aria-hidden="true">→</span>
+        </a>
+        <a class="help-card" href="/help/export-your-data" data-title="Export your data" data-keywords="export download data backup json portable copy gdpr">
+          <span class="help-card__title">Export your data</span>
+          <span class="help-card__desc">Get a portable copy of your apps and records.</span>
+          <span class="help-card__arrow" aria-hidden="true">→</span>
+        </a>
+      </div>
+    </section>
+
+    <section class="help-cat" data-cat>
+      <h2 class="help-cat__title">Plans & billing</h2>
+      <div class="help-grid">
+        <a class="help-card" href="/help/plans-and-pricing" data-title="Plans and pricing" data-keywords="plans pricing free pro cost price subscription upgrade storage limits">
+          <span class="help-card__title">Plans and pricing</span>
+          <span class="help-card__desc">Free and Pro, side by side. What you get on each.</span>
+          <span class="help-card__arrow" aria-hidden="true">→</span>
+        </a>
+        <a class="help-card" href="/help/ai-credits" data-title="How AI credits work" data-keywords="credits ai cost usage allowance top up packs generate estimate">
+          <span class="help-card__title">How AI credits work</span>
+          <span class="help-card__desc">Credits are the unit of AI work. Here is roughly what things cost.</span>
+          <span class="help-card__arrow" aria-hidden="true">→</span>
+        </a>
+        <a class="help-card" href="/help/manage-your-subscription" data-title="Manage or cancel your subscription" data-keywords="cancel subscription manage billing renew stop pro downgrade apple google">
+          <span class="help-card__title">Manage or cancel your subscription</span>
+          <span class="help-card__desc">Change, cancel, or check your Pro subscription through the app store.</span>
+          <span class="help-card__arrow" aria-hidden="true">→</span>
+        </a>
+        <a class="help-card" href="/help/restore-purchases-and-refunds" data-title="Restore purchases and refunds" data-keywords="restore purchase refund money back reinstall new device apple google not showing">
+          <span class="help-card__title">Restore purchases and refunds</span>
+          <span class="help-card__desc">Get your purchase back on a new device, or request a refund.</span>
+          <span class="help-card__arrow" aria-hidden="true">→</span>
+        </a>
+      </div>
+    </section>
+
+    <section class="help-cat" data-cat>
+      <h2 class="help-cat__title">Privacy & data</h2>
+      <div class="help-grid">
+        <a class="help-card" href="/help/how-your-data-is-used" data-title="Your data and AI" data-keywords="privacy data ai security training providers consent stored sell share">
+          <span class="help-card__title">Your data and AI</span>
+          <span class="help-card__desc">What Briques stores, what it sends to AI, and what it never does.</span>
+          <span class="help-card__arrow" aria-hidden="true">→</span>
+        </a>
+      </div>
+    </section>
+
+    <section class="help-cat" data-cat>
+      <h2 class="help-cat__title">Troubleshooting</h2>
+      <div class="help-grid">
+        <a class="help-card" href="/help/troubleshooting" data-title="Troubleshooting" data-keywords="troubleshoot problem error not working fix generate failed sign in sync crash">
+          <span class="help-card__title">Troubleshooting</span>
+          <span class="help-card__desc">Fixes for the most common snags — generation, sign-in, sync, and purchases.</span>
+          <span class="help-card__arrow" aria-hidden="true">→</span>
+        </a>
+        <a class="help-card" href="/help/contact-support" data-title="Contact support" data-keywords="contact support email help human reach team bug report">
+          <span class="help-card__title">Contact support</span>
+          <span class="help-card__desc">How to reach a human, and which address to use.</span>
+          <span class="help-card__arrow" aria-hidden="true">→</span>
+        </a>
+      </div>
+    </section>
+
+    <div class="help-cta">
+      <div>
+        <h2>Still need help?</h2>
+        <p>Can't find an answer here? Email us and a human replies within about two days.</p>
+      </div>
+      <a class="btn btn--accent" href="/help/contact-support">Contact support</a>
+    </div>
+  </section>
+
+</main>
+
+<footer class="footer kit">
+  <div class="footer__top">
+    <div class="footer__brand">
+      <span class="footer__name">
+        <span class="brand-mark brand-mark--footer" aria-hidden="true"><i></i><i></i></span>
+        Briques
+      </span>
+      <p class="footer__tag">
+        Describe an app. Ship it before the idea cools.
+      </p>
+      <p class="footer__tag" style="margin-top: var(--s-2); font-size: var(--t-eyebrow); text-transform: uppercase; letter-spacing: 0.14em; color: var(--ink-muted); font-weight: 600;">
+        briques.app
+      </p>
+    </div>
+    <div class="footer__col">
+      <span class="footer__col-title">Product</span>
+      <a href="/#what">What you build</a>
+      <a href="/#how">How it works</a>
+      <a href="/pricing">Pricing</a>
+      <a href="/beta">iOS beta</a>
+    </div>
+    <div class="footer__col">
+      <span class="footer__col-title">Company</span>
+      <a href="/contact">Contact</a>
+      <a href="/help">Help center</a>
+      <a href="mailto:hello@briques.app">hello@briques.app</a>
+      <a href="mailto:press@briques.app">Press</a>
+    </div>
+    <div class="footer__col">
+      <span class="footer__col-title">Legal</span>
+      <a href="/privacy">Privacy</a>
+      <a href="/terms">Terms</a>
+      <a href="mailto:privacy@briques.app">Data requests</a>
+    </div>
+  </div>
+  <div class="footer__base">
+    <span>© 2026 Briques. Made with care.</span>
+    <span>iOS TestFlight beta</span>
+  </div>
+</footer>
+
+
+  <script>
+    (function () {
+      var input = document.getElementById('help-search');
+      if (!input) return;
+      var cards = Array.prototype.slice.call(document.querySelectorAll('.help-card'));
+      var cats = Array.prototype.slice.call(document.querySelectorAll('[data-cat]'));
+      var noResults = document.querySelector('.help-noresults');
+      var noResultsQ = noResults ? noResults.querySelector('span') : null;
+      function apply() {
+        var q = input.value.trim().toLowerCase();
+        var any = false;
+        cards.forEach(function (c) {
+          var hay = (c.getAttribute('data-title') + ' ' + c.getAttribute('data-keywords')).toLowerCase();
+          var show = !q || hay.indexOf(q) !== -1;
+          c.hidden = !show;
+          if (show) any = true;
+        });
+        cats.forEach(function (cat) {
+          cat.hidden = cat.querySelectorAll('.help-card:not([hidden])').length === 0;
+        });
+        if (noResults) {
+          noResults.hidden = any || !q;
+          if (noResultsQ) noResultsQ.textContent = input.value;
+        }
+      }
+      input.addEventListener('input', apply);
+    })();
+  </script>
+
+</body>
+</html>

@@ -16,9 +16,10 @@
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:image" content="https://briques.app/assets/images/logo.png" />
 
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
+  <!-- Fonts are fully self-hosted — no third-party request on the
+       critical path. Preload the serif that paints the headlines. -->
+  <link rel="preload" href="assets/fonts/InstrumentSerif-Regular.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="assets/fonts/InstrumentSerif-Italic.woff2" as="font" type="font/woff2" crossorigin />
 
   <meta name="color-scheme" content="light dark" />
   <meta name="theme-color" content="#FAF7F0" media="(prefers-color-scheme: light)" />
@@ -27,7 +28,9 @@
     (function () {
       try {
         var stored = localStorage.getItem('theme');
-        var theme = stored || 'light';
+        var theme = stored ||
+          (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+            ? 'dark' : 'light');
         document.documentElement.setAttribute('data-theme', theme);
       } catch (e) {
         document.documentElement.setAttribute('data-theme', 'light');
@@ -57,16 +60,18 @@
 </head>
 <body>
 
+<a class="skip-link" href="#main">Skip to content</a>
+
 <nav class="nav">
   <a class="nav__brand" href="index.html">
     <span class="brand-mark brand-mark--nav" aria-hidden="true"><i></i><i></i></span>
     <span class="nav__name">Briques</span>
   </a>
-  <div class="nav__links">
+  <div class="nav__links" id="site-menu">
     <a href="index.html#what">What you build</a>
     <a href="index.html#how">How it works</a>
     <a href="pricing.html">Pricing</a>
-    <a href="beta.html" class="is-active">Beta</a>
+    <a href="beta.html" class="is-active" aria-current="page">Beta</a>
     <a href="contact.html">Contact</a>
   </div>
   <button type="button" class="theme-toggle" aria-label="Switch to dark theme" onclick="toggleTheme()">
@@ -74,9 +79,12 @@
     <svg class="theme-toggle__sun"  viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
   </button>
   <a class="nav__cta" href="#join">Join beta</a>
+  <button type="button" class="nav__menu-btn" aria-expanded="false" aria-controls="site-menu" aria-label="Open menu">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
 
-<main>
+<main id="main">
   <header class="beta-hero kit">
     <div class="beta-hero__copy">
       <p class="eyebrow">
@@ -223,6 +231,7 @@
     <div class="footer__col">
       <span class="footer__col-title">Company</span>
       <a href="contact.html">Contact</a>
+      <a href="/help">Help center</a>
       <a href="mailto:hello@briques.app">hello@briques.app</a>
       <a href="mailto:press@briques.app">Press</a>
     </div>
@@ -257,6 +266,19 @@
     statusEl.className = 'beta-form__status' + (kind ? ' is-' + kind : '');
   }
 
+  // Tie the error state to the field itself, not only the shared
+  // status region, so screen readers announce it on re-focus.
+  function setFieldError(invalid) {
+    if (!form.email) return;
+    if (invalid) {
+      form.email.setAttribute('aria-invalid', 'true');
+      form.email.setAttribute('aria-describedby', 'beta-status');
+    } else {
+      form.email.removeAttribute('aria-invalid');
+      form.email.removeAttribute('aria-describedby');
+    }
+  }
+
   form.addEventListener('submit', function (e) {
     e.preventDefault();
     var email = (form.email && form.email.value || '').trim();
@@ -265,9 +287,11 @@
 
     if (!EMAIL_RE.test(email)) {
       setStatus('Enter a valid email address.', 'error');
+      setFieldError(true);
       if (form.email) form.email.focus();
       return;
     }
+    setFieldError(false);
     if (os !== 'ios' && os !== 'android') {
       setStatus('Pick iOS or Android.', 'error');
       return;
@@ -297,8 +321,8 @@
         form.reset();
         setStatus(
           res.status === 409
-            ? "You're already on the list — invite coming soon."
-            : "You're on the list — we'll email your invite soon.",
+            ? "You're already on the list. Invite coming soon."
+            : "You're on the list. We'll email your invite soon.",
           'ok'
         );
         if (submitBtn) submitBtn.textContent = 'Requested ✓';

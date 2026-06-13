@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="description" content="The rules for using Briques: AI output, mini app sandbox, subscriptions, and Apple App Store EULA." />
 
-  <title>Terms — Briques</title>
+  <title>Terms - Briques</title>
 
   <link rel="icon" href="/favicon.ico" />
   <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
@@ -16,9 +16,10 @@
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:image" content="https://briques.app/assets/images/logo.png" />
 
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
+  <!-- Fonts are fully self-hosted — no third-party request on the
+       critical path. Preload the serif that paints the headlines. -->
+  <link rel="preload" href="assets/fonts/InstrumentSerif-Regular.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="assets/fonts/InstrumentSerif-Italic.woff2" as="font" type="font/woff2" crossorigin />
 
   <!-- Theme: set data-theme BEFORE stylesheets to avoid FOUC. -->
   <meta name="color-scheme" content="light dark" />
@@ -28,7 +29,9 @@
     (function () {
       try {
         var stored = localStorage.getItem('theme');
-        var theme = stored || 'light';
+        var theme = stored ||
+          (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+            ? 'dark' : 'light');
         document.documentElement.setAttribute('data-theme', theme);
       } catch (e) {
         document.documentElement.setAttribute('data-theme', 'light');
@@ -58,12 +61,14 @@
 </head>
 <body>
 
+<a class="skip-link" href="#main">Skip to content</a>
+
 <nav class="nav">
   <a class="nav__brand" href="index.html">
     <span class="brand-mark brand-mark--nav" aria-hidden="true"><i></i><i></i></span>
     <span class="nav__name">Briques</span>
   </a>
-  <div class="nav__links">
+  <div class="nav__links" id="site-menu">
     <a href="index.html#what">What you build</a>
     <a href="index.html#how">How it works</a>
     <a href="pricing.html">Pricing</a>
@@ -75,9 +80,12 @@
     <svg class="theme-toggle__sun"  viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
   </button>
   <a class="nav__cta" href="beta.html">Join beta</a>
+  <button type="button" class="nav__menu-btn" aria-expanded="false" aria-controls="site-menu" aria-label="Open menu">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
 
-<main>
+<main id="main">
 
   <header class="page-head kit">
     <div class="page-head__bricks" aria-hidden="true">
@@ -662,6 +670,7 @@
     <div class="footer__col">
       <span class="footer__col-title">Company</span>
       <a href="contact.html">Contact</a>
+      <a href="/help">Help center</a>
       <a href="mailto:hello@briques.app">hello@briques.app</a>
       <a href="mailto:press@briques.app">Press</a>
     </div>

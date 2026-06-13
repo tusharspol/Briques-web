@@ -36,6 +36,25 @@ input, textarea, select, button { font: inherit; color: inherit; }
    2. TOKENS
    ═══════════════════════════════════════════════════════════════ */
 
+/* Instrument Serif — self-hosted (latin subset, ~15KB each). Was a
+   render-blocking Google Fonts request; now it ships with the site
+   like Geist does. */
+@font-face {
+  font-family: "Instrument Serif";
+  src: url("assets/fonts/InstrumentSerif-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Instrument Serif";
+  src: url("assets/fonts/InstrumentSerif-Italic.woff2") format("woff2");
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
 @font-face {
   font-family: "Geist";
   src: url("assets/fonts/Geist-Regular.ttf") format("truetype");
@@ -77,6 +96,8 @@ input, textarea, select, button { font: inherit; color: inherit; }
 }
 
 :root {
+  color-scheme: light;    /* UA chrome (scrollbars, form panes) follows the toggle */
+
   /* ── Sunlit palette — mirrors lib/widgets/brick.dart ──────── */
   --paper:     #FAF7F0;   /* default background everywhere */
   --cream:     #F4ECD8;   /* slightly darker tinted surface */
@@ -94,6 +115,16 @@ input, textarea, select, button { font: inherit; color: inherit; }
   /* Hover/pressed variants of the two interactive colors. */
   --ink-deep:     #2A2520; /* nav cta + dark btn hover bg */
   --apricot-deep: #ED914D; /* apricot button hover bg */
+
+  /* Functional colors — where color must COMMUNICATE (focus, form
+     feedback, annotations) the pastel accents fail contrast on
+     paper. These are ink-mixed variants that clear WCAG on light
+     surfaces; the dark theme swaps back to the pure accents, which
+     pass there. Decorative use of the accents is unchanged. */
+  --focus-ring: #9C5A14;  /* burnt apricot — ≥3:1 on paper AND on ink */
+  --ok-text:    #4F6138;  /* deep sage — form success, 6.3:1 on paper */
+  --err-text:   #9A4B2E;  /* deep rose — form errors, 5.7:1 on paper */
+  --annotation: #5C6B4E;  /* readable sage for margin notes, 5.3:1 */
 
   /* Brick stud highlight — a touch of inner-light. */
   --stud-highlight: rgba(255, 251, 240, 0.55);
@@ -146,6 +177,8 @@ input, textarea, select, button { font: inherit; color: inherit; }
    ═══════════════════════════════════════════════════════════════ */
 
 [data-theme="dark"] {
+  color-scheme: dark;
+
   --paper:     #1A1411;   /* deep warm coffee — not black */
   --cream:     #251D17;   /* one notch lighter — cards, surfaces */
   --ink:       #F4ECD8;   /* warm cream — primary text */
@@ -163,6 +196,12 @@ input, textarea, select, button { font: inherit; color: inherit; }
 
   --ink-deep:     #0E0A08; /* hover bg = even deeper than paper */
   --apricot-deep: #E59661; /* hover variant of dark apricot */
+
+  /* Functional colors — the pure accents pass on dark surfaces. */
+  --focus-ring: #F5AC73;
+  --ok-text:    #A3B18A;
+  --err-text:   #E29578;
+  --annotation: #A3B18A;
 
   /* Legacy brick-paint tokens kept for older local experiments. */
   --stud-highlight: rgba(255, 245, 220, 0.22);
@@ -194,12 +233,35 @@ body {
 /* Selection — warm butter highlight (matches the brand) */
 ::selection { background: var(--butter); color: var(--ink); }
 
-/* Focus ring — same warm tone, never a default blue */
+/* Focus ring — warm burnt apricot, never a default blue. The token
+   darkens in light theme (raw apricot is 1.9:1 on paper, invisible
+   to keyboard users) and returns to bright apricot in dark. */
 :focus-visible {
-  outline: 2px solid var(--apricot);
+  outline: 2px solid var(--focus-ring);
   outline-offset: 3px;
   border-radius: var(--radius-sm);
 }
+
+/* Skip link — first tab stop on every page. Visually hidden until
+   focused, then drops in under the top-left corner. */
+.skip-link {
+  position: absolute;
+  top: -100px;
+  left: var(--s-4);
+  z-index: 100;
+  background: var(--ink);
+  color: var(--paper);
+  padding: 10px 16px;
+  border-radius: 0 0 var(--radius) var(--radius);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: var(--t-small);
+  transition: top 150ms ease-out;
+}
+.skip-link:focus-visible { top: 0; }
+
+/* Anchor jumps land below the 77px sticky nav, not under it. */
+[id] { scroll-margin-top: 96px; }
 
 
 /* ═══════════════════════════════════════════════════════════════
@@ -442,7 +504,7 @@ h1 em, h2 em, h3 em { font-style: italic; font-family: var(--serif); }
   text-decoration: none;
   background: var(--ink);
   color: var(--paper);
-  padding: 10px 16px;
+  padding: 12px 16px;   /* 12px vertical clears the 44pt touch bar */
   border-radius: 999px;
   transition: transform 220ms cubic-bezier(0.2, 0.8, 0.2, 1), background 200ms;
 }
@@ -471,7 +533,7 @@ h1 em, h2 em, h3 em { font-style: italic; font-family: var(--serif); }
   background: var(--cream);
 }
 .theme-toggle:focus-visible {
-  outline: 2px solid var(--apricot);
+  outline: 2px solid var(--focus-ring);
   outline-offset: 2px;
 }
 .theme-toggle svg {
@@ -489,10 +551,60 @@ h1 em, h2 em, h3 em { font-style: italic; font-family: var(--serif); }
 [data-theme="dark"] .theme-toggle__sun  { opacity: 1; transform: rotate(0) scale(1); }
 [data-theme="dark"] .theme-toggle__moon { opacity: 0; transform: rotate(90deg) scale(0.6); }
 
+/* Mobile menu button — hidden on desktop, a 44x44 disclosure on
+   phones. Three hand-drawn-feeling bars via currentColor borders. */
+.nav__menu-btn {
+  display: none;
+  width: 44px;
+  height: 44px;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 5px;
+  background: transparent;
+  border: 0;
+  border-radius: var(--radius-sm);
+  color: var(--ink);
+  -webkit-tap-highlight-color: transparent;
+}
+.nav__menu-btn span {
+  display: block;
+  width: 20px;
+  height: 2px;
+  background: currentColor;
+  border-radius: 2px;
+  transition: transform 220ms cubic-bezier(0.2, 0.8, 0.2, 1), opacity 180ms;
+}
+.nav__menu-btn[aria-expanded="true"] span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.nav__menu-btn[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
+.nav__menu-btn[aria-expanded="true"] span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
 @media (max-width: 720px) {
-  .nav__links { display: none; }
-  /* Theme toggle stays visible on mobile — keep it tight against CTA. */
-  .theme-toggle { width: 32px; height: 32px; }
+  .nav__menu-btn { display: inline-flex; }
+
+  /* The link row becomes a dropdown sheet under the sticky bar,
+     opened by the menu button. Solid paper (not the nav scrim) so
+     the list reads cleanly over scrolling content. */
+  .nav__links {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    gap: 0;
+    background: var(--paper);
+    border-bottom: 1px solid var(--hairline);
+    padding: var(--s-2) clamp(var(--s-4), 4vw, var(--s-6)) var(--s-4);
+    box-shadow: 0 18px 30px -22px rgba(26, 23, 20, 0.25);
+  }
+  .nav.is-open .nav__links { display: flex; }
+  .nav__links a {
+    padding: var(--s-3) 0;          /* ≥44px tap rows */
+    font-size: var(--t-body);
+    border-bottom: 1px solid var(--hairline);
+  }
+  .nav__links a:last-child { border-bottom: 0; }
 }
 
 
@@ -795,6 +907,11 @@ h1 em, h2 em, h3 em { font-style: italic; font-family: var(--serif); }
   font-style: italic;
 }
 
+/* Dark theme flips the band to cream (var(--ink) inverts), where
+   butter is 1.4:1 — "ships tonight" vanished. Deep butter holds
+   the same warmth at >3:1 on the light band. */
+[data-theme="dark"] .cta-band__title em { color: #8A6D1F; }
+
 .cta-band__lede {
   color: color-mix(in srgb, var(--paper) 70%, transparent);
   margin-inline: auto;
@@ -868,7 +985,7 @@ h1 em, h2 em, h3 em { font-style: italic; font-family: var(--serif); }
 .footer__col {
   display: flex;
   flex-direction: column;
-  gap: var(--s-3);
+  gap: var(--s-1);   /* tighter gap; the links carry their own padding */
 }
 
 .footer__col-title {
@@ -883,6 +1000,7 @@ h1 em, h2 em, h3 em { font-style: italic; font-family: var(--serif); }
   text-decoration: none;
   color: var(--ink-soft);
   font-size: var(--t-small);
+  padding-block: var(--s-2);   /* ~38px rows — comfortable thumb targets */
   transition: color 180ms;
 }
 
@@ -1000,7 +1118,7 @@ h1 em, h2 em, h3 em { font-style: italic; font-family: var(--serif); }
   height: 8px;
   background: var(--apricot);
   border-radius: 2px;
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.35), inset 0 -1px 0 var(--brick-edge);
+  box-shadow: inset 0 1px 0 rgba(255, 251, 240, 0.35), inset 0 -1px 0 var(--brick-edge);
 }
 
 .plan__feature strong { color: inherit; font-weight: 700; }
@@ -1330,7 +1448,7 @@ h1 em, h2 em, h3 em { font-style: italic; font-family: var(--serif); }
   height: 12px;
   background: var(--apricot);
   border-radius: 3px;
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.35), inset 0 -1px 0 var(--brick-edge);
+  box-shadow: inset 0 1px 0 rgba(255, 251, 240, 0.35), inset 0 -1px 0 var(--brick-edge);
 }
 
 .prose h2:nth-of-type(2n)::before { background: var(--sage); }
@@ -1369,7 +1487,7 @@ h1 em, h2 em, h3 em { font-style: italic; font-family: var(--serif); }
   height: 6px;
   background: var(--apricot);
   border-radius: 2px;
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.35);
+  box-shadow: inset 0 1px 0 rgba(255, 251, 240, 0.35);
 }
 
 .prose ol { padding-left: var(--s-5); margin-left: var(--s-3); }
@@ -1584,7 +1702,7 @@ h1 em, h2 em, h3 em { font-style: italic; font-family: var(--serif); }
   border-radius: var(--radius-lg);
   padding: clamp(var(--s-6), 4vw, var(--s-7));
   box-shadow:
-    0 1px 0 rgba(255, 255, 255, 0.08) inset,
+    0 1px 0 rgba(255, 251, 240, 0.08) inset,
     0 30px 80px -38px rgba(26, 23, 20, 0.4);
 }
 
@@ -1762,8 +1880,8 @@ h1 em, h2 em, h3 em { font-style: italic; font-family: var(--serif); }
   border-radius: 44px;
   padding: 10px;
   box-shadow:
-    0 1px 0 rgba(255,255,255,0.08) inset,
-    0 -1px 0 rgba(0,0,0,0.6) inset,
+    0 1px 0 rgba(255, 251, 240, 0.08) inset,
+    0 -1px 0 rgba(26, 23, 20, 0.6) inset,
     0 30px 60px -20px rgba(26, 23, 20, 0.35),
     0 12px 30px -12px rgba(26, 23, 20, 0.25);
   /* Z-stacking against the brick scatter — phone wins. */
@@ -1941,7 +2059,10 @@ h1 em, h2 em, h3 em { font-style: italic; font-family: var(--serif); }
   font-weight: 600;
   padding: 3px 7px;
   border-radius: 5px;
-  color: var(--ink);
+  /* Chips keep their light pastel fills in both themes, so the
+     text is pinned dark — var(--ink) flips to cream in dark mode
+     and went light-on-light. */
+  color: #1A1714;
   letter-spacing: 0;
 }
 
@@ -2180,7 +2301,7 @@ h1 em, h2 em, h3 em { font-style: italic; font-family: var(--serif); }
   font-family: var(--serif);
   font-style: italic;
   font-size: 14px;
-  color: var(--sage);
+  color: var(--annotation);
   line-height: 1.2;
   white-space: nowrap;
   pointer-events: none;
@@ -2304,7 +2425,7 @@ h1 em, h2 em, h3 em { font-style: italic; font-family: var(--serif); }
   position: absolute;
   font-family: var(--serif);
   font-style: italic;
-  color: var(--sage);
+  color: var(--annotation);
   font-size: 14px;
   white-space: nowrap;
   z-index: 5;
@@ -2313,124 +2434,108 @@ h1 em, h2 em, h3 em { font-style: italic; font-family: var(--serif); }
 
 
 /* ═══════════════════════════════════════════════════════════════
-   21. TRY-BAND — "Type a sentence. See an app appear."
+   21. PILE BAND — "you don't need another app subscription"
+   ───────────────────────────────────────────────────────────────
+   The displacement story vs single-purpose apps. Typographic on
+   a cream surface — deliberately NOT another dark band (the CTA
+   band owns that move) and NOT a card grid. Asymmetric two-column:
+   serif claim left, supporting copy right.
+   (Replaces the retired .try-band template that no page used.)
    ═══════════════════════════════════════════════════════════════ */
 
-.try-band {
-  background: var(--ink);
-  color: var(--paper);
+.pile-band {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+  gap: clamp(var(--s-6), 5vw, var(--s-9));
+  align-items: center;
+  background: var(--cream);
+  border: 1px solid var(--hairline);
   border-radius: var(--radius-lg);
-  padding: clamp(var(--s-7), 5vw, var(--s-9)) clamp(var(--s-5), 4vw, var(--s-7));
-  text-align: center;
-  position: relative;
+  padding: clamp(var(--s-6), 5vw, var(--s-8));
+}
+
+.pile-band__title {
+  font-family: var(--serif);
+  font-size: clamp(1.875rem, 3.4vw, 2.75rem);
+  line-height: 1.08;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+
+.pile-band__title em { font-style: italic; }
+
+.pile-band__copy {
+  color: var(--ink-soft);
+  font-size: var(--t-lede);
+  line-height: 1.55;
+}
+
+.pile-band__copy strong { color: var(--ink); font-weight: 600; }
+
+@media (max-width: 760px) {
+  .pile-band { grid-template-columns: 1fr; }
+}
+
+
+/* ═══════════════════════════════════════════════════════════════
+   21b. SHOTS — product screenshots + labelled placeholders
+   ───────────────────────────────────────────────────────────────
+   .shot is the one sanctioned home for real product imagery: a
+   plain figure with a hairline border (no fake browser/phone
+   chrome — the screenshots already show the app's own UI).
+
+   .shot--ph is the interim placeholder: dashed border + a brick +
+   an honest label naming the asset that belongs there. Each
+   placeholder carries data-asset="<slug>" so swapping in real
+   images later is a grep away.
+   ═══════════════════════════════════════════════════════════════ */
+
+.shot {
+  margin: 0;
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius);
   overflow: hidden;
+  background: var(--cream);
 }
 
-.try-band__kicker {
-  font-size: var(--t-eyebrow);
-  text-transform: uppercase;
-  letter-spacing: 0.16em;
-  color: rgba(250, 247, 240, 0.55);
-  font-weight: 600;
-  margin-bottom: var(--s-3);
+.shot img {
+  width: 100%;
+  height: 100%;
+  /* Raw portrait iPhone screenshots drop straight in: cover crops
+     them to the frame, top-anchored so the app's header and first
+     rows stay visible (the slice that orients the viewer). */
+  object-fit: cover;
+  object-position: top center;
 }
 
-.try-band__title {
-  font-family: var(--serif);
-  font-size: clamp(2rem, 4vw, 3rem);
-  line-height: 1.1;
-  color: var(--paper);
-  margin-bottom: var(--s-6);
-}
+.shot--landscape { aspect-ratio: 16 / 10; }
+.shot--portrait  { aspect-ratio: 4 / 5; }
 
-.try-band__title em {
-  color: var(--butter);
-  font-style: italic;
-}
-
-/* Fake input — looks tappable, isn't fancy. The action is sending
-   the prompt to /contact via mailto so we capture interest with a
-   real human reply (no backend needed). */
-.try-band__input {
+.shot--ph {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: var(--s-3);
-  background: var(--paper);
-  color: var(--ink);
-  border-radius: 999px;
-  padding: 8px 8px 8px 22px;
-  max-width: 580px;
-  margin-inline: auto;
-  font-size: 1.0625rem;
-  text-align: left;
-}
-
-.try-band__input-spark {
-  color: var(--apricot);
-  flex-shrink: 0;
-  font-size: 1.125rem;
-}
-
-.try-band__input-text {
-  flex: 1;
-  background: transparent;
-  border: 0;
-  outline: none;
-  font: inherit;
-  color: var(--ink);
-  min-width: 0;
-}
-
-.try-band__input-text::placeholder { color: var(--ink-muted); }
-
-.try-band__input-go {
-  background: var(--apricot);
-  color: var(--ink);
-  border: 0;
-  padding: 12px 20px;
-  border-radius: 999px;
-  font-weight: 700;
-  cursor: pointer;
-  white-space: nowrap;
-  transition: transform 220ms cubic-bezier(0.2, 0.8, 0.2, 1), background 200ms;
-}
-
-.try-band__input-go:hover { transform: translateY(-1px); background: #f0934a; }
-
-.try-band__starters {
-  display: flex;
-  flex-wrap: wrap;
   justify-content: center;
-  align-items: center;
   gap: var(--s-3);
-  margin-top: var(--s-5);
+  border-style: dashed;
+  border-color: var(--ink-muted);
+  padding: var(--s-5);
+  text-align: center;
 }
 
-.try-band__starters-label {
+.shot__hint {
   font-size: var(--t-eyebrow);
   text-transform: uppercase;
-  letter-spacing: 0.14em;
-  color: rgba(250, 247, 240, 0.5);
+  letter-spacing: 0.12em;
   font-weight: 600;
+  color: var(--ink-muted);
+  max-width: 24ch;
+  line-height: 1.5;
 }
 
-.try-band__chip {
-  background: rgba(250, 247, 240, 0.08);
-  color: var(--paper);
-  border: 1px solid rgba(250, 247, 240, 0.16);
-  padding: 8px 14px;
-  border-radius: 999px;
-  font-size: var(--t-small);
-  font-family: var(--serif);
-  font-style: italic;
-  cursor: pointer;
-  transition: background 200ms, border-color 200ms;
-}
-
-.try-band__chip:hover {
-  background: rgba(250, 247, 240, 0.14);
-  border-color: rgba(250, 247, 240, 0.3);
-}
+/* Where shots sit inside existing components */
+.g-card .shot { margin-top: var(--s-4); }
+.step .shot   { margin-top: var(--s-3); }
 
 
 /* ═══════════════════════════════════════════════════════════════
@@ -2816,6 +2921,14 @@ h1 em, h2 em, h3 em { font-style: italic; font-family: var(--serif); }
   /* Plan cards condense */
   .plan { padding: var(--s-5); }
   .plan__price-amount { font-size: 2.75rem; }
+
+  /* Diagram pieces: max-content tracks can't shrink and overflow
+     a 320px viewport two-up — collapse to one column. */
+  .diagram__pieces {
+    grid-template-columns: max-content;
+    justify-content: start;
+    gap: var(--s-4);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -2852,7 +2965,9 @@ h1 em, h2 em, h3 em { font-style: italic; font-family: var(--serif); }
   padding: 14px var(--s-4);
   background: var(--paper);
   color: var(--ink);
-  border: 1.5px solid var(--hairline);
+  /* ink-muted border: the hairline was 1.2:1 against paper, below
+     the 3:1 non-text minimum — the field boundary was guesswork. */
+  border: 1.5px solid var(--ink-muted);
   border-radius: var(--radius);
   font-size: var(--t-body);
   transition: border-color 150ms ease, box-shadow 150ms ease;
@@ -2860,8 +2975,8 @@ h1 em, h2 em, h3 em { font-style: italic; font-family: var(--serif); }
 .beta-form__input::placeholder { color: var(--ink-muted); }
 .beta-form__input:focus {
   outline: none;
-  border-color: var(--apricot);
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--apricot) 28%, transparent);
+  border-color: var(--focus-ring);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--focus-ring) 28%, transparent);
 }
 
 .beta-form__os {
@@ -2875,7 +2990,7 @@ h1 em, h2 em, h3 em { font-style: italic; font-family: var(--serif); }
   align-items: center;
   gap: var(--s-2);
   padding: 10px var(--s-4);
-  border: 1.5px solid var(--hairline);
+  border: 1.5px solid var(--ink-muted);
   border-radius: var(--radius);
   cursor: pointer;
   font-weight: 500;
@@ -2895,5 +3010,222 @@ h1 em, h2 em, h3 em { font-style: italic; font-family: var(--serif); }
   min-height: 1.25em;
   margin: 0;
 }
-.beta-form__status.is-ok    { color: var(--sage); font-weight: 600; }
-.beta-form__status.is-error { color: var(--rose); font-weight: 600; }
+.beta-form__status.is-ok    { color: var(--ok-text); font-weight: 600; }
+.beta-form__status.is-error { color: var(--err-text); font-weight: 600; }
+
+
+/* ═══════════════════════════════════════════════════════════════
+   18. HELP CENTER
+   Hub (search + category cards) and article pages (prose + CTA).
+   Reuses page-head / prose / kit-narrow from the legal pages.
+   ═══════════════════════════════════════════════════════════════ */
+
+/* Screen-reader-only utility (used for the search field label) */
+.visually-hidden {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ── Search box on the hub ───────────────────────────────────── */
+.help-search-wrap {
+  max-width: 34rem;
+  margin: 0 auto var(--s-8);
+}
+
+.help-search {
+  width: 100%;
+  font-family: var(--sans);
+  font-size: 1.0625rem;
+  color: var(--ink);
+  background: var(--paper);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius);
+  padding: var(--s-3) var(--s-4);
+  box-shadow: 0 1px 0 rgba(26, 23, 20, 0.03);
+  transition: border-color 180ms ease, box-shadow 180ms ease;
+}
+
+.help-search::placeholder { color: var(--ink-muted); }
+
+.help-search:focus {
+  outline: none;
+  border-color: var(--apricot);
+  box-shadow: 0 0 0 3px rgba(244, 162, 97, 0.18);
+}
+
+.help-noresults {
+  text-align: center;
+  color: var(--ink-muted);
+  margin-bottom: var(--s-7);
+}
+
+/* ── Category blocks ─────────────────────────────────────────── */
+.help-cat { margin-bottom: var(--s-8); }
+
+.help-cat__title {
+  position: relative;
+  font-family: var(--serif);
+  font-size: clamp(1.375rem, 2.2vw, 1.75rem);
+  color: var(--ink);
+  margin-bottom: var(--s-4);
+  padding-left: 26px;
+}
+
+/* Tiny brick accent, rotating colour like the prose headings */
+.help-cat__title::before {
+  content: "";
+  position: absolute;
+  left: 0; top: 0.52em;
+  width: 16px; height: 11px;
+  background: var(--apricot);
+  border-radius: 3px;
+  box-shadow: inset 0 1px 0 rgba(255, 251, 240, 0.35), inset 0 -1px 0 var(--brick-edge);
+}
+.help-cat:nth-of-type(2n) .help-cat__title::before { background: var(--sage); }
+.help-cat:nth-of-type(3n) .help-cat__title::before { background: var(--butter); }
+.help-cat:nth-of-type(4n) .help-cat__title::before { background: var(--sky); }
+.help-cat:nth-of-type(5n) .help-cat__title::before { background: var(--rose); }
+
+/* ── Article cards ───────────────────────────────────────────── */
+.help-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--s-4);
+}
+
+@media (max-width: 720px) { .help-grid { grid-template-columns: 1fr; } }
+
+.help-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-1);
+  background: var(--cream);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius);
+  padding: var(--s-5) var(--s-7) var(--s-5) var(--s-5);
+  text-decoration: none;
+  transition:
+    transform 180ms cubic-bezier(0.2, 0.8, 0.2, 1),
+    border-color 180ms ease,
+    box-shadow 180ms ease;
+}
+
+.help-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--apricot);
+  box-shadow: 0 10px 24px rgba(26, 23, 20, 0.08);
+}
+
+.help-card__title {
+  font-family: var(--sans);
+  font-weight: 600;
+  font-size: 1.0625rem;
+  color: var(--ink);
+}
+
+.help-card__desc {
+  font-size: var(--t-small);
+  color: var(--ink-soft);
+  line-height: 1.5;
+}
+
+.help-card__arrow {
+  position: absolute;
+  top: var(--s-5);
+  right: var(--s-5);
+  color: var(--apricot);
+  font-weight: 700;
+  opacity: 0;
+  transform: translateX(-4px);
+  transition: opacity 180ms ease, transform 180ms ease;
+}
+
+.help-card:hover .help-card__arrow {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* ── Article page: back link, callouts, CTA, related ─────────── */
+.help-back {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-2);
+  font-size: var(--t-small);
+  font-weight: 600;
+  color: var(--ink-soft);
+  text-decoration: none;
+  margin-bottom: var(--s-6);
+}
+.help-back:hover { color: var(--ink); }
+
+/* Callouts inside .prose — tip / note / warning */
+.callout {
+  border: 1px solid var(--hairline);
+  border-left: 4px solid var(--sky);
+  background: var(--cream);
+  border-radius: var(--radius);
+  padding: var(--s-4) var(--s-5);
+  margin: var(--s-5) 0;
+  font-size: var(--t-small);
+  color: var(--ink-soft);
+  line-height: 1.6;
+}
+.callout strong { color: var(--ink); }
+.callout--warn { border-left-color: var(--rose); }
+.callout--tip  { border-left-color: var(--sage); }
+
+.help-cta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-5);
+  flex-wrap: wrap;
+  background: var(--cream);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius);
+  padding: var(--s-6);
+  margin-top: var(--s-8);
+}
+
+.help-cta h2 {
+  font-family: var(--serif);
+  font-size: 1.5rem;
+  color: var(--ink);
+  margin-bottom: var(--s-1);
+}
+
+.help-cta p { color: var(--ink-soft); font-size: var(--t-small); }
+
+.help-related { margin-top: var(--s-7); }
+
+.help-related__title {
+  font-size: var(--t-eyebrow);
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-weight: 600;
+  color: var(--ink-muted);
+  margin-bottom: var(--s-3);
+}
+
+.help-related ul {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  gap: var(--s-2);
+}
+
+.help-related a {
+  color: var(--ink);
+  text-decoration: underline;
+  text-decoration-color: var(--apricot);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 3px;
+  font-weight: 500;
+}
+.help-related a:hover { text-decoration-color: var(--ink); }

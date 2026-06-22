@@ -7,8 +7,8 @@
 
   <title>Pricing - Briques</title>
 
-  <link rel="icon" href="/favicon.ico" />
-  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <link rel="icon" href="favicon.ico" />
+  <link rel="apple-touch-icon" href="apple-touch-icon.png" />
   <meta property="og:image" content="https://briques.app/assets/images/logo.png" />
   <meta property="og:image:type" content="image/png" />
   <meta property="og:image:width" content="1024" />
@@ -16,332 +16,152 @@
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:image" content="https://briques.app/assets/images/logo.png" />
 
-  <!-- Fonts are fully self-hosted — no third-party request on the
-       critical path. Preload the serif that paints the headlines. -->
-  <link rel="preload" href="assets/fonts/InstrumentSerif-Regular.woff2" as="font" type="font/woff2" crossorigin />
-  <link rel="preload" href="assets/fonts/InstrumentSerif-Italic.woff2" as="font" type="font/woff2" crossorigin />
-
-  <!-- Theme: set data-theme BEFORE stylesheets to avoid FOUC. -->
-  <meta name="color-scheme" content="light dark" />
-  <meta name="theme-color" content="#FAF7F0" media="(prefers-color-scheme: light)" />
-  <meta name="theme-color" content="#1A1411" media="(prefers-color-scheme: dark)" />
-  <script>
-    (function () {
-      try {
-        var stored = localStorage.getItem('theme');
-        var theme = stored ||
-          (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
-            ? 'dark' : 'light');
-        document.documentElement.setAttribute('data-theme', theme);
-      } catch (e) {
-        document.documentElement.setAttribute('data-theme', 'light');
-      }
-    })();
-    function toggleTheme() {
-      var current = document.documentElement.getAttribute('data-theme') === 'dark'
-        ? 'dark' : 'light';
-      var next = current === 'dark' ? 'light' : 'dark';
-      document.documentElement.setAttribute('data-theme', next);
-      try { localStorage.setItem('theme', next); } catch (e) {}
-      var btn = document.querySelector('.theme-toggle');
-      if (btn) btn.setAttribute('aria-label',
-        next === 'dark' ? 'Switch to light theme' : 'Switch to dark theme');
-      var meta = document.querySelector('meta[name="theme-color"]:not([media])');
-      if (!meta) {
-        meta = document.createElement('meta');
-        meta.setAttribute('name', 'theme-color');
-        document.head.appendChild(meta);
-      }
-      meta.setAttribute('content', next === 'dark' ? '#1A1411' : '#FAF7F0');
-    }
-  </script>
-
-  <link rel="stylesheet" href="styles.css" />
-  <script src="site.js" defer></script>
+  <link rel="stylesheet" href="site.css" />
 </head>
 <body>
 
-<a class="skip-link" href="#main">Skip to content</a>
+<div class="nav">
+  <nav class="nav__pill" aria-label="Primary">
+    <a class="brand" href="index.html"><img src="assets/images/logo.png" alt="Briques" /> Briques</a>
+    <div class="nav__links"><a href="index.html">Home</a><a href="pricing.html">Pricing</a><a href="help/index.html">Help</a></div>
+    <a class="btn btn--primary" href="beta.html">Join the beta</a>
+  </nav>
+</div>
+<div class="nav-spacer"></div>
 
-<nav class="nav">
-  <a class="nav__brand" href="index.html">
-    <span class="brand-mark brand-mark--nav" aria-hidden="true"><i></i><i></i></span>
-    <span class="nav__name">Briques</span>
-  </a>
-  <div class="nav__links" id="site-menu">
-    <a href="index.html#what">What you make</a>
-    <a href="index.html#how">How it works</a>
-    <a href="pricing.html" class="is-active" aria-current="page">Pricing</a>
-    <a href="beta.html">Beta</a>
-    <a href="contact.html">Contact</a>
+<header class="page-head">
+  <div class="wrap">
+    <span class="badge">Pricing</span>
+    <h1>Two plans. One paid.</h1>
+    <p class="lede">Single-user trackers. No seats, no per-user math. Cancel anytime; your Briques come with you. Pro costs about the same as one single-purpose app subscription, and covers all of them.</p>
   </div>
-  <button type="button" class="theme-toggle" aria-label="Switch to dark theme" onclick="toggleTheme()">
-    <svg class="theme-toggle__moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-    <svg class="theme-toggle__sun"  viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
-  </button>
-  <a class="nav__cta" href="beta.html">Join beta</a>
-  <button type="button" class="nav__menu-btn" aria-expanded="false" aria-controls="site-menu" aria-label="Open menu">
-    <span></span><span></span><span></span>
-  </button>
-</nav>
+</header>
 
-<main id="main">
-
-  <header class="page-head kit">
-    <div class="page-head__bricks" aria-hidden="true">
-      <span class="brick brick--butter brick--2x1 brick--lg brick--tilt-l-sm"></span>
-      <span class="brick brick--apricot brick--3x2 brick--lg"></span>
-      <span class="brick brick--sage brick--2x1 brick--lg brick--tilt-r-sm"></span>
-    </div>
-    <p class="page-head__kicker">Pricing</p>
-    <h1 class="page-head__title">Two plans. <em>One paid</em>.</h1>
-    <p class="page-head__meta">
-      Single-user trackers. No seats, no per-user math. Cancel anytime; your Briques come with you.<br>
-      Pro costs about the same as one single-purpose app subscription, and covers all of them.
-    </p>
-  </header>
-
-  <section class="kit section--tight">
-    <div class="price-grid">
+<section class="section" style="padding-top:0">
+  <div class="wrap">
+    <div class="tiers">
 
       <!-- ── FREE ────────────────────────────────────────── -->
-      <article class="plan">
-        <h2 class="plan__name">Free</h2>
-        <p class="plan__tag">Try the whole flow. Make something small.</p>
-        <div class="plan__price">
-          <span class="plan__price-amount">$0</span>
-          <span class="plan__price-period">forever</span>
-        </div>
-        <a class="btn btn--ghost plan__cta" href="beta.html">Join beta</a>
-        <ul class="plan__features">
-          <li class="plan__feature"><strong>1</strong> active Brique (drafts unlimited)</li>
-          <li class="plan__feature"><strong>100 MB</strong> data</li>
-          <li class="plan__feature"><strong>5 MB</strong> file storage, 5 MB max single file</li>
-          <li class="plan__feature">Fast model only</li>
-          <li class="plan__feature"><strong>80</strong> AI credits per month</li>
-          <li class="plan__feature">"Made with Briques" badge</li>
-          <li class="plan__feature">Community support</li>
+      <div class="tier reveal">
+        <div class="tier__name">Free</div>
+        <p class="lede" style="font-size:var(--t-small);margin:.4rem 0 0">Try the whole flow. Make something small.</p>
+        <div class="tier__price">$0<span> forever</span></div>
+        <ul>
+          <li><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8.5l3 3 7-7" fill="none" stroke="#5E8A6C" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg> <strong>1</strong> active Brique (drafts unlimited)</li>
+          <li><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8.5l3 3 7-7" fill="none" stroke="#5E8A6C" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg> <strong>100 MB</strong> data</li>
+          <li><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8.5l3 3 7-7" fill="none" stroke="#5E8A6C" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg> <strong>5 MB</strong> file storage, 5 MB max single file</li>
+          <li><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8.5l3 3 7-7" fill="none" stroke="#5E8A6C" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg> Fast model only</li>
+          <li><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8.5l3 3 7-7" fill="none" stroke="#5E8A6C" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg> <strong>80</strong> AI credits per month</li>
+          <li><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8.5l3 3 7-7" fill="none" stroke="#5E8A6C" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg> "Made with Briques" badge</li>
+          <li><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8.5l3 3 7-7" fill="none" stroke="#5E8A6C" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg> Community support</li>
         </ul>
-      </article>
-
-      <!-- ── PRO ────────────────────────────────────────── -->
-      <article class="plan plan--accent">
-        <div class="plan__ribbon">Most makers pick this</div>
-        <h2 class="plan__name">Pro</h2>
-        <p class="plan__tag">Make as many trackers as you can think of.</p>
-        <div class="plan__price">
-          <span class="plan__price-amount">$8.99</span>
-          <span class="plan__price-period">/ month</span>
-        </div>
-        <a class="btn btn--accent plan__cta" href="beta.html">Join beta</a>
-        <ul class="plan__features">
-          <li class="plan__feature"><strong>7 days free</strong>, then $8.99 / month</li>
-          <li class="plan__feature"><strong>Unlimited</strong> Briques</li>
-          <li class="plan__feature"><strong>1 GB</strong> data</li>
-          <li class="plan__feature"><strong>500 MB</strong> file storage, 10 MB max single file</li>
-          <li class="plan__feature">Fast + Balanced models</li>
-          <li class="plan__feature"><strong>200</strong> AI credits per month, rolls over up to 2 months</li>
-          <li class="plan__feature">AI search inside your trackers</li>
-          <li class="plan__feature">AI workflows</li>
-          <li class="plan__feature">Badge hidden</li>
-          <li class="plan__feature">Email support</li>
-        </ul>
-      </article>
-
-    </div>
-
-
-    <!-- ══════════════════ CREDIT PACKS ══════════════════ -->
-    <!--
-      One-time credit top-ups available on every plan. Three SKUs
-      shown as 2x4 / 2x6 / 2x8 brick stacks — the visual "weight"
-      of each card scales with the pack size. Sunlit accents
-      cycle across cards so the row reads as a kit, not a copy.
-
-      Designed to be the one place on the site where someone
-      asking "wait, how do I top up if I run out?" lands. Mirrors
-      what the in-app Plans screen shows — same prices, same
-      copy, so an Apple reviewer screenshotting the IAP review
-      finds the same numbers everywhere.
-    -->
-    <section class="packs">
-      <header class="packs__head">
-        <span class="packs__kicker">Need more?</span>
-        <h2 class="packs__title">
-          Top up <em>anytime</em>.
-        </h2>
-        <p class="packs__sub">
-          One-time credit packs. Stack on top of your plan's monthly
-          allowance. Never expire: they stay yours through cancel,
-          downgrade, or anything else.
-        </p>
-      </header>
-
-      <div class="packs__grid">
-
-        <!-- ── 200 ─────────────────────────────────────── -->
-        <!-- 4x2 brick = 8 studs. The brick visual scales with the
-             pack size so the row reads as "small / medium / large"
-             at a glance, not just by reading prices. -->
-        <article class="pack pack--apricot">
-          <div class="pack__brick" aria-hidden="true">
-            <span class="brick brick--apricot brick--4x2">
-              <span class="studs">
-                <i></i><i></i><i></i><i></i>
-                <i></i><i></i><i></i><i></i>
-              </span>
-            </span>
-          </div>
-          <div class="pack__body">
-            <div class="pack__amount">+200</div>
-            <div class="pack__amount-label">credits</div>
-            <div class="pack__price">$2.99</div>
-            <p class="pack__note">Quick top-up. ~5 small chats or one tracker rebuild.</p>
-          </div>
-        </article>
-
-        <!-- ── 800 ─────────────────────────────────────── -->
-        <article class="pack pack--sage pack--featured">
-          <div class="pack__ribbon">Best value</div>
-          <div class="pack__brick" aria-hidden="true">
-            <span class="brick brick--sage brick--6x2">
-              <span class="studs">
-                <i></i><i></i><i></i><i></i><i></i><i></i>
-                <i></i><i></i><i></i><i></i><i></i><i></i>
-              </span>
-            </span>
-          </div>
-          <div class="pack__body">
-            <div class="pack__amount">+800</div>
-            <div class="pack__amount-label">credits</div>
-            <div class="pack__price">$9.99</div>
-            <p class="pack__note">A month of heavy making, on top of Pro.</p>
-          </div>
-        </article>
-
-        <!-- ── 2,500 ───────────────────────────────────── -->
-        <article class="pack pack--butter">
-          <div class="pack__brick" aria-hidden="true">
-            <span class="brick brick--butter brick--8x2">
-              <span class="studs">
-                <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
-                <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
-              </span>
-            </span>
-          </div>
-          <div class="pack__body">
-            <div class="pack__amount">+2.5k</div>
-            <div class="pack__amount-label">credits</div>
-            <div class="pack__price">$24.99</div>
-            <p class="pack__note">For sprints, hackathons, or "I want to keep going."</p>
-          </div>
-        </article>
-
+        <a class="btn btn--ghost" href="beta.html">Join beta</a>
       </div>
 
-      <p class="packs__foot">
-        Buy from inside the app · Pack credits never expire ·
-        <strong>Use them on any AI feature</strong>
-      </p>
-    </section>
+      <!-- ── PRO ────────────────────────────────────────── -->
+      <div class="tier tier--pro reveal">
+        <div class="tier__name">Pro <span class="tier__badge">Most makers pick this</span></div>
+        <p class="lede" style="font-size:var(--t-small);margin:.4rem 0 0">Make as many trackers as you can think of.</p>
+        <div class="tier__price">$8.99<span> / month</span></div>
+        <ul>
+          <li><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8.5l3 3 7-7" fill="none" stroke="#5E8A6C" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg> <strong>7 days free</strong>, then $8.99 / month</li>
+          <li><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8.5l3 3 7-7" fill="none" stroke="#5E8A6C" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg> <strong>Unlimited</strong> Briques</li>
+          <li><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8.5l3 3 7-7" fill="none" stroke="#5E8A6C" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg> <strong>1 GB</strong> data</li>
+          <li><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8.5l3 3 7-7" fill="none" stroke="#5E8A6C" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg> <strong>500 MB</strong> file storage, 10 MB max single file</li>
+          <li><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8.5l3 3 7-7" fill="none" stroke="#5E8A6C" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg> Fast + Balanced models</li>
+          <li><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8.5l3 3 7-7" fill="none" stroke="#5E8A6C" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg> <strong>200</strong> AI credits per month, rolls over up to 2 months</li>
+          <li><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8.5l3 3 7-7" fill="none" stroke="#5E8A6C" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg> AI search inside your trackers</li>
+          <li><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8.5l3 3 7-7" fill="none" stroke="#5E8A6C" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg> AI workflows</li>
+          <li><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8.5l3 3 7-7" fill="none" stroke="#5E8A6C" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg> Badge hidden</li>
+          <li><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8.5l3 3 7-7" fill="none" stroke="#5E8A6C" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg> Email support</li>
+        </ul>
+        <a class="btn btn--primary" href="beta.html">Join beta</a>
+      </div>
 
+    </div>
+  </div>
+</section>
 
-    <!-- ── Pro+ signpost ────────────────────────────────── -->
-    <div class="proplus">
+<!-- ══════════════════ CREDIT PACKS ══════════════════ -->
+<section class="section" id="packs" style="padding-top:0">
+  <div class="wrap">
+    <div class="sectionhead center reveal">
+      <span class="badge">Need more?</span>
+      <h2>Top up anytime.</h2>
+      <p>One-time credit packs. Stack on top of your plan's monthly allowance. Never expire: they stay yours through cancel, downgrade, or anything else.</p>
+    </div>
+
+    <div class="steps">
+      <!-- ── 200 ─────────────────────────────────────── -->
+      <div class="step reveal">
+        <div class="n" style="background:rgba(242,160,90,.18);color:var(--apricot-deep)">+</div>
+        <h3>+200 credits</h3>
+        <div class="tier__price" style="font-size:1.9rem;margin:.4rem 0 .6rem">$2.99</div>
+        <p>Quick top-up. ~5 small chats or one tracker rebuild.</p>
+      </div>
+
+      <!-- ── 800 ─────────────────────────────────────── -->
+      <div class="step reveal">
+        <div class="n">+</div>
+        <h3>+800 credits <span class="pill-pro" style="color:var(--sage-deep);background:var(--accent-tint)">Best value</span></h3>
+        <div class="tier__price" style="font-size:1.9rem;margin:.4rem 0 .6rem">$9.99</div>
+        <p>A month of heavy making, on top of Pro.</p>
+      </div>
+
+      <!-- ── 2,500 ───────────────────────────────────── -->
+      <div class="step reveal">
+        <div class="n" style="background:rgba(199,154,46,.18);color:var(--butter-deep)">+</div>
+        <h3>+2.5k credits</h3>
+        <div class="tier__price" style="font-size:1.9rem;margin:.4rem 0 .6rem">$24.99</div>
+        <p>For sprints, hackathons, or "I want to keep going."</p>
+      </div>
+    </div>
+
+    <p class="center" style="margin-top:2rem;color:var(--ink-muted);font-size:var(--t-small)">
+      Buy from inside the app · Pack credits never expire · <strong style="color:var(--ink);font-weight:600">Use them on any AI feature</strong>
+    </p>
+  </div>
+</section>
+
+<!-- ── Pro+ signpost ────────────────────────────────── -->
+<section class="section" style="padding-top:0">
+  <div class="wrap">
+    <div class="statement reveal" style="display:flex;flex-wrap:wrap;gap:1.5rem;align-items:center;justify-content:space-between;text-align:left">
       <div>
-        <h3>Pro+ later</h3>
-        <p>
-          Larger storage, the "Best" model tier, custom domains.
-          We'll signpost it when it ships.
-        </p>
+        <h3 style="color:var(--paper)">Pro+ later</h3>
+        <p style="margin:.6rem 0 0;max-width:42ch">Larger storage, the "Best" model tier, custom domains. We'll signpost it when it ships.</p>
       </div>
       <a class="btn btn--ghost" href="contact.html">Tell us what you need</a>
     </div>
-
-
-    <!-- ── Footnote cards ───────────────────────────────── -->
-    <div class="price-notes">
-      <div class="price-note">
-        <h3>What's a credit?</h3>
-        <p>
-          A credit is the unit of AI work. Generating a tracker costs
-          ~40 credits on the Fast model. Editing one screen, ~10.
-          A small chat tweak, ~3. Every action shows an estimate
-          before it runs and the actual cost after.
-        </p>
-      </div>
-      <div class="price-note">
-        <h3>Top up anytime</h3>
-        <p>
-          Run out mid-tracker? One-time packs from $2.99.
-          Pack credits never expire and stay yours through
-          cancellation, downgrade, or anything else.
-        </p>
-      </div>
-      <div class="price-note">
-        <h3>No surprise bills</h3>
-        <p>
-          Credits cap your AI spend at the plan's allowance.
-          Storage and bandwidth aren't separately billable. The
-          monthly fee is the monthly fee.
-        </p>
-      </div>
-    </div>
-
-
-    <p style="text-align: center; margin-top: var(--s-7); color: var(--ink-muted); font-size: var(--t-small); max-width: 44rem; margin-inline: auto;">
-      Pro subscriptions are purchased and managed inside the app,
-      via Apple on iOS, Google on Android. Pricing on this page is for
-      reference. Refunds for system failures are automatic. See
-      <a href="terms.html" style="color: var(--ink); text-decoration: underline; text-decoration-color: var(--apricot); text-decoration-thickness: 2px; text-underline-offset: 3px;">terms</a>
-      for the full mechanics.
-    </p>
-  </section>
-
-</main>
-
-
-<footer class="footer kit">
-  <div class="footer__top">
-    <div class="footer__brand">
-      <span class="footer__name">
-        <span class="brand-mark brand-mark--footer" aria-hidden="true"><i></i><i></i></span>
-        Briques
-      </span>
-      <p class="footer__tag">
-        Describe a tracker. Set it up before the idea cools.
-      </p>
-      <p class="footer__tag" style="margin-top: var(--s-2); font-size: var(--t-eyebrow); text-transform: uppercase; letter-spacing: 0.14em; color: var(--ink-muted); font-weight: 600;">
-        briques.app
-      </p>
-    </div>
-    <div class="footer__col">
-      <span class="footer__col-title">Product</span>
-      <a href="index.html#what">What you make</a>
-      <a href="index.html#how">How it works</a>
-      <a href="pricing.html">Pricing</a>
-      <a href="beta.html">iOS beta</a>
-    </div>
-    <div class="footer__col">
-      <span class="footer__col-title">Company</span>
-      <a href="contact.html">Contact</a>
-      <a href="/help">Help center</a>
-      <a href="mailto:hello@briques.app">hello@briques.app</a>
-      <a href="mailto:press@briques.app">Press</a>
-    </div>
-    <div class="footer__col">
-      <span class="footer__col-title">Legal</span>
-      <a href="privacy.html">Privacy</a>
-      <a href="terms.html">Terms</a>
-      <a href="mailto:privacy@briques.app">Data requests</a>
-    </div>
   </div>
-  <div class="footer__base">
-    <span>© 2026 Briques. Made with care.</span>
-    <span>iOS TestFlight beta</span>
+</section>
+
+<!-- ── Credit FAQ ───────────────────────────────────── -->
+<section class="section" id="faq" style="padding-top:0">
+  <div class="wrap">
+    <div class="sectionhead center reveal"><span class="badge">Good to know</span><h2>How credits work.</h2></div>
+    <div class="faq__list reveal">
+      <details class="qa" open><summary>What's a credit? <span class="pm">+</span></summary><p>A credit is the unit of AI work. Generating a tracker costs ~40 credits on the Fast model. Editing one screen, ~10. A small chat tweak, ~3. Every action shows an estimate before it runs and the actual cost after.</p></details>
+      <details class="qa"><summary>Top up anytime <span class="pm">+</span></summary><p>Run out mid-tracker? One-time packs from $2.99. Pack credits never expire and stay yours through cancellation, downgrade, or anything else.</p></details>
+      <details class="qa"><summary>No surprise bills <span class="pm">+</span></summary><p>Credits cap your AI spend at the plan's allowance. Storage and bandwidth aren't separately billable. The monthly fee is the monthly fee.</p></details>
+    </div>
+
+    <p class="center" style="margin-top:clamp(2.5rem,5vw,3.5rem);color:var(--ink-muted);font-size:var(--t-small);max-width:44rem;margin-inline:auto">
+      Pro subscriptions are purchased and managed inside the app, via Apple on iOS, Google on Android. Pricing on this page is for reference. Refunds for system failures are automatic. See <a href="terms.html" style="color:var(--ink);text-decoration:underline;text-decoration-color:var(--apricot);text-decoration-thickness:2px;text-underline-offset:3px">terms</a> for the full mechanics.
+    </p>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer__top">
+      <a class="brand" href="index.html"><img src="assets/images/logo.png" alt="Briques" /> Briques</a>
+      <div class="footer__links"><a href="index.html">Home</a><a href="pricing.html">Pricing</a><a href="help/index.html">Help</a><a href="contact.html">Contact</a><a href="terms.html">Terms</a><a href="privacy.html">Privacy</a></div>
+    </div>
+    <p class="footer__copy">Small bricks. Big things. Describe a tracker, set it up before your coffee's cold. © Briques.</p>
   </div>
 </footer>
 
-
+<script src="site.js" defer></script>
 </body>
 </html>

@@ -7,8 +7,8 @@
 
   <title>Contact - Briques</title>
 
-  <link rel="icon" href="/favicon.ico" />
-  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <link rel="icon" href="favicon.ico" />
+  <link rel="apple-touch-icon" href="apple-touch-icon.png" />
   <meta property="og:image" content="https://briques.app/assets/images/logo.png" />
   <meta property="og:image:type" content="image/png" />
   <meta property="og:image:width" content="1024" />
@@ -16,187 +16,91 @@
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:image" content="https://briques.app/assets/images/logo.png" />
 
-  <!-- Fonts are fully self-hosted — no third-party request on the
-       critical path. Preload the serif that paints the headlines. -->
-  <link rel="preload" href="assets/fonts/InstrumentSerif-Regular.woff2" as="font" type="font/woff2" crossorigin />
-  <link rel="preload" href="assets/fonts/InstrumentSerif-Italic.woff2" as="font" type="font/woff2" crossorigin />
-
-  <!-- Theme: set data-theme BEFORE stylesheets to avoid FOUC. -->
-  <meta name="color-scheme" content="light dark" />
-  <meta name="theme-color" content="#FAF7F0" media="(prefers-color-scheme: light)" />
-  <meta name="theme-color" content="#1A1411" media="(prefers-color-scheme: dark)" />
-  <script>
-    (function () {
-      try {
-        var stored = localStorage.getItem('theme');
-        var theme = stored ||
-          (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
-            ? 'dark' : 'light');
-        document.documentElement.setAttribute('data-theme', theme);
-      } catch (e) {
-        document.documentElement.setAttribute('data-theme', 'light');
-      }
-    })();
-    function toggleTheme() {
-      var current = document.documentElement.getAttribute('data-theme') === 'dark'
-        ? 'dark' : 'light';
-      var next = current === 'dark' ? 'light' : 'dark';
-      document.documentElement.setAttribute('data-theme', next);
-      try { localStorage.setItem('theme', next); } catch (e) {}
-      var btn = document.querySelector('.theme-toggle');
-      if (btn) btn.setAttribute('aria-label',
-        next === 'dark' ? 'Switch to light theme' : 'Switch to dark theme');
-      var meta = document.querySelector('meta[name="theme-color"]:not([media])');
-      if (!meta) {
-        meta = document.createElement('meta');
-        meta.setAttribute('name', 'theme-color');
-        document.head.appendChild(meta);
-      }
-      meta.setAttribute('content', next === 'dark' ? '#1A1411' : '#FAF7F0');
-    }
-  </script>
-
-  <link rel="stylesheet" href="styles.css" />
-  <script src="site.js" defer></script>
+  <link rel="stylesheet" href="site.css" />
 </head>
 <body>
 
-<a class="skip-link" href="#main">Skip to content</a>
+<div class="nav">
+  <nav class="nav__pill" aria-label="Primary">
+    <a class="brand" href="index.html"><img src="assets/images/logo.png" alt="Briques" /> Briques</a>
+    <div class="nav__links"><a href="index.html">Home</a><a href="pricing.html">Pricing</a><a href="help/index.html">Help</a></div>
+    <a class="btn btn--primary" href="beta.html">Join the beta</a>
+  </nav>
+</div>
+<div class="nav-spacer"></div>
 
-<nav class="nav">
-  <a class="nav__brand" href="index.html">
-    <span class="brand-mark brand-mark--nav" aria-hidden="true"><i></i><i></i></span>
-    <span class="nav__name">Briques</span>
-  </a>
-  <div class="nav__links" id="site-menu">
-    <a href="index.html#what">What you make</a>
-    <a href="index.html#how">How it works</a>
-    <a href="pricing.html">Pricing</a>
-    <a href="beta.html">Beta</a>
-    <a href="contact.html" class="is-active" aria-current="page">Contact</a>
+<header class="page-head">
+  <div class="wrap">
+    <span class="badge">Contact</span>
+    <h1>Say hello. We read everything.</h1>
+    <p class="lede">Pick a reason below. Real humans (well, one) read these and reply within two days.</p>
   </div>
-  <button type="button" class="theme-toggle" aria-label="Switch to dark theme" onclick="toggleTheme()">
-    <svg class="theme-toggle__moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-    <svg class="theme-toggle__sun"  viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
-  </button>
-  <a class="nav__cta" href="beta.html">Join beta</a>
-  <button type="button" class="nav__menu-btn" aria-expanded="false" aria-controls="site-menu" aria-label="Open menu">
-    <span></span><span></span><span></span>
-  </button>
-</nav>
+</header>
 
-<main id="main">
+<section class="section" style="padding-top:0">
+  <div class="wrap">
+    <div class="bento">
 
-  <header class="page-head kit">
-    <div class="page-head__bricks" aria-hidden="true">
-      <span class="brick brick--apricot brick--2x1 brick--lg brick--tilt-l-sm"></span>
-      <span class="brick brick--butter brick--3x2 brick--lg"></span>
-      <span class="brick brick--rose brick--2x1 brick--lg brick--tilt-r-sm"></span>
-    </div>
-    <p class="page-head__kicker">Contact</p>
-    <h1 class="page-head__title">Say hello.<br><em>We read everything.</em></h1>
-    <p class="page-head__meta">
-      Pick a reason below. Real humans (well, one) read these and reply within two days.
-    </p>
-  </header>
-
-  <section class="kit">
-    <div class="contact-grid">
-
-      <article class="contact-card">
-        <span class="brick brick--apricot brick--2x1 contact-card__brick"></span>
-        <h2>General</h2>
+      <article class="cell cell--third reveal">
+        <div class="ic" style="background:rgba(242,160,90,.18)">✉️</div>
+        <h3>General</h3>
         <p>Hi, ideas, questions, anything you'd like to say.</p>
-        <a href="mailto:hello@briques.app">hello@briques.app</a>
+        <a class="btn btn--ghost" style="margin-top:auto;align-self:flex-start" href="mailto:hello@briques.app">hello@briques.app</a>
       </article>
 
-      <article class="contact-card">
-        <span class="brick brick--sage brick--2x1 contact-card__brick"></span>
-        <h2>Beta access</h2>
-        <p>Tell us what you'd make. We'll send the TestFlight invite if there is room.</p>
-        <a href="mailto:hello@briques.app?subject=Briques%20iOS%20TestFlight%20beta">hello@briques.app</a>
+      <article class="cell cell--third reveal">
+        <div class="ic" style="background:rgba(94,138,108,.14)">🚀</div>
+        <h3>Beta access</h3>
+        <p>Tell us what you'd make. We'll send the TestFlight (iOS) or Google Play (Android) invite if there is room.</p>
+        <a class="btn btn--ghost" style="margin-top:auto;align-self:flex-start" href="mailto:hello@briques.app?subject=Briques%20beta">hello@briques.app</a>
       </article>
 
-      <article class="contact-card">
-        <span class="brick brick--butter brick--2x1 contact-card__brick"></span>
-        <h2>Support</h2>
+      <article class="cell cell--third reveal">
+        <div class="ic" style="background:rgba(199,154,46,.16)">🛠️</div>
+        <h3>Support</h3>
         <p>Bugs, problems with your trackers, anything not working.</p>
-        <a href="mailto:support@briques.app">support@briques.app</a>
+        <a class="btn btn--ghost" style="margin-top:auto;align-self:flex-start" href="mailto:support@briques.app">support@briques.app</a>
       </article>
 
-      <article class="contact-card">
-        <span class="brick brick--sky brick--2x1 contact-card__brick"></span>
-        <h2>Privacy &amp; data</h2>
+      <article class="cell cell--third reveal">
+        <div class="ic" style="background:rgba(94,146,198,.16)">🔒</div>
+        <h3>Privacy &amp; data</h3>
         <p>Data requests, deletion, GDPR / CCPA rights.</p>
-        <a href="mailto:privacy@briques.app">privacy@briques.app</a>
+        <a class="btn btn--ghost" style="margin-top:auto;align-self:flex-start" href="mailto:privacy@briques.app">privacy@briques.app</a>
       </article>
 
-      <article class="contact-card">
-        <span class="brick brick--rose brick--2x1 contact-card__brick"></span>
-        <h2>Press</h2>
+      <article class="cell cell--third reveal">
+        <div class="ic" style="background:rgba(229,155,130,.18)">📣</div>
+        <h3>Press</h3>
         <p>Stories, interviews, screenshots, brand assets.</p>
-        <a href="mailto:press@briques.app">press@briques.app</a>
+        <a class="btn btn--ghost" style="margin-top:auto;align-self:flex-start" href="mailto:press@briques.app">press@briques.app</a>
       </article>
 
-      <article class="contact-card">
-        <span class="brick brick--cream brick--2x1 contact-card__brick"></span>
-        <h2>Partnerships</h2>
+      <article class="cell cell--third reveal">
+        <div class="ic" style="background:rgba(242,208,106,.22)">🤝</div>
+        <h3>Partnerships</h3>
         <p>Integrations, distribution, anything that takes a call.</p>
-        <a href="mailto:hello@briques.app?subject=Partnership">hello@briques.app</a>
+        <a class="btn btn--ghost" style="margin-top:auto;align-self:flex-start" href="mailto:hello@briques.app?subject=Partnership">hello@briques.app</a>
       </article>
 
     </div>
 
-    <p style="text-align:center; margin-top: var(--s-7); color: var(--ink-muted); font-size: var(--t-small); max-width: 40rem; margin-inline: auto;">
-      No contact form on purpose. A direct email lets you tell the
-      story your way, and gives us a real thread to reply on.
+    <p class="center" style="margin-top:clamp(2.5rem,5vw,3.5rem);color:var(--ink-muted);font-size:var(--t-small);max-width:40rem;margin-inline:auto">
+      No contact form on purpose. A direct email lets you tell the story your way, and gives us a real thread to reply on.
     </p>
-  </section>
-
-</main>
-
-
-<footer class="footer kit">
-  <div class="footer__top">
-    <div class="footer__brand">
-      <span class="footer__name">
-        <span class="brand-mark brand-mark--footer" aria-hidden="true"><i></i><i></i></span>
-        Briques
-      </span>
-      <p class="footer__tag">
-        Describe a tracker. Set it up before the idea cools.
-      </p>
-      <p class="footer__tag" style="margin-top: var(--s-2); font-size: var(--t-eyebrow); text-transform: uppercase; letter-spacing: 0.14em; color: var(--ink-muted); font-weight: 600;">
-        briques.app
-      </p>
-    </div>
-    <div class="footer__col">
-      <span class="footer__col-title">Product</span>
-      <a href="index.html#what">What you make</a>
-      <a href="index.html#how">How it works</a>
-      <a href="pricing.html">Pricing</a>
-      <a href="beta.html">iOS beta</a>
-    </div>
-    <div class="footer__col">
-      <span class="footer__col-title">Company</span>
-      <a href="contact.html">Contact</a>
-      <a href="/help">Help center</a>
-      <a href="mailto:hello@briques.app">hello@briques.app</a>
-      <a href="mailto:press@briques.app">Press</a>
-    </div>
-    <div class="footer__col">
-      <span class="footer__col-title">Legal</span>
-      <a href="privacy.html">Privacy</a>
-      <a href="terms.html">Terms</a>
-      <a href="mailto:privacy@briques.app">Data requests</a>
-    </div>
   </div>
-  <div class="footer__base">
-    <span>© 2026 Briques. Made with care.</span>
-    <span>iOS TestFlight beta</span>
+</section>
+
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer__top">
+      <a class="brand" href="index.html"><img src="assets/images/logo.png" alt="Briques" /> Briques</a>
+      <div class="footer__links"><a href="index.html">Home</a><a href="pricing.html">Pricing</a><a href="help/index.html">Help</a><a href="contact.html">Contact</a><a href="terms.html">Terms</a><a href="privacy.html">Privacy</a></div>
+    </div>
+    <p class="footer__copy">Small bricks. Big things. Describe a tracker, set it up before your coffee's cold. © Briques.</p>
   </div>
 </footer>
 
-
+<script src="site.js" defer></script>
 </body>
 </html>

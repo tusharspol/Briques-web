@@ -152,3 +152,34 @@
     initMobileMenu();
   });
 })();
+
+/* ── design-system motion (reveals · nav-scroll · cursor-spotlight) ── */
+(function () {
+const reveals = document.querySelectorAll('.reveal');
+  if ('IntersectionObserver' in window) {
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+    }, { rootMargin: '0px 0px -10% 0px', threshold: 0 });
+    reveals.forEach(el => {
+      const sibs = [...el.parentElement.children].filter(c => c.classList.contains('reveal'));
+      const i = sibs.indexOf(el);
+      if (i > 0) el.style.setProperty('--d', (i * 0.07).toFixed(2) + 's');
+      io.observe(el);
+    });
+  } else {
+    reveals.forEach(el => el.classList.add('in'));
+  }
+
+  const nav = document.querySelector('.nav');
+  const onScroll = () => nav.classList.toggle('scrolled', window.scrollY > 8);
+  onScroll();
+  addEventListener('scroll', onScroll, { passive: true });
+
+  document.querySelectorAll('.cell').forEach(card => {
+    card.addEventListener('pointermove', e => {
+      const r = card.getBoundingClientRect();
+      card.style.setProperty('--mx', (e.clientX - r.left) + 'px');
+      card.style.setProperty('--my', (e.clientY - r.top) + 'px');
+    });
+  });
+})();

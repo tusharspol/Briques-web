@@ -1,0 +1,34 @@
+# Briques
+
+> Briques turns plain words into real, working personal apps. Describe what you want to track in plain English and Briques sets up the tables and screens for you in about a minute. It is mobile-first (iOS and Android) and made for an audience of one.
+
+Briques is a personal database and micro-app builder — think Notion or Airtable, but mobile-first and built for a single person rather than a team. No coding required. There is a free plan to start, and Pro is $8.99/month with a 7-day trial. Apps and data you make are private to you.
+
+## Main pages
+- [Briques home](https://briques.app/): What Briques is and how it works — describe a tracker in plain English, get a real app on your phone in about a minute.
+- [Pricing](https://briques.app/pricing): Two plans — Free ($0 forever, 1 active app) and Pro ($8.99/month, unlimited apps, 7-day trial) — plus one-time AI credit packs.
+- [Notion alternative](https://briques.app/notion-alternative): How Briques compares to Notion — a personal, mobile-first alternative for single-user trackers, with an honest "which fits you" breakdown and FAQ.
+- [Join the beta](https://briques.app/beta): Get the Briques beta on iOS or Android.
+- [Contact](https://briques.app/contact): Get in touch — hello@briques.app.
+
+## Help and guides
+- [Help center](https://briques.app/help): Index of all guides for using Briques.
+- [What is Briques?](https://briques.app/help/what-is-briques): A plain overview of what Briques does and who it is for.
+- [Create your first app](https://briques.app/help/create-your-first-app): Make your first Brique, by AI or by hand.
+- [Build and edit pages](https://briques.app/help/build-and-edit-pages): Lay out screens, add elements, and edit your app's pages.
+- [Tables and data](https://briques.app/help/tables-and-data): How tables, fields, and records work.
+- [Publish your app](https://briques.app/help/publish-your-app): Make a Brique live so you can use it.
+- [Plans and pricing](https://briques.app/help/plans-and-pricing): What each plan includes and how billing works.
+- [AI credits](https://briques.app/help/ai-credits): What AI credits are, how they're used, and how to top up.
+- [Sign in and account](https://briques.app/help/sign-in-and-account): Signing in with Google or Apple and managing your account.
+- [Export your data](https://briques.app/help/export-your-data): Get your data out of Briques.
+- [Manage your subscription](https://briques.app/help/manage-your-subscription): Change or cancel Pro via Apple or Google.
+- [Delete your account](https://briques.app/help/delete-your-account): Permanently delete your account and data.
+- [How your data is used](https://briques.app/help/how-your-data-is-used): What Briques does and does not do with your data.
+- [Troubleshooting](https://briques.app/help/troubleshooting): Fixes for common issues.
+
+## Optional
+- [Privacy policy](https://briques.app/privacy): How Briques handles your data; apps and data are single-user and private to you.
+- [Terms of service](https://briques.app/terms): Terms for the Briques iOS app, Android app, and website.
+- [Restore purchases and refunds](https://briques.app/help/restore-purchases-and-refunds): Restoring purchases and how refunds work.
+- [Contact support](https://briques.app/help/contact-support): How to reach support.

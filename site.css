@@ -300,3 +300,91 @@ a{ color:inherit; text-decoration:none; }
 .field textarea{ min-height:130px; resize:vertical; }
 .field input:focus,.field textarea:focus,.field select:focus{ outline:none; border-color:var(--accent); box-shadow:0 0 0 3px var(--accent-tint); }
 .field input::placeholder,.field textarea::placeholder{ color:var(--ink-muted); }
+
+/* ════════════ Web + mobile showcase (home) ════════════ */
+/* All scoped under .showcase so generic class names can't leak to other pages. */
+.showcase{ background:var(--paper-2); overflow:hidden; }
+.showcase .rig{ position:relative; max-width:960px; margin:0 auto; padding-right:70px; padding-bottom:46px; }
+
+/* Browser frame (desktop web app) */
+.showcase .win{ width:100%; aspect-ratio:16/10; background:#fff; border:1px solid var(--line-2); border-radius:16px; box-shadow:0 44px 90px -44px rgba(22,19,17,.45); overflow:hidden; }
+.showcase .win__bar{ display:flex; align-items:center; gap:7px; height:40px; padding:0 15px; border-bottom:1px solid var(--line); background:#FBFAF7; }
+.showcase .win__dots{ display:flex; gap:6px; }
+.showcase .win__dots i{ width:11px; height:11px; border-radius:50%; background:var(--line-2); }
+.showcase .win__url{ margin-inline:auto; font-size:.74rem; color:var(--ink-muted); background:#fff; border:1px solid var(--line); border-radius:999px; padding:.2rem 1rem; }
+.showcase .win__screen{ position:relative; height:calc(100% - 40px); container-type:size; background:#fff; }
+
+/* Phone frame, overlapping the browser's lower-right */
+.showcase .phone2{ position:absolute; right:-8px; bottom:-32px; width:172px; aspect-ratio:375/812; background:#100E0C; border-radius:30px; padding:7px; box-shadow:0 40px 70px -34px rgba(22,19,17,.5); z-index:2; }
+.showcase .phone2__island{ position:absolute; top:8px; left:50%; transform:translateX(-50%); width:50px; height:14px; background:#100E0C; border-radius:9px; z-index:3; }
+.showcase .phone__scr{ position:relative; height:100%; border-radius:23px; overflow:hidden; background:#fff; container-type:size; }
+
+/* Recreated app UI — DESKTOP (scales with the frame via cqw) */
+.showcase .app{ display:flex; height:100%; font-size:1.5cqw; font-family:var(--sans); color:var(--ink); letter-spacing:0; line-height:1.3; }
+.showcase .app__side{ width:23%; flex:none; background:var(--paper-2); border-right:1px solid var(--line); padding:1.1em .8em; display:flex; flex-direction:column; gap:.7em; }
+.showcase .side__brand{ display:flex; align-items:center; gap:.5em; font-weight:600; font-size:1.15em; }
+.showcase .side__brand img{ width:1.3em; height:1.3em; }
+.showcase .side__app{ display:flex; align-items:center; gap:.55em; background:#fff; border:1px solid var(--line); border-radius:.8em; padding:.55em; }
+.showcase .aptile{ flex:none; display:grid; place-items:center; border-radius:.5em; font-weight:700; line-height:1; }
+.showcase .aptile.sky{ width:2em; height:2em; background:rgba(94,146,198,.20); color:#3f74ad; }
+.showcase .aptile.rose{ width:2em; height:2em; background:rgba(229,155,130,.24); color:#bd5c35; }
+.showcase .side__app .nm{ font-weight:600; font-size:.95em; }
+.showcase .side__app .st{ font-size:.78em; color:var(--ink-muted); }
+.showcase .side__app .chev{ margin-left:auto; color:var(--ink-muted); }
+.showcase .side__search{ display:flex; align-items:center; gap:.45em; border:1px solid var(--line); border-radius:.7em; padding:.5em .65em; color:var(--ink-muted); font-size:.86em; }
+.showcase .side__search kbd{ margin-left:auto; background:var(--paper-3); border-radius:.3em; padding:.05em .35em; font-size:.85em; }
+.showcase .side__label{ font-size:.72em; font-weight:600; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-muted); margin-top:.4em; padding-inline:.3em; }
+.showcase .app__side nav{ display:flex; flex-direction:column; gap:.12em; }
+.showcase .navit{ display:flex; align-items:center; gap:.5em; padding:.45em .55em; border-radius:.6em; font-size:.92em; color:var(--ink-soft); }
+.showcase .navit .gl{ width:1.15em; height:1.15em; border-radius:.25em; border:1.6px solid currentColor; opacity:.7; }
+.showcase .navit.active{ background:var(--paper-3); color:var(--ink); font-weight:600; }
+.showcase .side__ai{ display:flex; align-items:center; gap:.5em; padding:.45em .55em; font-size:.92em; color:var(--ink-soft); }
+.showcase .side__ai .gl{ color:var(--sage-deep); }
+.showcase .side__credits{ margin-top:auto; border:1px solid var(--line); border-radius:.8em; padding:.6em .7em; }
+.showcase .side__credits .top{ display:flex; align-items:center; gap:.4em; }
+.showcase .side__credits .lbl{ font-size:.7em; font-weight:600; letter-spacing:.08em; text-transform:uppercase; color:var(--ink-muted); }
+.showcase .side__credits b{ margin-left:auto; font-size:.95em; }
+.showcase .side__credits .bar{ height:.4em; background:var(--paper-3); border-radius:999px; margin:.5em 0 .35em; overflow:hidden; }
+.showcase .side__credits .bar i{ display:block; height:100%; width:100%; background:var(--sage); border-radius:999px; }
+.showcase .side__credits small{ font-size:.74em; color:var(--ink-muted); }
+.showcase .app__main{ flex:1; min-width:0; padding:1.2em 1.4em; display:flex; flex-direction:column; gap:.85em; }
+.showcase .crumb{ font-size:.85em; color:var(--ink-muted); }
+.showcase .main__head{ display:flex; align-items:center; gap:.6em; }
+.showcase .main__head h3{ font-family:var(--sans); font-weight:600; font-size:1.7em; letter-spacing:-.02em; }
+.showcase .main__head .aptile{ width:2.2em; height:2.2em; font-size:1em; }
+.showcase .main__tools{ display:flex; align-items:center; gap:.5em; }
+.showcase .chip2{ display:inline-flex; align-items:center; gap:.35em; border:1px solid var(--line-2); border-radius:.6em; padding:.4em .7em; font-size:.85em; color:var(--ink-soft); }
+.showcase .chip2.dark{ background:var(--ink); color:#fff; border-color:var(--ink); font-weight:500; }
+.showcase .main__tools .grow{ flex:1; }
+.showcase .tbl{ border:1px solid var(--line); border-radius:.7em; overflow:hidden; }
+.showcase .tr{ display:grid; grid-template-columns:2.1fr 1.3fr 1fr .9fr 1fr; align-items:center; border-bottom:1px solid var(--line); }
+.showcase .tr:last-child{ border-bottom:0; }
+.showcase .td{ padding:.62em .8em; font-size:.9em; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.showcase .tr.th .td{ color:var(--ink-muted); font-size:.82em; display:flex; align-items:center; gap:.35em; }
+.showcase .tr.th .ti{ font-size:.9em; opacity:.7; font-weight:600; }
+.showcase .c-book{ font-weight:500; color:var(--ink); }
+.showcase .stars{ color:#C68A40; }
+.showcase .muted{ color:var(--ink-muted); }
+
+/* Recreated app UI — MOBILE */
+.showcase .m{ height:100%; font-size:4.4cqw; font-family:var(--sans); color:var(--ink); line-height:1.3; display:flex; flex-direction:column; }
+.showcase .m__top{ display:flex; align-items:center; gap:.5em; padding:1.5em .9em .5em; }
+.showcase .m__top .back{ color:var(--ink-soft); font-size:1.2em; }
+.showcase .m__top .aptile{ width:2em; height:2em; font-size:.85em; }
+.showcase .m__top .nm{ font-weight:600; font-size:.95em; }
+.showcase .m__top .st{ font-size:.78em; color:var(--ink-muted); }
+.showcase .m__top .av{ margin-left:auto; width:1.8em; height:1.8em; border-radius:50%; background:var(--paper-3); }
+.showcase .m__tabs{ display:flex; gap:.4em; padding:.3em .9em .6em; }
+.showcase .m__tabs span{ font-size:.82em; padding:.32em .7em; border-radius:999px; color:var(--ink-soft); background:var(--paper-2); }
+.showcase .m__tabs .active{ background:var(--ink); color:#fff; }
+.showcase .m__head{ display:flex; align-items:center; gap:.5em; padding:.5em .9em; font-weight:600; font-size:1.25em; }
+.showcase .m__head .aptile{ width:1.9em; height:1.9em; font-size:.7em; }
+.showcase .m__col{ padding:.7em .9em .4em; font-size:.78em; color:var(--ink-muted); border-bottom:1px solid var(--line); }
+.showcase .m__row{ padding:.75em .9em; font-size:.92em; border-bottom:1px solid var(--line); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+
+@media (max-width:760px){
+  /* Stack: browser on top, phone centered just below with a slight overlap. */
+  .showcase .rig{ padding:0; display:flex; flex-direction:column; align-items:center; }
+  .showcase .win{ width:100%; }
+  .showcase .phone2{ position:relative; right:auto; bottom:auto; transform:none; margin:-44px 0 0; width:170px; }
+}

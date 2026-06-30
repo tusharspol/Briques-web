@@ -58,7 +58,7 @@
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png?v=3" />
 <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png?v=3" />
 <link rel="apple-touch-icon" href="apple-touch-icon.png" />
-<link rel="stylesheet" href="site.css" />
+<link rel="stylesheet" href="site.css?v=20260630" />
 </head>
 <body>
 
@@ -88,67 +88,60 @@
   </div>
 </header>
 
-<section class="section showcase">
+<section class="section showcase" id="examples">
   <div class="wrap">
-    <div class="sectionhead center reveal">
-      <span class="badge">Web &amp; mobile</span>
-      <h2>See it on the big screen, and in your pocket.</h2>
-      <p>Set it up in your browser, check it on your phone. The same Brique, your data, everywhere you are.</p>
-    </div>
-    <div class="rig">
-      <!-- Desktop / web -->
-      <div class="win">
-        <div class="win__bar"><div class="win__dots"><i></i><i></i><i></i></div><span class="win__url">create.briques.app</span></div>
-        <div class="win__screen">
-          <div class="app">
-            <aside class="app__side">
-              <div class="side__brand"><img src="assets/images/logo.png" alt="" /> Briques</div>
-              <div class="side__app"><span class="aptile sky">R</span><div><div class="nm">Reading list</div><div class="st">Draft</div></div><span class="chev">⌄</span></div>
-              <div class="side__search">⌕ Search or ask <kbd>⌘K</kbd></div>
-              <div class="side__label">Pages</div>
-              <nav>
-                <span class="navit"><span class="gl"></span> Overview</span>
-                <span class="navit active"><span class="gl"></span> Tables</span>
-                <span class="navit"><span class="gl"></span> Views</span>
-                <span class="navit"><span class="gl"></span> App info</span>
-              </nav>
-              <div class="side__label">Briques AI</div>
-              <span class="side__ai"><span class="gl">✦</span> Ask your data</span>
-              <div class="side__credits"><div class="top"><span class="lbl">⚡ Credits</span><b>80</b></div><div class="bar"><i></i></div><small>of 80 this month</small></div>
-            </aside>
-            <main class="app__main">
-              <div class="crumb">‹ Tables</div>
-              <div class="main__head"><span class="aptile rose">B</span><h3>Books</h3></div>
-              <div class="main__tools"><span class="chip2">⚙ Fields</span><span class="grow"></span><span class="chip2">⌕ Search</span><span class="chip2 dark">＋ New</span></div>
-              <div class="tbl">
-                <div class="tr th"><span class="td c-book"><span class="ti">T</span> Book</span><span class="td"><span class="ti">T</span> Author</span><span class="td"><span class="ti">T</span> Status</span><span class="td"><span class="ti">★</span> Rating</span><span class="td"><span class="ti">🗓</span> Started</span></div>
-                <div class="tr"><span class="td c-book">Project Hail Mary</span><span class="td">Andy Weir</span><span class="td">Finished</span><span class="td stars">★ 5</span><span class="td muted">02/04/2026</span></div>
-                <div class="tr"><span class="td c-book">The Creative Act</span><span class="td">Rick Rubin</span><span class="td">Reading</span><span class="td stars">★ 4</span><span class="td muted">18/05/2026</span></div>
-                <div class="tr"><span class="td c-book">Tomorrow, and Tomorrow, and Tomorrow</span><span class="td">Gabrielle Zevin</span><span class="td">Finished</span><span class="td stars">★ 4</span><span class="td muted">11/03/2026</span></div>
-                <div class="tr"><span class="td c-book">Klara and the Sun</span><span class="td">Kazuo Ishiguro</span><span class="td">To read</span><span class="td muted">★ 0</span><span class="td muted">—</span></div>
-                <div class="tr"><span class="td c-book">The Anthropocene Reviewed</span><span class="td">John Green</span><span class="td">Reading</span><span class="td stars">★ 5</span><span class="td muted">01/06/2026</span></div>
-                <div class="tr"><span class="td c-book">Piranesi</span><span class="td">Susanna Clarke</span><span class="td">To read</span><span class="td muted">★ 0</span><span class="td muted">—</span></div>
-              </div>
-            </main>
-          </div>
-        </div>
+    <div class="ex">
+      <div class="ex__intro reveal">
+        <span class="badge">Real Briques</span>
+        <h2>What people build with Briques.</h2>
+        <p>Real apps, real data, and the same Brique on your desktop and in your pocket. Take your pick.</p>
+        <ul class="ex__list">
+          <li>
+            <button class="ex__item is-active" type="button" aria-pressed="true"
+              data-desk="assets/examples/brand-deals-desk.jpg" data-mob="assets/examples/brand-deals-phone.png">
+              <span class="ex__name">Brand Deals</span>
+              <span class="ex__desc"><span>A creator's sponsorship pipeline: value booked, money collected, and what's due next.</span></span>
+            </button>
+          </li>
+          <li>
+            <button class="ex__item" type="button" aria-pressed="false"
+              data-desk="assets/examples/client-studio-desk.jpg" data-mob="assets/examples/client-studio-phone.png">
+              <span class="ex__name">Client Studio</span>
+              <span class="ex__desc"><span>Every freelance project and its fee, for one person juggling a dozen clients.</span></span>
+            </button>
+          </li>
+          <li>
+            <button class="ex__item" type="button" aria-pressed="false"
+              data-desk="assets/examples/events-desk.jpg" data-mob="assets/examples/events-phone.png">
+              <span class="ex__name">Events</span>
+              <span class="ex__desc"><span>A planner's month at a glance: weddings, launches, and galas on a calendar.</span></span>
+            </button>
+          </li>
+          <li>
+            <button class="ex__item" type="button" aria-pressed="false"
+              data-desk="assets/examples/sales-pipeline-desk.jpg" data-mob="assets/examples/sales-pipeline-phone.png">
+              <span class="ex__name">Sales Pipeline</span>
+              <span class="ex__desc"><span>Deals on a board, dragged from first call to closed won.</span></span>
+            </button>
+          </li>
+          <li>
+            <button class="ex__item" type="button" aria-pressed="false"
+              data-desk="assets/examples/wine-cellar-desk.jpg" data-mob="assets/examples/wine-cellar-phone.png">
+              <span class="ex__name">Wine Cellar</span>
+              <span class="ex__desc"><span>Every bottle as a sortable table: varietal, region, vintage, and what to drink next.</span></span>
+            </button>
+          </li>
+        </ul>
       </div>
-      <!-- Mobile -->
-      <div class="phone2">
-        <div class="phone2__island"></div>
-        <div class="phone__scr">
-          <div class="m">
-            <div class="m__top"><span class="back">‹</span><span class="aptile sky">📖</span><div><div class="nm">Reading list</div><div class="st">Draft</div></div><span class="av"></span></div>
-            <div class="m__tabs"><span>Overview</span><span class="active">Tables</span><span>Views</span></div>
-            <div class="m__head"><span class="aptile rose">B</span> Books</div>
-            <div class="m__col">T  Book</div>
-            <div class="m__row">Project Hail Mary</div>
-            <div class="m__row">The Creative Act</div>
-            <div class="m__row">Tomorrow, and Tomorrow, and Tomorrow</div>
-            <div class="m__row">Klara and the Sun</div>
-            <div class="m__row">The Anthropocene Reviewed</div>
-            <div class="m__row">Piranesi</div>
+      <div class="ex__stage reveal">
+        <div class="rig">
+          <div class="win">
+            <div class="win__bar"><div class="win__dots"><i></i><i></i><i></i></div><span class="win__url">create.briques.app</span></div>
+            <div class="win__screen">
+              <img class="ex__shot" data-ex-desk src="assets/examples/brand-deals-desk.jpg" width="1600" height="899" alt="A Brique open on the desktop web app" />
+            </div>
           </div>
+          <img class="ex__phone" data-ex-mob src="assets/examples/brand-deals-phone.png" width="480" height="987" alt="The same Brique on a phone" />
         </div>
       </div>
     </div>
@@ -220,30 +213,15 @@
           <div class="ic" style="background:rgba(94,146,198,.16)">▦</div>
           <h3>See it however you like</h3>
           <p>The same Brique as a list, a table, a board, or a calendar. Your data doesn't change, only the way you look at it.</p>
-          <div class="views-row">
-            <span class="vchip">List</span><span class="vchip">Table</span><span class="vchip">Board</span><span class="vchip">Calendar</span>
+          <div class="views-row" role="tablist" aria-label="View types">
+            <button class="vchip is-active" type="button" role="tab" aria-selected="true" data-mock="assets/examples/client-studio-phone.png">List</button>
+            <button class="vchip" type="button" role="tab" aria-selected="false" data-mock="assets/examples/wine-cellar-phone.png">Table</button>
+            <button class="vchip" type="button" role="tab" aria-selected="false" data-mock="assets/examples/sales-pipeline-phone.png">Board</button>
+            <button class="vchip" type="button" role="tab" aria-selected="false" data-mock="assets/examples/events-phone.png">Calendar</button>
           </div>
         </div>
         <div class="vis">
-          <div class="phone" style="width:200px">
-            <div class="phone__screen"><div class="phone__island"></div>
-              <div class="scr">
-                <div class="scr__bar"><span>9:41</span><span class="sig">●●● ▮</span></div>
-                <div class="scr__head"><div class="k">Plant log · Calendar</div><div class="t">June</div></div>
-                <div class="scr__body">
-                  <div class="board">
-                    <div class="bcol"><div class="bh">This week</div>
-                      <div class="bcard"><span class="bdot" style="background:var(--sage)"></span><br>Monstera · watered</div>
-                      <div class="bcard"><span class="bdot" style="background:var(--apricot)"></span><br>Fiddle leaf · due</div>
-                    </div>
-                    <div class="bcol"><div class="bh">Next</div>
-                      <div class="bcard"><span class="bdot" style="background:var(--sky)"></span><br>Pothos · Fri</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+          <img class="vmock" data-view-mock src="assets/examples/client-studio-phone.png" width="480" height="987" alt="The same Brique shown as a list, table, board, or calendar on a phone" />
         </div>
       </div>
 
@@ -341,6 +319,6 @@
   </div>
 </footer>
 
-<script src="site.js" defer></script>
+<script src="site.js?v=20260630" defer></script>
 </body>
 </html>

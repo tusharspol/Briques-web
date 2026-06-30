@@ -47,10 +47,10 @@
     banner.setAttribute('aria-label', 'Cookie choices');
     banner.innerHTML =
       '<p class="cookie-banner__title">A quick note on cookies</p>' +
-      '<p class="cookie-banner__body">We use Microsoft Clarity to understand how the site is used, with heatmaps and session recordings (your typing stays masked). It only runs if you accept. See our <a href="/privacy.html">privacy policy</a>.</p>' +
+      '<p class="cookie-banner__body">By clicking “Accept All Cookies”, you agree to the storing of cookies on your device to enhance site navigation, analyze site usage, and assist in our marketing efforts. See our <a href="/privacy.html">privacy policy</a>.</p>' +
       '<div class="cookie-banner__actions">' +
       '<button type="button" class="btn btn--ghost" data-cookie="decline">Decline</button>' +
-      '<button type="button" class="btn" data-cookie="accept">Accept</button>' +
+      '<button type="button" class="btn" data-cookie="accept">Accept All Cookies</button>' +
       '</div>';
     document.body.appendChild(banner);
     requestAnimationFrame(function () { banner.classList.add('is-visible'); });
@@ -182,4 +182,87 @@ const reveals = document.querySelectorAll('.reveal');
       card.style.setProperty('--my', (e.clientY - r.top) + 'px');
     });
   });
+})();
+
+
+/* ── Examples picker — swap real screenshots in the browser + phone frame ── */
+(function () {
+  function initExamples() {
+    var root = document.querySelector('.showcase .ex');
+    if (!root) return;
+    var items = root.querySelectorAll('.ex__item');
+    var desk = root.querySelector('[data-ex-desk]');
+    var mob = root.querySelector('[data-ex-mob]');
+    var rig = root.querySelector('.rig');
+    if (!items.length || !desk || !mob) return;
+
+    // Preload every screenshot so swaps are instant.
+    items.forEach(function (b) {
+      ['data-desk', 'data-mob'].forEach(function (a) {
+        var src = b.getAttribute(a);
+        if (src) { var im = new Image(); im.src = src; }
+      });
+    });
+
+    function select(btn) {
+      if (btn.classList.contains('is-active')) return;
+      items.forEach(function (b) {
+        b.classList.remove('is-active');
+        b.setAttribute('aria-pressed', 'false');
+      });
+      btn.classList.add('is-active');
+      btn.setAttribute('aria-pressed', 'true');
+      if (rig) rig.classList.add('is-swapping');
+      var d = btn.getAttribute('data-desk');
+      var m = btn.getAttribute('data-mob');
+      setTimeout(function () {
+        if (d) desk.src = d;
+        if (m) mob.src = m;
+        if (rig) rig.classList.remove('is-swapping');
+      }, 150);
+    }
+
+    items.forEach(function (b) {
+      b.addEventListener('click', function () { select(b); });
+    });
+  }
+  document.addEventListener('DOMContentLoaded', initExamples);
+})();
+
+/* ── "See it however you like" — view-type tabs swap the phone mockup ── */
+(function () {
+  function initViewTabs() {
+    var root = document.querySelector('.cell--showcase');
+    if (!root) return;
+    var tabs = root.querySelectorAll('.vchip');
+    var img = root.querySelector('[data-view-mock]');
+    if (!tabs.length || !img) return;
+
+    // Preload the four view mockups so the swap is instant.
+    tabs.forEach(function (t) {
+      var s = t.getAttribute('data-mock');
+      if (s) { var im = new Image(); im.src = s; }
+    });
+
+    function select(tab) {
+      if (tab.classList.contains('is-active')) return;
+      tabs.forEach(function (t) {
+        t.classList.remove('is-active');
+        t.setAttribute('aria-selected', 'false');
+      });
+      tab.classList.add('is-active');
+      tab.setAttribute('aria-selected', 'true');
+      var src = tab.getAttribute('data-mock');
+      img.classList.add('is-swapping');
+      setTimeout(function () {
+        if (src) img.src = src;
+        img.classList.remove('is-swapping');
+      }, 150);
+    }
+
+    tabs.forEach(function (t) {
+      t.addEventListener('click', function () { select(t); });
+    });
+  }
+  document.addEventListener('DOMContentLoaded', initViewTabs);
 })();
